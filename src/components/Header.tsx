@@ -29,7 +29,7 @@ const Header = () => {
             <div className="w-10 h-10 rounded-full bg-polkadot-pink overflow-hidden flex items-center justify-center animate-ping-slow">
               <div className="w-4 h-4 rounded-full bg-white"></div>
             </div>
-            <span className="ml-3 text-lg font-semibold">Polkadot</span>
+            <span className="ml-3 text-lg font-semibold">Polkadot Sales Hub</span>
           </a>
         </div>
         

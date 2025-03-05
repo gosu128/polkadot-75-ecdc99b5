@@ -34,11 +34,11 @@ const Features = () => {
       <div className="container-tight">
         <div className="max-w-3xl mx-auto text-center mb-16">
           <div className="pill-tag mb-4 opacity-0 animate-fade-in">Core Features</div>
-          <h2 className="heading-lg mb-6 opacity-0 animate-fade-in delay-100">
-            Built for Developers, <span className="text-polkadot-pink">by Developers</span>
+          <h2 className="heading-lg font-unbounded mb-6 opacity-0 animate-fade-in delay-100">
+            Built for Developers, <span className="bg-gradient-pink-orange text-transparent bg-clip-text">by Developers</span>
           </h2>
           <p className="body-md opacity-0 animate-fade-in delay-200">
-            Polkadot provides the technical advancements necessary to make blockchain technology practical, accessible, scalable, and future-proof.
+            Polkadot provides the technical advancements necessary to make blockchain technology practical, accessible, <span className="bg-gradient-blue-purple text-transparent bg-clip-text font-medium">scalable</span>, and future-proof.
           </p>
         </div>
         
@@ -58,7 +58,7 @@ const Features = () => {
               >
                 <div className="flex items-center mb-2">
                   {feature.icon}
-                  <h3 className="text-xl font-semibold ml-3">{feature.title}</h3>
+                  <h3 className="text-xl font-unbounded ml-3">{feature.title}</h3>
                   {activeFeature === index && (
                     <ArrowRight size={16} className="ml-auto text-polkadot-pink" />
                   )}

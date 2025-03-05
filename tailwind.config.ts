@@ -65,6 +65,7 @@ export default {
       },
       fontFamily: {
         sans: ['Inter var', 'Inter', 'sans-serif'],
+        unbounded: ['Unbounded', 'cursive'],
       },
       borderRadius: {
         lg: 'var(--radius)',
@@ -118,6 +119,11 @@ export default {
       transitionProperty: {
         'height': 'height',
         'spacing': 'margin, padding',
+      },
+      backgroundImage: {
+        'gradient-pink-orange': 'linear-gradient(90deg, #E6007A 0%, #FF4AA0 50%, #FF7E21 100%)',
+        'gradient-blue-purple': 'linear-gradient(90deg, #3B82F6 0%, #8B5CF6 100%)',
+        'gradient-green-teal': 'linear-gradient(90deg, #10B981 0%, #0EA5E9 100%)',
       }
     }
   },

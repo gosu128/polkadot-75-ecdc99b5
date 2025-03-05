@@ -1,5 +1,6 @@
 
 import { useEffect, useRef } from 'react';
+import SalesDropdown from './SalesDropdown';
 
 const Hero = () => {
   const heroRef = useRef<HTMLDivElement>(null);
@@ -50,18 +51,23 @@ const Hero = () => {
             The Interoperable Blockchain
           </div>
           
-          <h1 className="heading-xl mb-6 opacity-0 animate-fade-in delay-200">
-            Build<span className="text-polkadot-pink"> Web3 </span>
-            with Infinite Possibilities
+          <h1 className="heading-xl font-unbounded mb-6 opacity-0 animate-fade-in delay-200">
+            Build<span className="bg-gradient-pink-orange text-transparent bg-clip-text"> Web3 </span>
+            with <span className="bg-gradient-blue-purple text-transparent bg-clip-text">Infinite</span> Possibilities
           </h1>
           
           <p className="body-lg max-w-2xl mx-auto mb-10 opacity-0 animate-fade-in delay-300">
-            The multichain vision for Web3 starts here. Connect to multiple blockchains in a single network, share security, and transfer any type of data or asset between chains.
+            The multichain vision for Web3 starts here. Connect to multiple blockchains in a single network, share <span className="bg-gradient-green-teal text-transparent bg-clip-text font-medium">security</span>, and transfer any type of <span className="bg-gradient-pink-orange text-transparent bg-clip-text font-medium">data</span> or <span className="bg-gradient-blue-purple text-transparent bg-clip-text font-medium">asset</span> between chains.
           </p>
           
-          <div className="flex flex-col sm:flex-row gap-4 opacity-0 animate-fade-in delay-400">
+          <div className="flex flex-col sm:flex-row gap-4 opacity-0 animate-fade-in delay-400 mb-12">
             <button className="btn-primary">Get Started</button>
             <button className="btn-secondary">Learn More</button>
+          </div>
+          
+          {/* Sales Dropdown - Heart of the website */}
+          <div className="w-full opacity-0 animate-fade-in delay-500">
+            <SalesDropdown />
           </div>
         </div>
         

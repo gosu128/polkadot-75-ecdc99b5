@@ -33,36 +33,24 @@ type SegmentProfileProps = {
   onBack: () => void;
 };
 
-// Function to format content with bullet points, remove colons, and left-align text
+// Function to format content with paragraphs and bold key phrases
 const formatContent = (content: string | null) => {
   if (!content) return <p className="text-gray-700 italic">No information available</p>;
-  
+
   return (
-    <ul className="list-disc pl-6 text-gray-700 space-y-2 text-left">
+    <div className="text-gray-700 space-y-4 text-left">
       {content.split('\n').map((line, index) => {
         const parts = line.split(':');
         const boldText = parts[0]?.trim();
         const remainingText = parts.slice(1).join(':').trim();
+
         return (
-          <li key={index}>
+          <p key={index}>
             <span className="font-semibold">{boldText}</span> {remainingText}
-          </li>
+          </p>
         );
       })}
-    </ul>
-  );
-};
-
-// Function to format the Key Regions section into a bullet-point list
-const formatRegions = (regions: string | null) => {
-  if (!regions) return <p className="text-gray-700 italic">No regions specified</p>;
-
-  return (
-    <ul className="list-disc pl-6 text-gray-700 space-y-2 text-left">
-      {regions.split(',').map((region, index) => (
-        <li key={index} className="font-semibold">{region.trim()}</li>
-      ))}
-    </ul>
+    </div>
   );
 };
 
@@ -147,7 +135,7 @@ const SegmentProfile = ({ segment, onBack }: SegmentProfileProps) => {
           {segment.regions && (
             <div>
               <SectionHeader icon={Globe} title="Key Regions" />
-              {formatRegions(segment.regions)}
+              {formatContent(segment.regions)}
             </div>
           )}
 

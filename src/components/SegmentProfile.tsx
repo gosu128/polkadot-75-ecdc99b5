@@ -104,7 +104,7 @@ const SegmentProfile = ({ segment, onBack }: SegmentProfileProps) => {
       <div className="space-y-10">
         {/* Overview */}
         <div>
-          <SectionHeader icon={Info} title="Overview" />
+          <SectionHeader icon={Info} title="Overview Test" />
           {formatContent(segment.abstract)}
         </div>
 

@@ -101,10 +101,10 @@ const SegmentProfile = ({ segment, onBack }: SegmentProfileProps) => {
       </div>
 
       {/* SINGLE COLUMN LAYOUT */}
-      <div className="space-y-10">
+      <div className="space-y-10 flex-grow">
         {/* Overview */}
         <div>
-          <SectionHeader icon={Info} title="Overview Test" />
+          <SectionHeader icon={Info} title="Overview" />
           {formatContent(segment.abstract)}
         </div>
 
@@ -187,9 +187,13 @@ const SegmentProfile = ({ segment, onBack }: SegmentProfileProps) => {
           </div>
         )}
       </div>
+
+      {/* Push Footer Below */}
+      <footer className="mt-auto pt-10">
+        <Footer />
+      </footer>
     </div>
   );
 };
 
 export default SegmentProfile;
-

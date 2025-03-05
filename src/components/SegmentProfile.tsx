@@ -207,11 +207,6 @@ const SegmentProfile = ({ segment, onBack }: SegmentProfileProps) => {
           )}
         </div>
       </div>
-
-      {/* Footer - Fixed at bottom */}
-      <footer className="mt-auto">
-        <Footer />
-      </footer>
     </div>
   );
 };

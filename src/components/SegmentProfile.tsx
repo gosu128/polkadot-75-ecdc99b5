@@ -212,7 +212,7 @@ const SegmentProfile = ({ segment, industry, onBack }: SegmentProfileProps) => {
                   dotSize={8}
                   dotColor={{ theme: 'background' }}
                   dotBorderWidth={2}
-                  colors={{ scheme: 'pink_purple' }}
+                  colors={{ scheme: 'purples' }}
                   blendMode="multiply"
                   motionConfig="gentle"
                   gridShape="circular"

@@ -1,4 +1,3 @@
-
 import { cn } from '@/lib/utils';
 
 const Header = () => {
@@ -10,8 +9,11 @@ const Header = () => {
             <span className="text-lg font-unbounded text-polkadot-pink">Polkadot</span>
             <span className="text-lg font-unbounded"> Sales Hub</span>
           </a>
-          <a href="#" className="bg-[#9b87f5] hover:bg-[#7E69AB] text-white px-6 py-2 rounded-full transition-colors">
-            FAQ
+          <a 
+            href="#" 
+            className="bg-[#9b87f5] hover:bg-[#7E69AB] text-white px-6 py-2 rounded-full transition-colors font-unbounded"
+          >
+            Instructions
           </a>
         </div>
       </div>

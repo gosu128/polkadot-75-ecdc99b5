@@ -39,11 +39,13 @@ const formatContent = (content: string | null) => {
   return (
     <ul className="list-disc pl-6 text-gray-700 space-y-2 text-left">
       {content.split('\n').map((line, index) => {
-        // Remove trailing colons and ensure left alignment
-        const formattedText = line.trim().replace(/:$/, '');
+        // Bold first part until the colon and remove trailing colons
+        const parts = line.split(':');
+        const boldText = parts[0]?.trim();
+        const remainingText = parts.slice(1).join(':').trim();
         return (
           <li key={index}>
-            <span className="font-semibold">{formattedText}</span>
+            <span className="font-semibold">{boldText}</span> {remainingText}
           </li>
         );
       })}
@@ -161,9 +163,33 @@ const SegmentProfile = ({ segment, onBack }: SegmentProfileProps) => {
             {formatContent(segment.personas)}
           </div>
         )}
+
+        {/* SCORE SECTION - Horizontal Bar Chart */}
+        {scoreData && (
+          <div>
+            <SectionHeader icon={Star} title="Segment Score" />
+            <div className="h-64 w-full">
+              <ResponsiveBar
+                data={scoreData}
+                keys={["score"]}
+                indexBy="category"
+                margin={{ top: 20, right: 30, bottom: 50, left: 100 }}
+                padding={0.3}
+                layout="horizontal"
+                colors={["#6366F1"]}
+                borderColor={{ from: 'color', modifiers: [['darker', 1.6]] }}
+                axisBottom={{ legend: "Score (out of 10)", legendPosition: "middle", legendOffset: 40 }}
+                axisLeft={{ tickSize: 0, tickPadding: 5 }}
+                enableLabel={true}
+                labelTextColor={{ from: 'color', modifiers: [['darker', 3]] }}
+              />
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
 };
 
 export default SegmentProfile;
+

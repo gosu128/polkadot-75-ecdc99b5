@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { 
   Info, 
@@ -188,5 +189,3 @@ const SegmentProfile = ({ segment, industry, onBack }: SegmentProfileProps) => {
 };
 
 export default SegmentProfile;
-
-

@@ -187,9 +187,6 @@ const SegmentProfile = ({ segment, onBack }: SegmentProfileProps) => {
           </div>
         )}
       </div>
-      <div className="mt-10">
-  <Footer />
-</div>
     </div>
   );
 };

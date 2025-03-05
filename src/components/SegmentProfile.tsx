@@ -33,22 +33,26 @@ type SegmentProfileProps = {
   onBack: () => void;
 };
 
-// Function to format content with paragraphs, key phrases bold, and Inter Light for normal text
+// Function to format content, ensuring ":" are preserved, bolding key phrases
 const formatContent = (content: string | null) => {
   if (!content) return <p className="font-inter-light text-gray-700 italic">No information available</p>;
 
   return (
     <div className="font-inter-light text-gray-700 space-y-4 text-left">
       {content.split('\n').map((line, index) => {
-        const parts = line.split(':');
-        const boldText = parts[0]?.trim();
-        const remainingText = parts.slice(1).join(':').trim();
+        if (line.includes(':')) {
+          const parts = line.split(':');
+          const boldText = parts[0]?.trim();
+          const remainingText = parts.slice(1).join(':').trim();
 
-        return (
-          <p key={index}>
-            <span className="font-inter-bold">{boldText}</span> {remainingText}
-          </p>
-        );
+          return (
+            <p key={index}>
+              <span className="font-inter-bold">{boldText}:</span> {remainingText}
+            </p>
+          );
+        }
+
+        return <p key={index}>{line.trim()}</p>;
       })}
     </div>
   );
@@ -200,4 +204,3 @@ const SegmentProfile = ({ segment, onBack }: SegmentProfileProps) => {
 };
 
 export default SegmentProfile;
-

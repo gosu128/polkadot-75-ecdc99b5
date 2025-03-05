@@ -36,7 +36,7 @@ type SegmentProfileProps = {
 // Function to format content with bullet points, remove colons, and left-align text
 const formatContent = (content: string | null) => {
   if (!content) return <p className="text-gray-700 italic">No information available</p>;
-
+  
   return (
     <ul className="list-disc pl-6 text-gray-700 space-y-2 text-left">
       {content.split('\n').map((line, index) => {
@@ -93,7 +93,7 @@ const SegmentProfile = ({ segment, onBack }: SegmentProfileProps) => {
     if (!segment?.score) return null;
     try {
       const parsedData = JSON.parse(segment.score);
-      if (!Array.isArray(parsedData)) return null;
+      if (!Array.isArray(parsedData)) return null; 
 
       return parsedData.map((item: any) => ({
         category: item.key || "Unknown",
@@ -110,8 +110,8 @@ const SegmentProfile = ({ segment, onBack }: SegmentProfileProps) => {
       {/* Main content container */}
       <div className="w-full max-w-6xl mx-auto px-8 py-16 flex-grow">
         {/* Header Section */}
-        <div className="mb-12 pt-16">
-          <h2 className="text-4xl font-unbounded font-bold text-gray-900">{segment.name}</h2>
+        <div className="mb-12">
+          <h2 className="text-4xl font-unbounded font-bold text-gray-900 mt-1">{segment.name}</h2>
           <button 
             onClick={onBack} 
             className="mt-4 px-4 py-2 text-sm text-gray-600 hover:bg-gray-200 rounded-md transition">
@@ -208,12 +208,12 @@ const SegmentProfile = ({ segment, onBack }: SegmentProfileProps) => {
         </div>
       </div>
 
-      {/* Footer - Positioned properly below the content */}
-      <Footer />
+      {/* Footer - Fixed at bottom */}
+      <footer className="mt-auto">
+        <Footer />
+      </footer>
     </div>
   );
 };
 
 export default SegmentProfile;
-
-

@@ -11,7 +11,6 @@ import {
   Users 
 } from 'lucide-react';
 import { ResponsiveBar } from '@nivo/bar';
-import WorldMap from './WorldMap';
 
 type Segment = {
   id: number;
@@ -33,7 +32,7 @@ type SegmentProfileProps = {
   onBack: () => void;
 };
 
-// Format content with bullet points, remove colons, and left-align text
+// Function to format content with bullet points, remove colons, and left-align text
 const formatContent = (content: string | null) => {
   if (!content) return <p className="text-gray-700 italic">No information available</p>;
   
@@ -48,6 +47,19 @@ const formatContent = (content: string | null) => {
           </li>
         );
       })}
+    </ul>
+  );
+};
+
+// Function to format the Key Regions section into a bullet-point list
+const formatRegions = (regions: string | null) => {
+  if (!regions) return <p className="text-gray-700 italic">No regions specified</p>;
+
+  return (
+    <ul className="list-disc pl-6 text-gray-700 space-y-2 text-left">
+      {regions.split(',').map((region, index) => (
+        <li key={index} className="font-semibold">{region.trim()}</li>
+      ))}
     </ul>
   );
 };
@@ -110,14 +122,11 @@ const SegmentProfile = ({ segment, onBack }: SegmentProfileProps) => {
           </div>
         )}
 
-        {/* Key Regions (Now below Market Trends) */}
+        {/* Key Regions - NEW Bullet Point List Instead of Map */}
         {segment.regions && (
           <div>
             <SectionHeader icon={Globe} title="Key Regions" />
-            <p className="text-gray-700">{segment.regions}</p>
-            <div className="h-64 w-full mt-4">
-              <WorldMap regions={segment.regions} />
-            </div>
+            {formatRegions(segment.regions)}
           </div>
         )}
 
@@ -150,29 +159,6 @@ const SegmentProfile = ({ segment, onBack }: SegmentProfileProps) => {
           <div>
             <SectionHeader icon={Users} title="Target Personas" />
             {formatContent(segment.personas)}
-          </div>
-        )}
-
-        {/* SCORE SECTION - Horizontal Bar Chart */}
-        {scoreData && (
-          <div>
-            <SectionHeader icon={Star} title="Segment Score" />
-            <div className="h-64 w-full">
-              <ResponsiveBar
-                data={scoreData}
-                keys={["score"]}
-                indexBy="category"
-                margin={{ top: 20, right: 30, bottom: 50, left: 100 }}
-                padding={0.3}
-                layout="horizontal"
-                colors={["#6366F1"]}
-                borderColor={{ from: 'color', modifiers: [['darker', 1.6]] }}
-                axisBottom={{ legend: "Score (out of 10)", legendPosition: "middle", legendOffset: 40 }}
-                axisLeft={{ tickSize: 0, tickPadding: 5 }}
-                enableLabel={true}
-                labelTextColor={{ from: 'color', modifiers: [['darker', 3]] }}
-              />
-            </div>
           </div>
         )}
       </div>

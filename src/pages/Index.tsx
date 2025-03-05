@@ -15,35 +15,13 @@ const Index = () => {
       POWERED BY SO SO SCALED!
     </div>
   </div>
-
+  
   <div className="max-w-4xl mx-auto w-full px-4 text-center">
     <h1 className="text-5xl sm:text-6xl md:text-7xl font-unbounded font-bold mb-10 leading-tight">
       Who do you want to <br />
       pitch <span className="bg-clip-text text-transparent bg-gradient-to-r from-polkadot-pink via-[#9B87F5] to-[#7E69AB]">Polkadot</span> to?
     </h1>
-    
-    {/* Dropdowns to Select Industry & Segment */}
-    <div className="flex flex-col items-center space-y-4">
-      <select onChange={handleIndustryChange} value={selectedIndustry} className="border p-2 rounded">
-        <option value="">Select Industry</option>
-        {industries.map((industry) => (
-          <option key={industry.id} value={industry.id}>
-            {industry.name}
-          </option>
-        ))}
-      </select>
-
-      {selectedIndustry && (
-        <select onChange={handleSegmentChange} value={selectedSegment} className="border p-2 rounded">
-          <option value="">Select Segment</option>
-          {segments.map((segment) => (
-            <option key={segment.id} value={segment.id}>
-              {segment.name}
-            </option>
-          ))}
-        </select>
-      )}
-    </div>
+    <SalesDropdown />  // <-- REPLACE THIS LINE
   </div>
 </section>
       </main>

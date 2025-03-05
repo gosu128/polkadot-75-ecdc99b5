@@ -10,8 +10,7 @@ const Footer = () => {
           {/* Logo and info */}
           <div className="md:w-1/3">
             <div className="flex items-center mb-4">
-              <span className="text-lg font-unbounded text-polkadot-pink">Polkadot</span>
-              <span className="text-lg font-unbounded"> Sales Hub</span>
+              <span className="text-lg font-unbounded text-polkadot-pink">So So Scaled!</span>
             </div>
             <p className="text-white/70 text-sm mb-4">
               A one-stop resource hub for Polkadot BD Agents to find the tools and materials needed 

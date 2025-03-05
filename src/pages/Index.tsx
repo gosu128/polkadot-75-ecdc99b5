@@ -19,10 +19,10 @@ const Index = () => {
 
         {/* Main Hero Content */}
         <section className="w-full max-w-4xl flex flex-col items-center justify-center h-full">
-          <h1 className="text-5xl sm:text-6xl md:text-7xl font-unbounded font-bold mb-12 leading-tight">
-            Who do you want to <br />
-            pitch <span className="bg-clip-text text-transparent bg-gradient-to-r from-polkadot-pink via-[#9B87F5] to-[#7E69AB]">Polkadot</span> to?
-          </h1>
+          {/* <h1 className="text-5xl sm:text-6xl md:text-7xl font-unbounded font-bold mb-12 leading-tight">
+  Who do you want to <br />
+  pitch <span className="bg-clip-text text-transparent bg-gradient-to-r from-polkadot-pink via-[#9B87F5] to-[#7E69AB]">Polkadot</span> to?
+</h1> */}
           <SalesDropdown />
         </section>
       </main>

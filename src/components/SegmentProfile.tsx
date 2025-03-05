@@ -56,13 +56,7 @@ const formatRegions = (regions: string | null) => {
   if (!regions) return <p className="text-gray-700 italic">No regions specified</p>;
 
   return (
-    <div className="flex flex-wrap gap-2">
-  {regions.split(',').map((region, index) => (
-    <span key={index} className="px-3 py-1 bg-indigo-100 text-indigo-700 rounded-full text-sm font-medium">
-      {region.trim()}
-    </span>
-  ))}
-</div>
+    <ul className="list-disc pl-6 text-gray-700 space-y-2 text-left">
       {regions.split(',').map((region, index) => (
         <li key={index} className="font-semibold">{region.trim()}</li>
       ))}

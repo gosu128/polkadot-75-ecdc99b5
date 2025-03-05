@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import Header from '@/components/Header';
 import SalesDropdown from '@/components/SalesDropdown';
@@ -29,13 +28,6 @@ const Index = () => {
         {/* Only show these elements when no segment is selected */}
         {!selectedSegment && (
           <>
-            {/* "Powered by So So Scaled!" - Only visible on main page */}
-            <div className="absolute top-8 left-0 right-0 flex justify-center">
-              <div className="bg-pink-100 text-pink-700 text-xs font-medium px-3 py-1 rounded-full">
-                POWERED BY SO SO SCALED!
-              </div>
-            </div>
-
             {/* Main Hero Content - Only visible on main page */}
             <section className="w-full max-w-4xl flex flex-col items-center justify-center h-full">
               <h1 className="text-5xl sm:text-6xl md:text-7xl font-unbounded font-bold mb-12 leading-tight">

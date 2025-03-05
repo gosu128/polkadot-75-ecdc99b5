@@ -1,8 +1,10 @@
+
 import { useState, useRef, useEffect } from 'react';
 import { ChevronDown, ChevronUp, Info, Layers, TrendingUp } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import SegmentProfile from './SegmentProfile';
 
 // Define types for our data
 type Industry = {
@@ -15,7 +17,14 @@ type Segment = {
   name: string;
   industry_id: number;
   abstract: string | null;
+  definition: string | null;
   trends: string | null;
+  regions: string | null;
+  challenges: string | null;
+  use_cases: string | null;
+  score: string | null;
+  positioning_statement: string | null;
+  personas: string | null;
 };
 
 const SalesDropdown = () => {
@@ -202,81 +211,6 @@ const SalesDropdown = () => {
           />
         </div>
       )}
-    </div>
-  );
-};
-
-// Component to display a segment profile
-const SegmentProfile = ({ 
-  segment, 
-  industry, 
-  onBack 
-}: { 
-  segment: Segment; 
-  industry: Industry | null;
-  onBack: () => void;
-}) => {
-  return (
-    <div className="bg-white rounded-xl p-6 shadow-xl animate-fade-in">
-      <div className="flex justify-between items-start mb-6">
-        <div>
-          <div className="pill-tag mb-2">{industry?.name}</div>
-          <h2 className="text-2xl md:text-3xl font-unbounded font-semibold mb-1">{segment.name}</h2>
-        </div>
-        <button 
-          onClick={onBack}
-          className="p-2 rounded-lg hover:bg-polkadot-gray transition-colors"
-        >
-          ← Back to Selection
-        </button>
-      </div>
-      
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-8">
-        <div className="lg:col-span-2">
-          <div className="mb-6">
-            <h3 className="text-lg font-medium flex items-center mb-3">
-              <Info className="mr-2 text-polkadot-pink w-5 h-5" />
-              Overview
-            </h3>
-            <div className="bg-polkadot-gray rounded-lg p-4">
-              {segment.abstract ? (
-                <p className="text-foreground/80 whitespace-pre-line">{segment.abstract}</p>
-              ) : (
-                <p className="text-foreground/60 italic">No overview information available.</p>
-              )}
-            </div>
-          </div>
-          
-          <div>
-            <h3 className="text-lg font-medium flex items-center mb-3">
-              <TrendingUp className="mr-2 text-polkadot-pink w-5 h-5" />
-              Market Trends
-            </h3>
-            <div className="bg-polkadot-gray rounded-lg p-4">
-              {segment.trends ? (
-                <p className="text-foreground/80 whitespace-pre-line">{segment.trends}</p>
-              ) : (
-                <p className="text-foreground/60 italic">No trend information available.</p>
-              )}
-            </div>
-          </div>
-        </div>
-        
-        <div className="bg-polkadot-gray rounded-lg p-5">
-          <h3 className="text-lg font-medium mb-4 border-b pb-2">Quick Actions</h3>
-          <div className="space-y-3">
-            <button className="w-full btn-primary flex items-center justify-center">
-              Download Segment Report
-            </button>
-            <button className="w-full btn-secondary flex items-center justify-center">
-              Schedule Consultation
-            </button>
-            <button className="w-full btn-secondary flex items-center justify-center">
-              View Case Studies
-            </button>
-          </div>
-        </div>
-      </div>
     </div>
   );
 };

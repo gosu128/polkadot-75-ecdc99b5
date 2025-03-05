@@ -33,12 +33,12 @@ type SegmentProfileProps = {
   onBack: () => void;
 };
 
-// Function to format content with paragraphs and bold key phrases
+// Function to format content with paragraphs, key phrases bold, and Inter Light for normal text
 const formatContent = (content: string | null) => {
-  if (!content) return <p className="text-gray-700 italic">No information available</p>;
+  if (!content) return <p className="font-inter-light text-gray-700 italic">No information available</p>;
 
   return (
-    <div className="text-gray-700 space-y-4 text-left">
+    <div className="font-inter-light text-gray-700 space-y-4 text-left">
       {content.split('\n').map((line, index) => {
         const parts = line.split(':');
         const boldText = parts[0]?.trim();
@@ -46,7 +46,7 @@ const formatContent = (content: string | null) => {
 
         return (
           <p key={index}>
-            <span className="font-semibold">{boldText}</span> {remainingText}
+            <span className="font-inter-bold">{boldText}</span> {remainingText}
           </p>
         );
       })}
@@ -54,7 +54,7 @@ const formatContent = (content: string | null) => {
   );
 };
 
-// Section header component
+// Section header component - Keep Unbounded for section titles
 const SectionHeader = ({ icon: Icon, title }: { icon: React.ElementType; title: string }) => (
   <h3 className="text-2xl font-unbounded text-gray-900 flex items-center mb-4">
     <Icon className="mr-2 text-indigo-600 w-6 h-6" />
@@ -102,7 +102,7 @@ const SegmentProfile = ({ segment, onBack }: SegmentProfileProps) => {
           <h2 className="text-4xl font-unbounded font-bold text-gray-900 mt-1">{segment.name}</h2>
           <button 
             onClick={onBack} 
-            className="mt-4 px-4 py-2 text-sm text-gray-600 hover:bg-gray-200 rounded-md transition">
+            className="mt-4 px-4 py-2 text-sm text-gray-600 hover:bg-gray-200 rounded-md transition font-inter-light">
             ← Back
           </button>
         </div>
@@ -200,3 +200,4 @@ const SegmentProfile = ({ segment, onBack }: SegmentProfileProps) => {
 };
 
 export default SegmentProfile;
+

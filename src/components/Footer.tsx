@@ -1,15 +1,13 @@
-
 import { ArrowUpRight, Github, Twitter } from 'lucide-react';
-
 const Footer = () => {
-  return (
-    <footer className="bg-[#1A1E2E] text-white pt-16 pb-8">
+  return <footer className="bg-[#1A1E2E] text-white pt-16 pb-8">
       <div className="container-tight">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-10 mb-16">
           {/* Logo and info */}
           <div className="md:col-span-1">
             <div className="flex items-center mb-4">
-              <span className="text-lg font-unbounded text-polkadot-pink">Polkadot</span>
+              <span className="text-lg font-unbounded text-polkadot-pink">Polkadot 
+            </span>
               <span className="text-lg font-unbounded"> Sales Hub</span>
             </div>
             <p className="text-white/70 text-sm mb-4">
@@ -21,48 +19,33 @@ const Footer = () => {
           <div>
             <h3 className="text-base font-semibold mb-4">Links</h3>
             <ul className="space-y-3 text-sm">
-              {['Home', 'Features', 'About', 'Contact'].map((item) => (
-                <li key={item}>
-                  <a 
-                    href="#" 
-                    className="text-white/70 hover:text-white flex items-center transition-colors"
-                  >
+              {['Home', 'Features', 'About', 'Contact'].map(item => <li key={item}>
+                  <a href="#" className="text-white/70 hover:text-white flex items-center transition-colors">
                     {item}
                   </a>
-                </li>
-              ))}
+                </li>)}
             </ul>
           </div>
           
           <div>
             <h3 className="text-base font-semibold mb-4">Resources</h3>
             <ul className="space-y-3 text-sm">
-              {['Documentation', 'Whitepaper', 'Roadmap'].map((item) => (
-                <li key={item}>
-                  <a 
-                    href="#" 
-                    className="text-white/70 hover:text-white flex items-center transition-colors"
-                  >
+              {['Documentation', 'Whitepaper', 'Roadmap'].map(item => <li key={item}>
+                  <a href="#" className="text-white/70 hover:text-white flex items-center transition-colors">
                     {item}
                   </a>
-                </li>
-              ))}
+                </li>)}
             </ul>
           </div>
           
           <div>
             <h3 className="text-base font-semibold mb-4">Community</h3>
             <ul className="space-y-3 text-sm">
-              {['hello@polkadot.network', 'Join our Discord', 'Follow us on Twitter'].map((item) => (
-                <li key={item}>
-                  <a 
-                    href="#" 
-                    className="text-white/70 hover:text-white flex items-center transition-colors"
-                  >
+              {['hello@polkadot.network', 'Join our Discord', 'Follow us on Twitter'].map(item => <li key={item}>
+                  <a href="#" className="text-white/70 hover:text-white flex items-center transition-colors">
                     {item}
                   </a>
-                </li>
-              ))}
+                </li>)}
             </ul>
           </div>
         </div>
@@ -85,8 +68,6 @@ const Footer = () => {
           </div>
         </div>
       </div>
-    </footer>
-  );
+    </footer>;
 };
-
 export default Footer;

@@ -11,6 +11,7 @@ import {
   Users 
 } from 'lucide-react';
 import { ResponsiveBar } from '@nivo/bar';
+import Footer from '@/components/Footer';
 
 type Segment = {
   id: number;
@@ -28,7 +29,7 @@ type Segment = {
 };
 
 type SegmentProfileProps = {
-  segment: Segment;
+  segment: Segment | null;
   onBack: () => void;
 };
 
@@ -75,121 +76,141 @@ const SectionHeader = ({ icon: Icon, title }: { icon: React.ElementType; title: 
 );
 
 const SegmentProfile = ({ segment, onBack }: SegmentProfileProps) => {
-  // Parse score data
-  const scoreData = React.useMemo(() => {
-    if (!segment.score) return null;
-    try {
-      return JSON.parse(segment.score).map((item: any) => ({
-        category: item.key,
-        score: item.value,
-      }));
-    } catch (e) {
-      return null;
-    }
-  }, [segment.score]);
-
-  return (
-    <div className="max-w-5xl mx-auto px-6 py-16 min-h-screen flex flex-col">
-      {/* Header Section */}
-      <div className="mb-12">
-        <h2 className="text-4xl font-unbounded font-bold text-gray-900 mt-1">{segment.name}</h2>
+  // If no segment data is received, return an error message instead of a blank page
+  if (!segment) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-screen text-center">
+        <h2 className="text-2xl font-bold text-red-600">Error: Segment data not found</h2>
         <button 
           onClick={onBack} 
-          className="mt-4 px-4 py-2 text-sm text-gray-600 hover:bg-gray-200 rounded-md transition">
-          ← Back
+          className="mt-4 px-4 py-2 bg-gray-800 text-white rounded-md">
+          ← Back to Selection
         </button>
       </div>
+    );
+  }
 
-      {/* SINGLE COLUMN LAYOUT */}
-      <div className="space-y-10 flex-grow">
-        {/* Overview */}
-        <div>
-          <SectionHeader icon={Info} title="Overview" />
-          {formatContent(segment.abstract)}
+  // Parse score data safely
+  const scoreData = React.useMemo(() => {
+    if (!segment?.score) return null;
+    try {
+      const parsedData = JSON.parse(segment.score);
+      if (!Array.isArray(parsedData)) return null; // Ensure it's an array
+
+      return parsedData.map((item: any) => ({
+        category: item.key || "Unknown",
+        score: typeof item.value === "number" ? item.value : 0, // Ensure valid number
+      }));
+    } catch (e) {
+      console.error("Error parsing score data:", e);
+      return null;
+    }
+  }, [segment?.score]);
+
+  return (
+    <div className="flex flex-col min-h-screen">
+      <div className="max-w-5xl mx-auto px-6 py-16 flex-grow">
+        {/* Header Section */}
+        <div className="mb-12">
+          <h2 className="text-4xl font-unbounded font-bold text-gray-900 mt-1">{segment.name}</h2>
+          <button 
+            onClick={onBack} 
+            className="mt-4 px-4 py-2 text-sm text-gray-600 hover:bg-gray-200 rounded-md transition">
+            ← Back
+          </button>
         </div>
 
-        {/* Definition */}
-        {segment.definition && (
+        {/* SINGLE COLUMN LAYOUT */}
+        <div className="space-y-10">
+          {/* Overview */}
           <div>
-            <SectionHeader icon={BookText} title="Definition" />
-            {formatContent(segment.definition)}
+            <SectionHeader icon={Info} title="Overview" />
+            {formatContent(segment.abstract)}
           </div>
-        )}
 
-        {/* Market Trends */}
-        {segment.trends && (
-          <div>
-            <SectionHeader icon={TrendingUp} title="Market Trends" />
-            {formatContent(segment.trends)}
-          </div>
-        )}
-
-        {/* Key Regions - NEW Bullet Point List Instead of Map */}
-        {segment.regions && (
-          <div>
-            <SectionHeader icon={Globe} title="Key Regions" />
-            {formatRegions(segment.regions)}
-          </div>
-        )}
-
-        {/* Challenges */}
-        {segment.challenges && (
-          <div>
-            <SectionHeader icon={AlertTriangle} title="Challenges" />
-            {formatContent(segment.challenges)}
-          </div>
-        )}
-
-        {/* Use Cases */}
-        {segment.use_cases && (
-          <div>
-            <SectionHeader icon={Lightbulb} title="Use Cases" />
-            {formatContent(segment.use_cases)}
-          </div>
-        )}
-
-        {/* Positioning Statement */}
-        {segment.positioning_statement && (
-          <div>
-            <SectionHeader icon={Target} title="Positioning Statement" />
-            {formatContent(segment.positioning_statement)}
-          </div>
-        )}
-
-        {/* Personas */}
-        {segment.personas && (
-          <div>
-            <SectionHeader icon={Users} title="Target Personas" />
-            {formatContent(segment.personas)}
-          </div>
-        )}
-
-        {/* SCORE SECTION - Horizontal Bar Chart */}
-        {scoreData && (
-          <div>
-            <SectionHeader icon={Star} title="Segment Score" />
-            <div className="h-64 w-full">
-              <ResponsiveBar
-                data={scoreData}
-                keys={["score"]}
-                indexBy="category"
-                margin={{ top: 20, right: 30, bottom: 50, left: 100 }}
-                padding={0.3}
-                layout="horizontal"
-                colors={["#6366F1"]}
-                borderColor={{ from: 'color', modifiers: [['darker', 1.6]] }}
-                axisBottom={{ legend: "Score (out of 10)", legendPosition: "middle", legendOffset: 40 }}
-                axisLeft={{ tickSize: 0, tickPadding: 5 }}
-                enableLabel={true}
-                labelTextColor={{ from: 'color', modifiers: [['darker', 3]] }}
-              />
+          {/* Definition */}
+          {segment.definition && (
+            <div>
+              <SectionHeader icon={BookText} title="Definition" />
+              {formatContent(segment.definition)}
             </div>
-          </div>
-        )}
+          )}
+
+          {/* Market Trends */}
+          {segment.trends && (
+            <div>
+              <SectionHeader icon={TrendingUp} title="Market Trends" />
+              {formatContent(segment.trends)}
+            </div>
+          )}
+
+          {/* Key Regions */}
+          {segment.regions && (
+            <div>
+              <SectionHeader icon={Globe} title="Key Regions" />
+              {formatRegions(segment.regions)}
+            </div>
+          )}
+
+          {/* Challenges */}
+          {segment.challenges && (
+            <div>
+              <SectionHeader icon={AlertTriangle} title="Challenges" />
+              {formatContent(segment.challenges)}
+            </div>
+          )}
+
+          {/* Use Cases */}
+          {segment.use_cases && (
+            <div>
+              <SectionHeader icon={Lightbulb} title="Use Cases" />
+              {formatContent(segment.use_cases)}
+            </div>
+          )}
+
+          {/* Positioning Statement */}
+          {segment.positioning_statement && (
+            <div>
+              <SectionHeader icon={Target} title="Positioning Statement" />
+              {formatContent(segment.positioning_statement)}
+            </div>
+          )}
+
+          {/* Personas */}
+          {segment.personas && (
+            <div>
+              <SectionHeader icon={Users} title="Target Personas" />
+              {formatContent(segment.personas)}
+            </div>
+          )}
+
+          {/* SCORE SECTION - Horizontal Bar Chart */}
+          {scoreData && (
+            <div>
+              <SectionHeader icon={Star} title="Segment Score" />
+              <div className="h-64 w-full">
+                <ResponsiveBar
+                  data={scoreData}
+                  keys={["score"]}
+                  indexBy="category"
+                  margin={{ top: 20, right: 30, bottom: 50, left: 100 }}
+                  padding={0.3}
+                  layout="horizontal"
+                  colors={["#6366F1"]}
+                  borderColor={{ from: 'color', modifiers: [['darker', 1.6]] }}
+                  axisBottom={{ legend: "Score (out of 10)", legendPosition: "middle", legendOffset: 40 }}
+                  axisLeft={{ tickSize: 0, tickPadding: 5 }}
+                  enableLabel={true}
+                  labelTextColor={{ from: 'color', modifiers: [['darker', 3]] }}
+                />
+              </div>
+            </div>
+          )}
+        </div>
       </div>
 
-      {/* Push Footer Below */}
-      <footer className="mt-auto pt-10">
+      {/* Footer - Now properly positioned below the content */}
+      <footer className="mt-auto">
         <Footer />
       </footer>
     </div>

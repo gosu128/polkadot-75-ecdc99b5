@@ -1,4 +1,3 @@
-
 import { useState, useRef, useEffect } from 'react';
 import { ChevronDown, ChevronUp, Info, Layers, TrendingUp } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -69,7 +68,7 @@ const SalesDropdown = () => {
         toast({
           variant: "destructive",
           title: "Failed to load segments",
-          description: "Please try again later."
+          description: "Please try again later"
         });
       }
     };
@@ -118,40 +117,38 @@ const SalesDropdown = () => {
   };
 
   return (
-    <div className="max-w-6xl mx-auto w-full px-4">
+    <div className="max-w-2xl mx-auto w-full">
       {!selectedSegment ? (
         <div ref={dropdownRef} className="relative z-20 w-full">
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="w-full bg-white shadow-lg rounded-xl px-6 py-4 flex items-center justify-between hover:shadow-xl transition-shadow duration-300"
+            className="w-full bg-white border border-gray-200 shadow-sm rounded-md px-4 py-3 flex items-center justify-between hover:border-gray-300 transition-colors text-sm"
           >
-            <span className="text-xl font-unbounded font-medium">
+            <span className="text-gray-700">
               {selectedIndustry 
                 ? `Industry: ${selectedIndustry.name}` 
-                : "Select an Industry"}
+                : "Select industry vertical"}
             </span>
-            {isOpen ? <ChevronUp className="text-polkadot-pink" /> : <ChevronDown className="text-polkadot-pink" />}
+            <ChevronDown className="h-4 w-4 text-gray-500" />
           </button>
           
           {isOpen && (
-            <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-xl shadow-2xl border border-gray-100 animate-fade-in z-30">
+            <div className="absolute top-full left-0 right-0 mt-1 bg-white rounded-md shadow-lg border border-gray-200 animate-fade-in z-30">
               {/* First level: Industries */}
               {!selectedIndustry && (
-                <div className="max-h-80 overflow-y-auto p-4">
-                  <h3 className="text-lg font-medium mb-3 px-2 border-b pb-2">Industries</h3>
+                <div className="max-h-80 overflow-y-auto p-3">
                   {loading ? (
                     <div className="flex items-center justify-center p-6">
-                      <div className="w-8 h-8 border-4 border-polkadot-pink border-t-transparent rounded-full animate-spin"></div>
+                      <div className="w-5 h-5 border-2 border-polkadot-pink border-t-transparent rounded-full animate-spin"></div>
                     </div>
                   ) : (
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                    <div className="grid grid-cols-1 gap-1">
                       {industries.map((industry) => (
                         <button
                           key={industry.id}
                           onClick={() => handleIndustrySelect(industry)}
-                          className="text-left p-3 rounded-lg hover:bg-polkadot-gray transition-colors duration-200 flex items-center"
+                          className="text-left p-2 rounded hover:bg-gray-50 transition-colors text-sm w-full"
                         >
-                          <Layers className="mr-2 text-polkadot-pink w-5 h-5" />
                           <span>{industry.name}</span>
                         </button>
                       ))}
@@ -162,30 +159,30 @@ const SalesDropdown = () => {
               
               {/* Second level: Segments */}
               {selectedIndustry && (
-                <div className="max-h-80 overflow-y-auto p-4">
-                  <div className="flex items-center justify-between mb-3 px-2 border-b pb-2">
-                    <h3 className="text-lg font-medium">Segments in {selectedIndustry.name}</h3>
+                <div className="max-h-80 overflow-y-auto p-3">
+                  <div className="flex items-center justify-between mb-2 pb-2 border-b">
+                    <p className="text-sm font-medium">Segments in {selectedIndustry.name}</p>
                     <button 
                       onClick={resetSelection}
-                      className="text-sm text-polkadot-pink hover:text-polkadot-pink-light"
+                      className="text-xs text-polkadot-pink hover:text-polkadot-pink-light"
                     >
                       ← Back to Industries
                     </button>
                   </div>
                   
                   {filteredSegments.length === 0 ? (
-                    <p className="text-center py-4 text-foreground/70">No segments found for this industry.</p>
+                    <p className="text-center py-2 text-sm text-gray-500">No segments found for this industry.</p>
                   ) : (
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                    <div className="grid grid-cols-1 gap-1">
                       {filteredSegments.map((segment) => (
                         <button
                           key={segment.id}
                           onClick={() => handleSegmentSelect(segment)}
-                          className="text-left p-3 rounded-lg hover:bg-polkadot-gray transition-colors duration-200"
+                          className="text-left p-2 rounded hover:bg-gray-50 transition-colors text-sm w-full"
                         >
                           <div className="font-medium">{segment.name}</div>
                           {segment.abstract && (
-                            <p className="text-sm text-foreground/70 line-clamp-1">{segment.abstract}</p>
+                            <p className="text-xs text-gray-500 line-clamp-1">{segment.abstract}</p>
                           )}
                         </button>
                       ))}

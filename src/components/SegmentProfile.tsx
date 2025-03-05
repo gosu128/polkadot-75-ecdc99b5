@@ -40,7 +40,6 @@ const formatContent = (content: string | null) => {
   return (
     <ul className="list-disc pl-6 text-gray-700 space-y-2 text-left">
       {content.split('\n').map((line, index) => {
-        // Bold first part until the colon and remove trailing colons
         const parts = line.split(':');
         const boldText = parts[0]?.trim();
         const remainingText = parts.slice(1).join(':').trim();
@@ -76,7 +75,6 @@ const SectionHeader = ({ icon: Icon, title }: { icon: React.ElementType; title: 
 );
 
 const SegmentProfile = ({ segment, onBack }: SegmentProfileProps) => {
-  // If no segment data is received, return an error message instead of a blank page
   if (!segment) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen text-center">
@@ -95,11 +93,11 @@ const SegmentProfile = ({ segment, onBack }: SegmentProfileProps) => {
     if (!segment?.score) return null;
     try {
       const parsedData = JSON.parse(segment.score);
-      if (!Array.isArray(parsedData)) return null; // Ensure it's an array
+      if (!Array.isArray(parsedData)) return null; 
 
       return parsedData.map((item: any) => ({
         category: item.key || "Unknown",
-        score: typeof item.value === "number" ? item.value : 0, // Ensure valid number
+        score: typeof item.value === "number" ? item.value : 0,
       }));
     } catch (e) {
       console.error("Error parsing score data:", e);
@@ -109,7 +107,8 @@ const SegmentProfile = ({ segment, onBack }: SegmentProfileProps) => {
 
   return (
     <div className="flex flex-col min-h-screen">
-      <div className="max-w-5xl mx-auto px-6 py-16 flex-grow">
+      {/* Main content container */}
+      <div className="w-full max-w-6xl mx-auto px-8 py-16 flex-grow">
         {/* Header Section */}
         <div className="mb-12">
           <h2 className="text-4xl font-unbounded font-bold text-gray-900 mt-1">{segment.name}</h2>
@@ -120,8 +119,8 @@ const SegmentProfile = ({ segment, onBack }: SegmentProfileProps) => {
           </button>
         </div>
 
-        {/* SINGLE COLUMN LAYOUT */}
-        <div className="space-y-10">
+        {/* SINGLE COLUMN LAYOUT WITH PROPER SPACING */}
+        <div className="space-y-12">
           {/* Overview */}
           <div>
             <SectionHeader icon={Info} title="Overview" />
@@ -193,7 +192,7 @@ const SegmentProfile = ({ segment, onBack }: SegmentProfileProps) => {
                   data={scoreData}
                   keys={["score"]}
                   indexBy="category"
-                  margin={{ top: 20, right: 30, bottom: 50, left: 100 }}
+                  margin={{ top: 20, right: 30, bottom: 50, left: 120 }}
                   padding={0.3}
                   layout="horizontal"
                   colors={["#6366F1"]}
@@ -209,8 +208,8 @@ const SegmentProfile = ({ segment, onBack }: SegmentProfileProps) => {
         </div>
       </div>
 
-      {/* Footer - Now properly positioned below the content */}
-      <footer className="mt-auto">
+      {/* Footer - Fixed at bottom */}
+      <footer className="mt-20">
         <Footer />
       </footer>
     </div>
@@ -218,3 +217,4 @@ const SegmentProfile = ({ segment, onBack }: SegmentProfileProps) => {
 };
 
 export default SegmentProfile;
+

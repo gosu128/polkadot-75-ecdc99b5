@@ -10,9 +10,7 @@ const Footer = () => {
             </span>
               <span className="text-lg font-unbounded"> Sales Hub</span>
             </div>
-            <p className="text-white/70 text-sm mb-4">
-              A resource hub for Polkadot BD Agents to find the tools and materials needed to pitch to B2B customers in an effective and efficient way.
-            </p>
+            <p className="text-white/70 text-sm mb-4">A one-stop resource hub for Polkadot BD Agents to find the tools and materials needed to pitch to B2B customers in an effective and efficient way. 🚀</p>
           </div>
           
           {/* Links */}

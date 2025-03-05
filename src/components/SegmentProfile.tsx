@@ -33,7 +33,7 @@ type SegmentProfileProps = {
   onBack: () => void;
 };
 
-// Function to format content properly
+// Function to format content, ensuring ":" are preserved, bolding key phrases
 const formatContent = (content: string | null) => {
   if (!content) return <p className="font-inter-light text-gray-700 italic">No information available</p>;
 
@@ -51,15 +51,16 @@ const formatContent = (content: string | null) => {
             </p>
           );
         }
+
         return <p key={index}>{line.trim()}</p>;
       })}
     </div>
   );
 };
 
-// Section header component
-const SectionHeader = ({ icon: Icon, title, id }: { icon: React.ElementType; title: string; id: string }) => (
-  <h3 id={id} className="text-2xl font-unbounded text-gray-900 flex items-center mb-4 scroll-mt-24">
+// Section header component - Keep Unbounded for section titles
+const SectionHeader = ({ icon: Icon, title }: { icon: React.ElementType; title: string }) => (
+  <h3 className="text-2xl font-unbounded text-gray-900 flex items-center mb-4">
     <Icon className="mr-2 text-indigo-600 w-6 h-6" />
     {title}
   </h3>
@@ -79,60 +80,123 @@ const SegmentProfile = ({ segment, onBack }: SegmentProfileProps) => {
     );
   }
 
-  // Smooth scrolling function
-  const scrollToSection = (id: string) => {
-    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  };
+  // Parse score data safely
+  const scoreData = React.useMemo(() => {
+    if (!segment?.score) return null;
+    try {
+      const parsedData = JSON.parse(segment.score);
+      if (!Array.isArray(parsedData)) return null; 
 
-  // Define available sections
-  const sections = [
-    { id: "overview", title: "Overview", icon: Info, content: segment.abstract },
-    { id: "definition", title: "Definition", icon: BookText, content: segment.definition },
-    { id: "trends", title: "Market Trends", icon: TrendingUp, content: segment.trends },
-    { id: "regions", title: "Key Regions", icon: Globe, content: segment.regions },
-    { id: "challenges", title: "Challenges", icon: AlertTriangle, content: segment.challenges },
-    { id: "use_cases", title: "Use Cases", icon: Lightbulb, content: segment.use_cases },
-    { id: "positioning", title: "Positioning Statement", icon: Target, content: segment.positioning_statement },
-    { id: "personas", title: "Target Personas", icon: Users, content: segment.personas },
-    { id: "score", title: "Segment Score", icon: Star, content: segment.score }
-  ].filter(section => section.content); // Only include sections with content
+      return parsedData.map((item: any) => ({
+        category: item.key || "Unknown",
+        score: typeof item.value === "number" ? item.value : 0,
+      }));
+    } catch (e) {
+      console.error("Error parsing score data:", e);
+      return null;
+    }
+  }, [segment?.score]);
 
   return (
     <div className="flex flex-col min-h-screen">
       {/* Main content container with extra padding at the top */}
       <div className="w-full max-w-6xl mx-auto px-8 py-24 flex-grow"> 
         {/* Header Section */}
-        <div className="mb-6">
+        <div className="mb-12">
           <h2 className="text-4xl font-unbounded font-bold text-gray-900 mt-1">{segment.name}</h2>
-          
-          {/* Navigation Menu */}
-          <div className="flex space-x-4 mt-4 overflow-x-auto pb-2 border-b border-gray-300">
-            {sections.map((section) => (
-              <button
-                key={section.id}
-                onClick={() => scrollToSection(section.id)}
-                className="text-gray-600 text-sm hover:text-indigo-600 transition font-inter-light px-3 py-1 rounded-md"
-              >
-                {section.title}
-              </button>
-            ))}
-          </div>
-
           <button 
             onClick={onBack} 
-            className="mt-6 px-4 py-2 text-sm text-gray-600 hover:bg-gray-200 rounded-md transition font-inter-light">
+            className="mt-4 px-4 py-2 text-sm text-gray-600 hover:bg-gray-200 rounded-md transition font-inter-light">
             ← Back
           </button>
         </div>
 
         {/* SINGLE COLUMN LAYOUT WITH PROPER SPACING */}
         <div className="space-y-12">
-          {sections.map(({ id, title, icon, content }) => (
-            <div key={id}>
-              <SectionHeader id={id} icon={icon} title={title} />
-              {formatContent(content)}
+          {/* Overview */}
+          <div>
+            <SectionHeader icon={Info} title="Overview" />
+            {formatContent(segment.abstract)}
+          </div>
+
+          {/* Definition */}
+          {segment.definition && (
+            <div>
+              <SectionHeader icon={BookText} title="Definition" />
+              {formatContent(segment.definition)}
             </div>
-          ))}
+          )}
+
+          {/* Market Trends */}
+          {segment.trends && (
+            <div>
+              <SectionHeader icon={TrendingUp} title="Market Trends" />
+              {formatContent(segment.trends)}
+            </div>
+          )}
+
+          {/* Key Regions */}
+          {segment.regions && (
+            <div>
+              <SectionHeader icon={Globe} title="Key Regions" />
+              {formatContent(segment.regions)}
+            </div>
+          )}
+
+          {/* Challenges */}
+          {segment.challenges && (
+            <div>
+              <SectionHeader icon={AlertTriangle} title="Challenges" />
+              {formatContent(segment.challenges)}
+            </div>
+          )}
+
+          {/* Use Cases */}
+          {segment.use_cases && (
+            <div>
+              <SectionHeader icon={Lightbulb} title="Use Cases" />
+              {formatContent(segment.use_cases)}
+            </div>
+          )}
+
+          {/* Positioning Statement */}
+          {segment.positioning_statement && (
+            <div>
+              <SectionHeader icon={Target} title="Positioning Statement" />
+              {formatContent(segment.positioning_statement)}
+            </div>
+          )}
+
+          {/* Personas */}
+          {segment.personas && (
+            <div>
+              <SectionHeader icon={Users} title="Target Personas" />
+              {formatContent(segment.personas)}
+            </div>
+          )}
+
+          {/* SCORE SECTION - Horizontal Bar Chart */}
+          {scoreData && (
+            <div>
+              <SectionHeader icon={Star} title="Segment Score" />
+              <div className="h-64 w-full">
+                <ResponsiveBar
+                  data={scoreData}
+                  keys={["score"]}
+                  indexBy="category"
+                  margin={{ top: 20, right: 30, bottom: 50, left: 120 }}
+                  padding={0.3}
+                  layout="horizontal"
+                  colors={["#6366F1"]}
+                  borderColor={{ from: 'color', modifiers: [['darker', 1.6]] }}
+                  axisBottom={{ legend: "Score (out of 10)", legendPosition: "middle", legendOffset: 40 }}
+                  axisLeft={{ tickSize: 0, tickPadding: 5 }}
+                  enableLabel={true}
+                  labelTextColor={{ from: 'color', modifiers: [['darker', 3]] }}
+                />
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>

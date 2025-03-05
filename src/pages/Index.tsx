@@ -9,6 +9,7 @@ const Index = () => {
   
   // This function will be called by the SalesDropdown component
   const handleSegmentSelection = (selected: boolean) => {
+    console.log("Index - Segment selected:", selected);
     setIsSegmentSelected(selected);
   };
   

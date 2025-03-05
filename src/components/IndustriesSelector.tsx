@@ -9,7 +9,6 @@ interface IndustriesSelectorProps {
   loading: boolean;
   selectedIndustry: Industry | null;
   setSelectedIndustry: (industry: Industry | null) => void;
-  setSelectedSegment: (segment: Segment | null) => void;
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
   onSegmentSelect: (segment: Segment) => void;
@@ -22,7 +21,6 @@ const IndustriesSelector = ({
   loading,
   selectedIndustry,
   setSelectedIndustry,
-  setSelectedSegment,
   isOpen,
   setIsOpen,
   onSegmentSelect,
@@ -42,10 +40,10 @@ const IndustriesSelector = ({
 
   const handleIndustrySelect = (industry: Industry) => {
     setSelectedIndustry(industry);
-    setSelectedSegment(null);
   };
 
   const handleSegmentSelect = (segment: Segment) => {
+    console.log("IndustriesSelector - Selected segment:", segment.name);
     onSegmentSelect(segment);
   };
 

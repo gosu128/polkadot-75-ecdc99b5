@@ -1,6 +1,5 @@
 
 import { useState, useRef, useEffect } from 'react';
-import { cn } from '@/lib/utils';
 import { useIndustriesAndSegments, Industry, Segment } from '@/hooks/useIndustriesAndSegments';
 import SegmentProfile from './SegmentProfile';
 import IndustriesSelector from './IndustriesSelector';
@@ -39,6 +38,7 @@ const SalesDropdown = ({ onSegmentSelect }: SalesDropdownProps) => {
   }, [selectedSegment, onSegmentSelect]);
 
   const handleSegmentSelect = (segment: Segment) => {
+    console.log("SalesDropdown - Setting selected segment:", segment.name);
     setSelectedSegment(segment);
     setIsOpen(false);
     
@@ -68,7 +68,6 @@ const SalesDropdown = ({ onSegmentSelect }: SalesDropdownProps) => {
             loading={loading}
             selectedIndustry={selectedIndustry}
             setSelectedIndustry={setSelectedIndustry}
-            setSelectedSegment={setSelectedSegment}
             isOpen={isOpen}
             setIsOpen={setIsOpen}
             onSegmentSelect={handleSegmentSelect}

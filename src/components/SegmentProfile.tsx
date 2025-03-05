@@ -107,8 +107,8 @@ const SegmentProfile = ({ segment, onBack }: SegmentProfileProps) => {
 
   return (
     <div className="flex flex-col min-h-screen">
-      {/* Main content container */}
-      <div className="w-full max-w-6xl mx-auto px-8 py-16 flex-grow">
+      {/* Main content container with extra padding at the top */}
+      <div className="w-full max-w-6xl mx-auto px-8 py-24 flex-grow"> 
         {/* Header Section */}
         <div className="mb-12">
           <h2 className="text-4xl font-unbounded font-bold text-gray-900 mt-1">{segment.name}</h2>

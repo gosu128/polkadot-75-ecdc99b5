@@ -89,7 +89,7 @@ const SegmentProfile = ({ segment, onBack }: SegmentProfileProps) => {
   }, [segment.score]);
 
   return (
-    <div className="max-w-5xl mx-auto px-6 py-16">
+    <div className="max-w-5xl mx-auto px-6 py-16 min-h-screen flex flex-col">
       {/* Header Section */}
       <div className="mb-12">
         <h2 className="text-4xl font-unbounded font-bold text-gray-900 mt-1">{segment.name}</h2>

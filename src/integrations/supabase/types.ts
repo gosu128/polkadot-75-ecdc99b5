@@ -27,49 +27,28 @@ export type Database = {
       segments: {
         Row: {
           abstract: string | null
-          challenges: string | null
-          definition: string | null
           id: number
           industry_id: number | null
-          name: string | null
-          personas: string | null
-          positioning_statement: string | null
-          regions: string | null
-          score: string | null
+          name: string
           trends: string | null
-          use_cases: string | null
         }
         Insert: {
           abstract?: string | null
-          challenges?: string | null
-          definition?: string | null
-          id: number
+          id?: number
           industry_id?: number | null
-          name?: string | null
-          personas?: string | null
-          positioning_statement?: string | null
-          regions?: string | null
-          score?: string | null
+          name: string
           trends?: string | null
-          use_cases?: string | null
         }
         Update: {
           abstract?: string | null
-          challenges?: string | null
-          definition?: string | null
           id?: number
           industry_id?: number | null
-          name?: string | null
-          personas?: string | null
-          positioning_statement?: string | null
-          regions?: string | null
-          score?: string | null
+          name?: string
           trends?: string | null
-          use_cases?: string | null
         }
         Relationships: [
           {
-            foreignKeyName: "segments_industry_fk"
+            foreignKeyName: "segments_industry_id_fkey"
             columns: ["industry_id"]
             isOneToOne: false
             referencedRelation: "industries"

@@ -8,7 +8,7 @@ const Index = () => {
       <Header />
 
       {/* Fullscreen Hero Section */}
-      <main className="flex-grow flex flex-col justify-center items-center text-center px-6 h-screen">
+      <main className="flex flex-col justify-center items-center text-center px-6 min-h-screen">
         
         {/* "Powered by So So Scaled!" - Positioned properly with extra spacing */}
         <div className="absolute top-8 left-0 right-0 flex justify-center">

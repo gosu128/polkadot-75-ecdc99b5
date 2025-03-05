@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { 
   Info, 
@@ -13,11 +12,6 @@ import {
 } from 'lucide-react';
 import { ResponsiveBar } from '@nivo/bar';
 import WorldMap from './WorldMap';
-
-type Industry = {
-  id: number;
-  name: string;
-};
 
 type Segment = {
   id: number;
@@ -36,22 +30,21 @@ type Segment = {
 
 type SegmentProfileProps = {
   segment: Segment;
-  industry: Industry | null;
   onBack: () => void;
 };
 
-// Format content with bullet points and bold leading text
+// Format content with bullet points, remove colons, and left-align text
 const formatContent = (content: string | null) => {
-  if (!content) return <p className="text-gray-700 italic">No information available.</p>;
+  if (!content) return <p className="text-gray-700 italic">No information available</p>;
   
   return (
-    <ul className="list-disc pl-5 text-gray-700 space-y-2">
+    <ul className="list-disc pl-6 text-gray-700 space-y-2 text-left">
       {content.split('\n').map((line, index) => {
-        // Bold text before the colon
-        const parts = line.split(':');
+        // Remove trailing colons and ensure left alignment
+        const formattedText = line.trim().replace(/:$/, '');
         return (
           <li key={index}>
-            <span className="font-semibold">{parts[0]}:</span> {parts.slice(1).join(':')}
+            <span className="font-semibold">{formattedText}</span>
           </li>
         );
       })}
@@ -61,14 +54,14 @@ const formatContent = (content: string | null) => {
 
 // Section header component
 const SectionHeader = ({ icon: Icon, title }: { icon: React.ElementType; title: string }) => (
-  <h3 className="text-2xl font-unbounded text-gray-900 flex items-center mb-3">
+  <h3 className="text-2xl font-unbounded text-gray-900 flex items-center mb-4">
     <Icon className="mr-2 text-indigo-600 w-6 h-6" />
     {title}
   </h3>
 );
 
-const SegmentProfile = ({ segment, industry, onBack }: SegmentProfileProps) => {
-  // Parse score data for better visualization
+const SegmentProfile = ({ segment, onBack }: SegmentProfileProps) => {
+  // Parse score data
   const scoreData = React.useMemo(() => {
     if (!segment.score) return null;
     try {
@@ -82,10 +75,9 @@ const SegmentProfile = ({ segment, industry, onBack }: SegmentProfileProps) => {
   }, [segment.score]);
 
   return (
-    <div className="max-w-5xl mx-auto px-6 py-10">
+    <div className="max-w-5xl mx-auto px-6 py-16">
       {/* Header Section */}
-      <div className="mb-8">
-        <div className="text-indigo-600 font-medium uppercase tracking-wide text-sm">{industry?.name}</div>
+      <div className="mb-12">
         <h2 className="text-4xl font-unbounded font-bold text-gray-900 mt-1">{segment.name}</h2>
         <button 
           onClick={onBack} 
@@ -95,7 +87,7 @@ const SegmentProfile = ({ segment, industry, onBack }: SegmentProfileProps) => {
       </div>
 
       {/* SINGLE COLUMN LAYOUT */}
-      <div className="space-y-8">
+      <div className="space-y-10">
         {/* Overview */}
         <div>
           <SectionHeader icon={Info} title="Overview" />

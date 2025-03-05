@@ -17,7 +17,7 @@ const Index = () => {
           </div>
           
           <div className="max-w-4xl mx-auto w-full px-4 text-center">
-            <h1 className="text-5xl sm:text-6xl md:text-7xl font-bold mb-10 leading-tight">
+            <h1 className="text-5xl sm:text-6xl md:text-7xl font-unbounded font-bold mb-10 leading-tight">
               Who do you want to <br />
               pitch <span className="bg-clip-text text-transparent bg-gradient-to-r from-polkadot-pink via-[#9B87F5] to-[#7E69AB]">Polkadot</span> to?
             </h1>

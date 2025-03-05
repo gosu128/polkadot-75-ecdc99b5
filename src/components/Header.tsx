@@ -6,7 +6,7 @@ const Header = () => {
     <header className="fixed top-0 left-0 right-0 z-50 pt-6 pb-4">
       <div className="container-tight">
         <div className="flex justify-between items-center">
-          <a href="/" className="flex items-center">
+          <a href="/" className="flex items-center space-x-1">
             <span className="text-lg font-unbounded text-polkadot-pink">Polkadot</span>
             <span className="text-lg font-unbounded"> Sales Hub</span>
           </a>

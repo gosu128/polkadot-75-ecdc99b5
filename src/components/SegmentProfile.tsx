@@ -39,54 +39,59 @@ type SegmentProfileProps = {
   onBack: () => void;
 };
 
-// Helper component for structured sections
-const Section = ({ icon: Icon, title, content }: { icon: React.ElementType; title: string; content: string | null }) => (
-  <div className="bg-gray-100 rounded-lg p-6 shadow-md">
-    <h3 className="text-lg font-semibold flex items-center mb-3 text-gray-800">
-      <Icon className="mr-2 text-indigo-500 w-5 h-5" />
-      {title}
-    </h3>
-    {content ? (
-      <p className="text-gray-700 whitespace-pre-line">{content}</p>
-    ) : (
-      <p className="text-gray-500 italic">No information available.</p>
-    )}
-  </div>
+// Function to format content with bullet points and bold sub-headings
+const formatContent = (content: string | null) => {
+  if (!content) return <p className="text-gray-600 italic">No information available.</p>;
+  
+  return (
+    <ul className="list-disc pl-5 text-gray-700 space-y-2">
+      {content.split('\n').map((line, index) => {
+        // Bold sub-titles detection (assumes sub-titles end with ':')
+        if (line.trim().endsWith(':')) {
+          return <li key={index} className="font-semibold">{line}</li>;
+        }
+        return <li key={index}>{line}</li>;
+      })}
+    </ul>
+  );
+};
+
+// Helper component for section headers
+const SectionHeader = ({ icon: Icon, title }: { icon: React.ElementType; title: string }) => (
+  <h3 className="text-xl font-unbounded text-gray-900 flex items-center mb-3">
+    <Icon className="mr-2 text-indigo-600 w-5 h-5" />
+    {title}
+  </h3>
 );
 
 const SegmentProfile = ({ segment, industry, onBack }: SegmentProfileProps) => {
-  // Parse score data
+  // Parse score data for the radar chart
   const scoreData = React.useMemo(() => {
     if (!segment.score) return null;
     try {
       return JSON.parse(segment.score);
     } catch (e) {
-      const parts = segment.score.split(',').map(part => {
-        const [key, value] = part.split(':').map(s => s.trim());
-        return { key, value: parseFloat(value) || 5 };
-      });
-      return parts.length > 0 ? parts : null;
+      return null;
     }
   }, [segment.score]);
 
-  // Format score data for radar chart
+  // Prepare radar chart data
   const radarData = React.useMemo(() => {
     if (!scoreData) return [];
-    return [scoreData.reduce((obj: any, item: any) => ({ ...obj, [item.key]: item.value }), { segment: segment.name })];
+    return [
+      scoreData.reduce((obj: any, item: any) => ({ ...obj, [item.key]: item.value }), { segment: segment.name })
+    ];
   }, [scoreData, segment.name]);
 
-  // Extract radar chart keys
   const radarKeys = React.useMemo(() => scoreData?.map((item: any) => item.key) || [], [scoreData]);
 
   return (
-    <div className="max-w-5xl mx-auto p-8 bg-white shadow-lg rounded-lg border border-gray-200">
+    <div className="max-w-7xl mx-auto px-8 py-10">
       {/* Header Section */}
-      <div className="flex justify-between items-center mb-6">
+      <div className="flex justify-between items-center mb-8">
         <div>
-          <div className="bg-indigo-100 text-indigo-600 text-xs font-medium px-3 py-1 rounded-full mb-2">
-            {industry?.name}
-          </div>
-          <h2 className="text-3xl font-bold text-gray-900">{segment.name}</h2>
+          <div className="text-indigo-600 font-medium uppercase tracking-wide text-sm">{industry?.name}</div>
+          <h2 className="text-4xl font-unbounded font-bold text-gray-900 mt-1">{segment.name}</h2>
         </div>
         <button 
           onClick={onBack} 
@@ -96,28 +101,71 @@ const SegmentProfile = ({ segment, industry, onBack }: SegmentProfileProps) => {
       </div>
 
       {/* Grid Layout for Sections */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
         {/* Left Side (Text Information) */}
-        <div className="lg:col-span-2 space-y-6">
-          <Section icon={Info} title="Overview" content={segment.abstract} />
-          {segment.definition && <Section icon={BookText} title="Definition" content={segment.definition} />}
-          {segment.trends && <Section icon={TrendingUp} title="Market Trends" content={segment.trends} />}
-          {segment.challenges && <Section icon={AlertTriangle} title="Challenges" content={segment.challenges} />}
-          {segment.use_cases && <Section icon={Lightbulb} title="Use Cases" content={segment.use_cases} />}
-          {segment.positioning_statement && <Section icon={Target} title="Positioning Statement" content={segment.positioning_statement} />}
-          {segment.personas && <Section icon={Users} title="Target Personas" content={segment.personas} />}
+        <div className="lg:col-span-2 space-y-8">
+          {/* Overview */}
+          <div>
+            <SectionHeader icon={Info} title="Overview" />
+            {formatContent(segment.abstract)}
+          </div>
+
+          {/* Definition */}
+          {segment.definition && (
+            <div>
+              <SectionHeader icon={BookText} title="Definition" />
+              {formatContent(segment.definition)}
+            </div>
+          )}
+
+          {/* Market Trends */}
+          {segment.trends && (
+            <div>
+              <SectionHeader icon={TrendingUp} title="Market Trends" />
+              {formatContent(segment.trends)}
+            </div>
+          )}
+
+          {/* Challenges */}
+          {segment.challenges && (
+            <div>
+              <SectionHeader icon={AlertTriangle} title="Challenges" />
+              {formatContent(segment.challenges)}
+            </div>
+          )}
+
+          {/* Use Cases */}
+          {segment.use_cases && (
+            <div>
+              <SectionHeader icon={Lightbulb} title="Use Cases" />
+              {formatContent(segment.use_cases)}
+            </div>
+          )}
+
+          {/* Positioning Statement */}
+          {segment.positioning_statement && (
+            <div>
+              <SectionHeader icon={Target} title="Positioning Statement" />
+              {formatContent(segment.positioning_statement)}
+            </div>
+          )}
+
+          {/* Personas */}
+          {segment.personas && (
+            <div>
+              <SectionHeader icon={Users} title="Target Personas" />
+              {formatContent(segment.personas)}
+            </div>
+          )}
         </div>
 
-        {/* Right Side (Charts & Actions) */}
-        <div className="space-y-6">
-          {/* Score Radar Chart */}
+        {/* Right Side (Charts & Regions) */}
+        <div className="space-y-10">
+          {/* Radar Chart */}
           {scoreData && (
-            <div className="bg-gray-100 rounded-lg p-6 shadow-md">
-              <h3 className="text-lg font-semibold flex items-center mb-4 text-gray-800">
-                <Star className="mr-2 text-indigo-500 w-5 h-5" />
-                Segment Score
-              </h3>
-              <div className="bg-white rounded-lg p-4 h-64">
+            <div>
+              <SectionHeader icon={Star} title="Segment Score" />
+              <div className="bg-white rounded-lg p-4 h-72 shadow-md">
                 <ResponsiveRadar
                   data={radarData}
                   keys={radarKeys}
@@ -139,35 +187,16 @@ const SegmentProfile = ({ segment, industry, onBack }: SegmentProfileProps) => {
             </div>
           )}
 
-          {/* Regions Section with Map */}
+          {/* Regions with Map */}
           {segment.regions && (
-            <div className="bg-gray-100 rounded-lg p-6 shadow-md">
-              <h3 className="text-lg font-semibold flex items-center mb-4 text-gray-800">
-                <Globe className="mr-2 text-indigo-500 w-5 h-5" />
-                Key Regions
-              </h3>
-              <p className="text-gray-700 mb-4">{segment.regions}</p>
-              <div className="h-64 w-full bg-white rounded-lg p-2">
+            <div>
+              <SectionHeader icon={Globe} title="Key Regions" />
+              <p className="text-gray-700">{segment.regions}</p>
+              <div className="h-64 w-full mt-4">
                 <WorldMap regions={segment.regions} />
               </div>
             </div>
           )}
-
-          {/* Quick Actions */}
-          <div className="bg-gray-100 rounded-lg p-6 shadow-md">
-            <h3 className="text-lg font-semibold mb-4 border-b pb-2 text-gray-800">Quick Actions</h3>
-            <div className="space-y-3">
-              <button className="w-full bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition">
-                Download Segment Report
-              </button>
-              <button className="w-full bg-gray-300 text-gray-800 px-4 py-2 rounded-lg hover:bg-gray-400 transition">
-                Schedule Consultation
-              </button>
-              <button className="w-full bg-gray-300 text-gray-800 px-4 py-2 rounded-lg hover:bg-gray-400 transition">
-                View Case Studies
-              </button>
-            </div>
-          </div>
         </div>
       </div>
     </div>
@@ -175,3 +204,4 @@ const SegmentProfile = ({ segment, industry, onBack }: SegmentProfileProps) => {
 };
 
 export default SegmentProfile;
+

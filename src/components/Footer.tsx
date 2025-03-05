@@ -1,14 +1,17 @@
 import { ArrowUpRight, Github, Twitter } from 'lucide-react';
+
 const Footer = () => {
-  return <footer className="bg-[#1A1E2E] text-white pt-16 pb-8">
+  return (
+    <footer className="bg-[#1A1E2E] text-white pt-16 pb-8">
       <div className="container-tight">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-10 mb-16">
+        
+        {/* Flex container for Links, Resources, and Community */}
+        <div className="flex flex-col md:flex-row justify-between gap-10 mb-16">
           {/* Logo and info */}
-          <div className="md:col-span-1">
+          <div className="md:w-1/3">
             <div className="flex items-center mb-4">
-              <span className="text-lg font-unbounded text-polkadot-pink">By So So Scaled!</span>
-              <span className="text-lg font-unbounded">
-            </span>
+              <span className="text-lg font-unbounded text-polkadot-pink">Polkadot</span>
+              <span className="text-lg font-unbounded"> Sales Hub</span>
             </div>
             <p className="text-white/70 text-sm mb-4">
               A one-stop resource hub for Polkadot BD Agents to find the tools and materials needed 
@@ -16,60 +19,35 @@ const Footer = () => {
             </p>
           </div>
 
-          {/* Links */}
-          <div>
-            <h3 className="text-base font-semibold mb-4">Links</h3>
-            <ul className="space-y-3 text-sm">
-              <li>
-                <a href="#" className="text-white/70 hover:text-white flex items-center transition-colors">
-                  Home
-                </a>
-              </li>
-              <li>
-                <a href="#" className="text-white/70 hover:text-white flex items-center transition-colors">
-                  About So So Scaled!
-                </a>
-              </li>
-              <li>
-                <a href="#" className="text-white/70 hover:text-white flex items-center transition-colors">
-                  Contact
-                </a>
-              </li>
-            </ul>
-          </div>
+          {/* Links, Resources, and Community side-by-side */}
+          <div className="flex flex-wrap md:flex-nowrap gap-12 w-full md:w-2/3 justify-between">
+            {/* Links */}
+            <div>
+              <h3 className="text-base font-semibold mb-4">Links</h3>
+              <ul className="space-y-3 text-sm">
+                <li><a href="#" className="text-white/70 hover:text-white transition-colors">Home</a></li>
+                <li><a href="#" className="text-white/70 hover:text-white transition-colors">About So So Scaled!</a></li>
+                <li><a href="#" className="text-white/70 hover:text-white transition-colors">Contact</a></li>
+              </ul>
+            </div>
 
-          {/* Resources */}
-          <div>
-            <h3 className="text-base font-semibold mb-4">Resources</h3>
-            <ul className="space-y-3 text-sm">
-              <li>
-                <a href="#" className="text-white/70 hover:text-white flex items-center transition-colors">
-                  Project Background
-                </a>
-              </li>
-              <li>
-                <a href="#" className="text-white/70 hover:text-white flex items-center transition-colors">
-                  Whitepaper
-                </a>
-              </li>
-              <li>
-                <a href="#" className="text-white/70 hover:text-white flex items-center transition-colors">
-                  Methodology
-                </a>
-              </li>
-            </ul>
-          </div>
+            {/* Resources */}
+            <div>
+              <h3 className="text-base font-semibold mb-4">Resources</h3>
+              <ul className="space-y-3 text-sm">
+                <li><a href="#" className="text-white/70 hover:text-white transition-colors">Project Background</a></li>
+                <li><a href="#" className="text-white/70 hover:text-white transition-colors">Whitepaper</a></li>
+                <li><a href="#" className="text-white/70 hover:text-white transition-colors">Methodology</a></li>
+              </ul>
+            </div>
 
-          {/* Community */}
-          <div>
-            <h3 className="text-base font-semibold mb-4">Community</h3>
-            <ul className="space-y-3 text-sm">
-              <li>
-                <a href="#" className="text-white/70 hover:text-white flex items-center transition-colors">
-                  Follow us on X
-                </a>
-              </li>
-            </ul>
+            {/* Community */}
+            <div>
+              <h3 className="text-base font-semibold mb-4">Community</h3>
+              <ul className="space-y-3 text-sm">
+                <li><a href="#" className="text-white/70 hover:text-white transition-colors">Follow us on X</a></li>
+              </ul>
+            </div>
           </div>
         </div>
 
@@ -89,6 +67,8 @@ const Footer = () => {
           </div>
         </div>
       </div>
-    </footer>;
+    </footer>
+  );
 };
+
 export default Footer;

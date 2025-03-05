@@ -1,5 +1,6 @@
+
 import { useState, useRef, useEffect } from 'react';
-import { ChevronDown, ChevronUp, Info, Layers, TrendingUp } from 'lucide-react';
+import { ChevronDown, ChevronUp, Info, Layers, TrendingUp, MapPin, Shield, Lightbulb, Star, Target, User, Book } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
@@ -15,10 +16,21 @@ type Segment = {
   name: string;
   industry_id: number;
   abstract: string | null;
+  definition: string | null;
   trends: string | null;
+  regions: string | null;
+  challenges: string | null;
+  use_cases: string | null;
+  score: string | null;
+  positioning_statement: string | null;
+  personas: string | null;
 };
 
-const SalesDropdown = () => {
+type SalesDropdownProps = {
+  onSegmentSelect?: (isSelected: boolean) => void;
+};
+
+const SalesDropdown = ({ onSegmentSelect }: SalesDropdownProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [industries, setIndustries] = useState<Industry[]>([]);
   const [segments, setSegments] = useState<Segment[]>([]);
@@ -100,6 +112,13 @@ const SalesDropdown = () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, []);
+  
+  // Notify parent component when segment selection changes
+  useEffect(() => {
+    if (onSegmentSelect) {
+      onSegmentSelect(selectedSegment !== null);
+    }
+  }, [selectedSegment, onSegmentSelect]);
 
   const handleIndustrySelect = (industry: Industry) => {
     setSelectedIndustry(industry);

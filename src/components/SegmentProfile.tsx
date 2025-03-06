@@ -53,10 +53,10 @@ type SegmentProfileProps = {
 
 // Function to format content properly
 const formatContent = (content: string | null) => {
-  if (!content) return <p className="text-gray-700 italic">No information available</p>;
+  if (!content) return <p className="text-gray-900 italic">No information available</p>;
 
   return (
-    <div className="text-gray-700 space-y-4 text-left">
+    <div className="text-gray-900 space-y-4 text-left">
       {content.split('\n').map((line, index) => {
         if (line.includes(':')) {
           const parts = line.split(':');
@@ -78,16 +78,16 @@ const formatContent = (content: string | null) => {
 
 // Section Headers
 const SectionHeader = ({ icon: Icon, title }: { icon: React.ElementType; title: string }) => (
-  <h2 className="text-3xl font-unbounded text-gray-900 flex items-center mt-12 mb-6 border-b-4 border-indigo-600 pb-2">
-    <Icon className="mr-3 text-indigo-600 w-7 h-7" />
+  <h2 className="text-3xl font-unbounded text-gray-900 flex items-center mt-12 mb-6 border-b-4 border-polkadot-pink pb-2">
+    <Icon className="mr-3 text-polkadot-pink w-7 h-7" />
     {title}
   </h2>
 );
 
 // Sub-section Headers
 const SubSectionHeader = ({ icon: Icon, title }: { icon: React.ElementType; title: string }) => (
-  <h3 className="text-xl font-semibold text-gray-800 mt-6 mb-3 flex items-center">
-    <Icon className="mr-2 text-indigo-600 w-5 h-5" />
+  <h3 className="text-xl font-semibold text-gray-900 mt-6 mb-3 flex items-center">
+    <Icon className="mr-2 text-polkadot-pink w-5 h-5" />
     {title}
   </h3>
 );
@@ -95,7 +95,7 @@ const SubSectionHeader = ({ icon: Icon, title }: { icon: React.ElementType; titl
 const ScoreItem = ({ label, value }: { label: string; value: number | null }) => (
   <div className="flex justify-between px-6 py-3 border-b">
     <span className="font-semibold text-gray-900">{label}</span>
-    <span className="text-gray-700">{value !== null ? value.toFixed(1) : 'N/A'}</span>
+    <span className="text-gray-900">{value !== null ? value.toFixed(1) : 'N/A'}</span>
   </div>
 );
 
@@ -135,28 +135,32 @@ const SegmentProfile = ({ segment, onBack }: SegmentProfileProps) => {
           {segment.regions && <div><SubSectionHeader icon={MapPin} title="Geographical Hotspots" />{formatContent(segment.regions)}</div>}
         </div>
 
-        {/* Section 2: Messaging Strategy (Left-Aligned) */}
-        <SectionHeader icon={AlignLeft} title="Messaging Strategy" />
-        {segment.positioning_headline && <SubSectionHeader icon={Target} title="Headline" />}
-        <p className="text-xl font-semibold text-indigo-700 text-left">{segment.positioning_headline}</p>
-
-        {segment.positioning_subheadline && <SubSectionHeader icon={CheckCircle} title="Subline" />}
-        <p className="text-lg text-gray-700 text-left">{segment.positioning_subheadline}</p>
-
-        {segment.positioning_statement && <SubSectionHeader icon={ClipboardList} title="Positioning Statement" />}
-        <div className="text-left">{formatContent(segment.positioning_statement)}</div>
-
-        {/* Section 3: Persona Profiles (Better Formatting) */}
+        {/* Section 2: Persona Profiles (Left-Aligned, Proper Formatting) */}
         <SectionHeader icon={User} title="Persona Profiles" />
-        <div className="space-y-6">
-          {segment.personas_1 && <div><p className="text-lg font-bold text-indigo-700">{segment.personas_1}</p></div>}
-          {segment.personas_2 && <div><p className="text-lg font-bold text-indigo-700">{segment.personas_2}</p></div>}
-          {segment.personas_3 && <div><p className="text-lg font-bold text-indigo-700">{segment.personas_3}</p></div>}
+        <div className="space-y-8 text-gray-900 text-left">
+          {segment.personas_1 && (
+            <div>
+              <p className="text-lg font-bold text-polkadot-pink">{segment.personas_1.split('\n')[0]}</p>
+              <p className="mt-2">{segment.personas_1.split('\n').slice(1).join('\n')}</p>
+            </div>
+          )}
+          {segment.personas_2 && (
+            <div>
+              <p className="text-lg font-bold text-polkadot-pink">{segment.personas_2.split('\n')[0]}</p>
+              <p className="mt-2">{segment.personas_2.split('\n').slice(1).join('\n')}</p>
+            </div>
+          )}
+          {segment.personas_3 && (
+            <div>
+              <p className="text-lg font-bold text-polkadot-pink">{segment.personas_3.split('\n')[0]}</p>
+              <p className="mt-2">{segment.personas_3.split('\n').slice(1).join('\n')}</p>
+            </div>
+          )}
         </div>
 
-        {/* Section 4: Polkadot-Market-Fit Score + Score Table */}
+        {/* Section 3: Polkadot-Market-Fit Score (PMF Score) */}
         <SectionHeader icon={Star} title="Polkadot-Market-Fit Score (PMF Score)" />
-        <div className="bg-gray-100 rounded-lg p-6 shadow-md text-center text-3xl font-bold text-indigo-700 mb-6">
+        <div className="bg-gray-100 rounded-lg p-6 shadow-md text-center text-3xl font-bold text-polkadot-pink mb-6">
           {segment.pmf !== null ? segment.pmf.toFixed(1) : 'N/A'}
         </div>
 

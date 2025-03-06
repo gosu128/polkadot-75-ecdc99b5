@@ -21,9 +21,21 @@ type Segment = {
   regions: string | null;
   challenges: string | null;
   use_cases: string | null;
-  score: string | null;
+  usecases_general: string | null;
+  usecases_web3: string | null;
+  personas_1: string | null;
+  personas_2: string | null;
+  personas_3: string | null;
   positioning_statement: string | null;
-  personas: string | null;
+  positioning_headline: string | null;
+  positioning_subheadline: string | null;
+  ca_interoperability: string | null;
+  ca_resiliance: string | null;
+  ca_scalability: string | null;
+  ca_customization: string | null;
+  ca_reliability: string | null;
+  ca_other: string | null;
+  pmf: number | null;
 };
 
 type SalesDropdownProps = {
@@ -41,7 +53,6 @@ const SalesDropdown = ({ onSelectSegment }: SalesDropdownProps) => {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
 
-  // Fetch industries on mount
   useEffect(() => {
     const fetchIndustries = async () => {
       try {
@@ -74,7 +85,7 @@ const SalesDropdown = ({ onSelectSegment }: SalesDropdownProps) => {
 
         if (error) throw error;
         
-        setSegments(segmentsData || []);
+        setSegments(segmentsData as Segment[] || []);
       } catch (error) {
         console.error('Error fetching segments:', error);
         toast({
@@ -89,7 +100,6 @@ const SalesDropdown = ({ onSelectSegment }: SalesDropdownProps) => {
     fetchSegments();
   }, [toast]);
 
-  // Filter segments when industry changes
   useEffect(() => {
     if (selectedIndustry) {
       const filtered = segments.filter(segment => segment.industry_id === selectedIndustry.id);
@@ -99,7 +109,6 @@ const SalesDropdown = ({ onSelectSegment }: SalesDropdownProps) => {
     }
   }, [selectedIndustry, segments]);
 
-  // Handle click outside to close the dropdown
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
@@ -145,7 +154,6 @@ const SalesDropdown = ({ onSelectSegment }: SalesDropdownProps) => {
         
         {isOpen && (
           <div className="absolute top-full left-0 right-0 mt-1 bg-white rounded-md shadow-lg border border-gray-200 animate-fade-in z-30">
-            {/* First level: Industries */}
             {!selectedIndustry && (
               <div className="max-h-80 overflow-y-auto p-3">
                 {loading ? (
@@ -168,7 +176,6 @@ const SalesDropdown = ({ onSelectSegment }: SalesDropdownProps) => {
               </div>
             )}
             
-            {/* Second level: Segments */}
             {selectedIndustry && (
               <div className="max-h-80 overflow-y-auto p-3">
                 <div className="flex items-center justify-between mb-2 pb-2 border-b">

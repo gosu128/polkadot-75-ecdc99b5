@@ -23,6 +23,8 @@ type Segment = {
   trends: string | null;
   regions: string | null;
   use_cases: string | null;
+  usecases_general: string | null;
+  usecases_web3: string | null;
   personas_1: string | null;
   personas_2: string | null;
   personas_3: string | null;
@@ -82,7 +84,7 @@ const formatContent = (content: string | null) => {
 
 // Section header component
 const SectionHeader = ({ icon: Icon, title }: { icon: React.ElementType; title: string }) => (
-  <div className="mt-8 mb-2">
+  <div className="mt-6 mb-2">
     <h2 className="text-2xl text-polkadot-pink font-unbounded flex items-center">
       <Icon className="mr-2 text-polkadot-pink w-6 h-6" />
       {title}
@@ -93,53 +95,137 @@ const SectionHeader = ({ icon: Icon, title }: { icon: React.ElementType; title: 
 
 // Subsection header component
 const SubsectionHeader = ({ icon: Icon, title }: { icon: React.ElementType; title: string }) => (
-  <h3 className="text-lg text-black font-semibold flex items-center mb-1 mt-4">
+  <h3 className="text-lg text-black font-semibold flex items-center mb-1 mt-3">
     <Icon className="mr-2 text-gray-700 w-5 h-5" />
     {title}
   </h3>
 );
 
-// Simple world map component
+// World map component with highlighted countries
 const WorldMap = () => (
-  <div className="mt-6 mb-8">
+  <div className="mt-4 mb-6">
     <svg
       viewBox="0 0 1000 500"
-      className="w-full h-auto text-gray-300 max-w-2xl mx-auto"
+      className="w-full h-auto max-w-2xl mx-auto"
     >
+      {/* Main world outlines */}
       <path
-        d="M473,190.5c3-1.9,1.8-5.3,1.4-8.1c-0.4-3,0.8-6.5-1.7-8.9c-1.5-1.4-3.5-2.9-3.7-5c-0.2-2.8,2.9-3.1,4.7-4.2
-        c2.8-1.7,2.7-4.2,2.7-6.9c0-2.9-0.6-5.9-0.6-8.9c0-6.4,0.5-12.9-2.2-18.8c-1.1-2.3-2.5-4.3-2.3-7c0.3-4,3.6-7.7,3.1-11.9
-        c-0.3-2.9-2.2-5.2-4.3-7c-2.6-2.2-5.8-3.7-9-4.2c-3.7-0.6-7.4,0.2-10.8,1.6c-4.4,1.8-9,1.6-11.9-2.5c-1.5-2.2-1.4-4.9-1.7-7.5
-        c-0.4-4.4-1.1-8.8-2-13.1"
+        d="M161.1,307.3c0.8-0.7,1.7-0.6,2.6-0.6c1.3,0,2.7-0.2,4-0.4c3.3-0.4,6.6-0.4,9.9-0.1c2.3,0.2,4.5,0.5,6.7,0.9
+        c4.7,0.8,9.5,0.3,14.2-0.3c2.7-0.4,5.4-1.1,8.1-1.6c1-0.2,2-0.3,3.1-0.4c3.1-0.4,6.1-0.8,9-2c2.1-0.9,3.9-2.2,5.7-3.5
+        c1.6-1.1,3.1-2.3,4.6-3.4c0.2-0.2,0.4-0.4,0.4-0.7c0-0.2-0.2-0.3-0.4-0.4c-1.7-0.6-3.4-1.3-5.1-1.9c-1.9-0.7-3.9-1-5.9-1.1
+        c-1.2-0.1-2.4-0.3-3.6-0.5c-2.8-0.5-5.7-0.8-8.5-1.4c-1.9-0.4-3.8-0.9-5.5-1.8c-1.8-0.9-3.4-2-5.2-2.8c-2-0.9-4.1-1.5-6.2-1.9
+        c-3-0.6-6-1.1-9-1.9c-1.6-0.4-3.2-0.8-4.8-1.3c-0.5-0.2-1.1-0.3-1.5-0.7c-0.5-0.5-1.1-0.7-1.8-0.7c-0.8,0-1.5,0.1-2.3,0.2"
         fill="none"
-        stroke="currentColor"
-        strokeWidth="0.5"
+        stroke="#BBB"
+        strokeWidth="1"
       />
+      
+      {/* North America */}
       <path
-        d="M250,260 C220,250 190,250 150,245 C120,240 100,220 80,200 C60,180 50,160 40,140 C30,120 20,100 20,80 C20,60 30,40 50,30 C70,20 90,20 110,30 C130,40 150,50 170,60 C190,70 210,80 230,80 C250,80 270,70 290,70 C310,70 330,80 350,90 C370,100 390,110 410,110 C430,110 450,100 470,100 C490,100 510,110 530,120 C550,130 570,140 590,140 C610,140 630,130 650,130 C670,130 690,140 710,150 C730,160 750,170 770,170 C790,170 810,160 830,160 C850,160 870,170 890,180 C910,190 930,200 950,200"
+        d="M210,120 C180,110 150,110 120,105 C90,100 70,80 50,60 C30,40 20,20 10,0 
+           C0,-20 -10,-40 -10,-60 C-10,-80 0,-100 20,-110 C40,-120 60,-120 80,-110 
+           C100,-100 120,-90 140,-80 C160,-70 180,-60 200,-60 C220,-60 240,-70 260,-70 
+           C280,-70 300,-60 320,-50 C340,-40 360,-30 380,-30 C400,-30 420,-40 440,-40 
+           C460,-40 480,-30 500,-20 C520,-10 540,0 560,0 C580,0 600,-10 620,-10 
+           C640,-10 660,0 680,10 C700,20 720,30 740,30"
         fill="none"
-        stroke="currentColor"
-        strokeWidth="0.8"
+        stroke="#BBB"
+        strokeWidth="1"
       />
+      
+      {/* Europe */}
       <path
-        d="M310,320 C290,310 270,310 250,300 C230,290 210,280 190,270 C170,260 150,250 130,250 C110,250 90,260 70,260 C50,260 30,250 30,230 C30,210 50,200 70,190 C90,180 110,170 130,170 C150,170 170,180 190,180 C210,180 230,170 250,170 C270,170 290,180 310,190 C330,200 350,210 370,210 C390,210 410,200 430,190 C450,180 470,170 490,170 C510,170 530,180 550,190 C570,200 590,210 610,210 C630,210 650,200 670,200 C690,200 710,210 730,220 C750,230 770,240 790,240 C810,240 830,230 850,230 C870,230 890,240 910,250 C930,260 950,270 970,270"
+        d="M500,120 C480,110 460,110 440,100 C420,90 400,80 380,70 
+           C360,60 340,50 320,50 C300,50 280,60 260,60 C240,60 220,50 200,50 
+           C180,50 160,60 140,70 C120,80 100,90 80,90 
+           C60,90 40,80 20,70 C0,60 -20,50 -20,30 
+           C-20,10 0,0 20,-10 C40,-20 60,-30 80,-30 
+           C100,-30 120,-20 140,-20 C160,-20 180,-30 200,-30 
+           C220,-30 240,-20 260,-10 C280,0 300,10 320,10 
+           C340,10 360,0 380,-10 C400,-20 420,-30 440,-30 
+           C460,-30 480,-20 500,-10 C520,0 540,10 560,10"
         fill="none"
-        stroke="currentColor"
-        strokeWidth="0.8"
+        stroke="#BBB"
+        strokeWidth="1"
       />
+      
+      {/* Africa */}
       <path
-        d="M240,350 C220,340 200,340 180,330 C160,320 140,310 120,300 C100,290 80,280 60,280 C40,280 20,290 20,310 C20,330 40,340 60,350 C80,360 100,370 120,370 C140,370 160,360 180,360 C200,360 220,370 240,370 C260,370 280,360 300,360 C320,360 340,370 360,380 C380,390 400,400 420,400 C440,400 460,390 480,380 C500,370 520,360 540,360 C560,360 580,370 600,380 C620,390 640,400 660,400 C680,400 700,390 720,390 C740,390 760,400 780,410 C800,420 820,430 840,430 C860,430 880,420 900,410 C920,400 940,390 960,390"
+        d="M500,200 C480,190 460,190 440,180 C420,170 400,160 380,150 
+           C360,140 340,130 320,130 C300,130 280,140 260,140 
+           C240,140 220,130 200,130 C180,130 160,140 140,150 
+           C120,160 100,170 80,170 C60,170 40,160 20,150 
+           C0,140 -20,130 -20,110 C-20,90 0,80 20,70 
+           C40,60 60,50 80,50 C100,50 120,60 140,60 
+           C160,60 180,50 200,50 C220,50 240,60 260,70 
+           C280,80 300,90 320,90 C340,90 360,80 380,70 
+           C400,60 420,50 440,50 C460,50 480,60 500,70"
         fill="none"
-        stroke="currentColor"
-        strokeWidth="0.8"
+        stroke="#BBB"
+        strokeWidth="1"
       />
-      <circle cx="200" cy="150" r="5" fill="#7E69AB" />
-      <circle cx="350" cy="180" r="5" fill="#7E69AB" />
-      <circle cx="500" cy="200" r="5" fill="#7E69AB" />
-      <circle cx="650" cy="220" r="5" fill="#7E69AB" />
-      <circle cx="310" cy="300" r="5" fill="#7E69AB" />
-      <circle cx="460" cy="320" r="5" fill="#7E69AB" />
-      <circle cx="600" cy="350" r="5" fill="#7E69AB" />
+      
+      {/* South America */}
+      <path
+        d="M280,320 C260,310 240,310 220,300 C200,290 180,280 160,270 
+           C140,260 120,250 100,250 C80,250 60,260 40,260 
+           C20,260 0,250 0,230 C0,210 20,200 40,190 
+           C60,180 80,170 100,170 C120,170 140,180 160,180 
+           C180,180 200,170 220,170 C240,170 260,180 280,190 
+           C300,200 320,210 340,210 C360,210 380,200 400,190"
+        fill="none"
+        stroke="#BBB"
+        strokeWidth="1"
+      />
+      
+      {/* Asia */}
+      <path
+        d="M600,150 C580,140 560,140 540,130 C520,120 500,110 480,100 
+           C460,90 440,80 420,80 C400,80 380,90 360,90 
+           C340,90 320,80 300,80 C280,80 260,90 240,100 
+           C220,110 200,120 180,120 C160,120 140,110 120,100 
+           C100,90 80,80 60,80 C40,80 20,90 0,100 
+           C-20,110 -40,120 -40,140 C-40,160 -20,170 0,180 
+           C20,190 40,200 60,200 C80,200 100,190 120,190 
+           C140,190 160,200 180,210 C200,220 220,230 240,230 
+           C260,230 280,220 300,210 C320,200 340,190 360,190 
+           C380,190 400,200 420,210 C440,220 460,230 480,230 
+           C500,230 520,220 540,210 C560,200 580,190 600,190"
+        fill="none"
+        stroke="#BBB"
+        strokeWidth="1"
+      />
+      
+      {/* Australia */}
+      <path
+        d="M750,300 C730,290 710,290 690,280 C670,270 650,260 630,250 
+           C610,240 590,230 570,230 C550,230 530,240 510,240 
+           C490,240 470,230 450,230 C430,230 410,240 390,250 
+           C370,260 350,270 330,270 C310,270 290,260 270,250"
+        fill="none"
+        stroke="#BBB"
+        strokeWidth="1"
+      />
+
+      {/* Highlighted regions/countries */}
+      <path d="M280,120 C260,110 240,110 220,100 C200,90 180,80 160,70" 
+        fill="none" stroke="#7E69AB" strokeWidth="2" />
+      <path d="M500,100 C480,90 460,90 440,80 C420,70 400,60 380,50" 
+        fill="none" stroke="#7E69AB" strokeWidth="2" />
+      <path d="M650,170 C630,160 610,160 590,150 C570,140 550,130 530,120" 
+        fill="none" stroke="#7E69AB" strokeWidth="2" />
+      <path d="M350,250 C330,240 310,240 290,230 C270,220 250,210 230,200" 
+        fill="none" stroke="#7E69AB" strokeWidth="2" />
+      <path d="M500,270 C480,260 460,260 440,250 C420,240 400,230 380,220" 
+        fill="none" stroke="#7E69AB" strokeWidth="2" />
+      
+      {/* Dots for major cities/regions */}
+      <circle cx="220" cy="120" r="4" fill="#7E69AB" />
+      <circle cx="450" cy="90" r="4" fill="#7E69AB" />
+      <circle cx="600" cy="150" r="4" fill="#7E69AB" />
+      <circle cx="300" cy="240" r="4" fill="#7E69AB" />
+      <circle cx="700" cy="270" r="4" fill="#7E69AB" />
+      <circle cx="500" cy="180" r="4" fill="#7E69AB" />
     </svg>
   </div>
 );
@@ -155,7 +241,7 @@ const SegmentProfile = ({ segment, industry, onBack }: SegmentProfileProps) => {
             .from('segments')
             .select('interoperability, roi, scalability, customization, awareness, tech, tam, compliance, complexity, reliability, pmf')
             .eq('id', segment.id)
-            .single();
+            .maybeSingle();
             
           if (error) {
             console.error('Error fetching scores:', error);
@@ -197,18 +283,17 @@ const SegmentProfile = ({ segment, industry, onBack }: SegmentProfileProps) => {
   ] : [];
 
   return (
-    <div className="flex flex-col min-h-screen text-left px-4 sm:px-6 lg:px-8 py-12 lg:py-16 max-w-5xl mx-auto">
-      {/* Header */}
+    <div className="flex flex-col min-h-screen text-left px-4 sm:px-6 lg:px-8 py-16 lg:py-20 max-w-5xl mx-auto">
+      {/* Header with more space at the top */}
       <div className="mb-8">
         <h2 className="text-4xl font-unbounded font-bold text-gray-900">{segment.name}</h2>
-        {industry && <p className="text-gray-500 mt-1">Industry: {industry.name}</p>}
         <button onClick={onBack} className="mt-2 px-4 py-2 text-sm text-gray-600 hover:bg-gray-200 rounded-md transition">
           ← Back
         </button>
       </div>
 
-      {/* Main Sections */}
-      <div className="space-y-6">
+      {/* Main Sections with less space and narrower design */}
+      <div className="space-y-4 max-w-4xl">
 
         {/* Section 1: Overview */}
         <SectionHeader icon={Info} title="Overview" />
@@ -222,12 +307,12 @@ const SegmentProfile = ({ segment, industry, onBack }: SegmentProfileProps) => {
         {formatContent(segment.regions)}
         <WorldMap />
 
-        {/* Section 2: Use Cases */}
+        {/* Section 2: Use Cases - with updated data fetching */}
         <SectionHeader icon={Lightbulb} title="Use Cases" />
         <SubsectionHeader icon={Lightbulb} title="General Use Cases" />
-        <p className="text-gray-500 italic">[Placeholder]</p>
+        {formatContent(segment.usecases_general)}
         <SubsectionHeader icon={Lightbulb} title="Web3 Use Cases" />
-        {formatContent(segment.use_cases)}
+        {formatContent(segment.usecases_web3)}
 
         {/* Section 3: Personas */}
         <SectionHeader icon={Users} title="Personas" />

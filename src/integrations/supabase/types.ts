@@ -57,7 +57,8 @@ export type Database = {
           tam: number | null
           tech: number | null
           trends: string | null
-          use_cases: string | null
+          usecases_general: string | null
+          usecases_web3: string | null
         }
         Insert: {
           abstract?: string | null
@@ -91,7 +92,8 @@ export type Database = {
           tam?: number | null
           tech?: number | null
           trends?: string | null
-          use_cases?: string | null
+          usecases_general?: string | null
+          usecases_web3?: string | null
         }
         Update: {
           abstract?: string | null
@@ -125,7 +127,8 @@ export type Database = {
           tam?: number | null
           tech?: number | null
           trends?: string | null
-          use_cases?: string | null
+          usecases_general?: string | null
+          usecases_web3?: string | null
         }
         Relationships: [
           {

@@ -4,11 +4,9 @@ import {
   BookText, 
   TrendingUp, 
   Globe, 
-  AlertTriangle, 
   Lightbulb, 
   Star, 
   Target, 
-  Users 
 } from 'lucide-react';
 import { ResponsiveBar } from '@nivo/bar';
 import Footer from '@/components/Footer';
@@ -21,11 +19,8 @@ type Segment = {
   definition: string | null;
   trends: string | null;
   regions: string | null;
-  challenges: string | null;
   use_cases: string | null;
   score: string | null;
-  positioning_statement: string | null;
-  personas: string | null;
   pmf: number | null;
   roi: number | null;
   scalability: number | null;
@@ -44,13 +39,30 @@ type SegmentProfileProps = {
   onBack: () => void;
 };
 
-// Helper function to display a score
-const ScoreItem = ({ label, value }: { label: string; value: number | null }) => (
-  <div className="flex justify-between px-6 py-3 border-b">
-    <span className="font-inter-bold text-gray-900">{label}</span>
-    <span className="text-gray-700">{value !== null ? value : 'N/A'}</span>
-  </div>
-);
+// Function to format content while keeping ":" and bolding key phrases
+const formatContent = (content: string | null) => {
+  if (!content) return <p className="text-gray-700 italic">No information available</p>;
+
+  return (
+    <div className="text-gray-700 space-y-4 text-left">
+      {content.split('\n').map((line, index) => {
+        if (line.includes(':')) {
+          const parts = line.split(':');
+          const boldText = parts[0]?.trim();
+          const remainingText = parts.slice(1).join(':').trim();
+
+          return (
+            <p key={index}>
+              <span className="font-semibold">{boldText}:</span> {remainingText}
+            </p>
+          );
+        }
+
+        return <p key={index}>{line.trim()}</p>;
+      })}
+    </div>
+  );
+};
 
 // Section Header Component
 const SectionHeader = ({ icon: Icon, title }: { icon: React.ElementType; title: string }) => (
@@ -58,6 +70,14 @@ const SectionHeader = ({ icon: Icon, title }: { icon: React.ElementType; title: 
     <Icon className="mr-2 text-indigo-600 w-6 h-6" />
     {title}
   </h3>
+);
+
+// Function to display a score
+const ScoreItem = ({ label, value }: { label: string; value: number | null }) => (
+  <div className="flex justify-between px-6 py-3 border-b">
+    <span className="font-semibold text-gray-900">{label}</span>
+    <span className="text-gray-700">{value !== null ? value : 'N/A'}</span>
+  </div>
 );
 
 const SegmentProfile = ({ segment, onBack }: SegmentProfileProps) => {
@@ -90,18 +110,29 @@ const SegmentProfile = ({ segment, onBack }: SegmentProfileProps) => {
         {/* Section 1: Segment Overview */}
         <div>
           <SectionHeader icon={Info} title="Segment Overview" />
-          <div className="text-gray-700 space-y-6">
-            {segment.abstract && <p>{segment.abstract}</p>}
-            {segment.definition && <p>{segment.definition}</p>}
-            {segment.trends && <p><strong>Market Trends:</strong> {segment.trends}</p>}
-            {segment.regions && <p><strong>Geographical Hotspots:</strong> {segment.regions}</p>}
+          <div className="space-y-6">
+            {segment.abstract && <div><SectionHeader icon={BookText} title="Abstract" />{formatContent(segment.abstract)}</div>}
+            {segment.definition && <div><SectionHeader icon={BookText} title="Definition" />{formatContent(segment.definition)}</div>}
+            {segment.trends && <div><SectionHeader icon={TrendingUp} title="Market Trends" />{formatContent(segment.trends)}</div>}
+            {segment.regions && <div><SectionHeader icon={Globe} title="Geographical Hotspots" />{formatContent(segment.regions)}</div>}
           </div>
         </div>
 
-        {/* --- NEW DIVIDER --- */}
+        {/* --- DIVIDER --- */}
         <div className="my-12 border-t-4 border-indigo-600 w-full"></div>
 
-        {/* Section 2: Polkadot-Market-Fit Score */}
+        {/* Section 2: Use Cases */}
+        {segment.use_cases && (
+          <div>
+            <SectionHeader icon={Lightbulb} title="Use Cases" />
+            {formatContent(segment.use_cases)}
+          </div>
+        )}
+
+        {/* --- DIVIDER --- */}
+        <div className="my-12 border-t-4 border-indigo-600 w-full"></div>
+
+        {/* Section 3: Polkadot-Market-Fit Score */}
         <div>
           <SectionHeader icon={Star} title="Polkadot-Market-Fit Score (PMF Score)" />
           <div className="bg-gray-100 rounded-lg p-6 shadow-md">

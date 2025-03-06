@@ -27,108 +27,109 @@ export type Database = {
       segments: {
         Row: {
           abstract: string | null
+          awareness: number | null
+          ca_customization: string | null
+          ca_interoperability: string | null
+          ca_other: string | null
+          ca_reliability: string | null
+          ca_resiliance: string | null
+          ca_scalability: string | null
           challenges: string | null
+          complexity: number | null
+          compliance: number | null
+          customization: number | null
           definition: string | null
           id: number
           industry_id: number | null
+          interoperability: number | null
           name: string | null
-          personas: string | null
+          personas_1: string | null
+          personas_2: string | null
+          personas_3: string | null
+          pmf: number | null
+          positioning_headline: string | null
           positioning_statement: string | null
+          positioning_subheadline: string | null
           regions: string | null
-          score: string | null
+          reliability: number | null
+          roi: number | null
+          scalability: number | null
+          tam: number | null
+          tech: number | null
           trends: string | null
           use_cases: string | null
         }
         Insert: {
           abstract?: string | null
+          awareness?: number | null
+          ca_customization?: string | null
+          ca_interoperability?: string | null
+          ca_other?: string | null
+          ca_reliability?: string | null
+          ca_resiliance?: string | null
+          ca_scalability?: string | null
           challenges?: string | null
+          complexity?: number | null
+          compliance?: number | null
+          customization?: number | null
           definition?: string | null
           id: number
           industry_id?: number | null
+          interoperability?: number | null
           name?: string | null
-          personas?: string | null
+          personas_1?: string | null
+          personas_2?: string | null
+          personas_3?: string | null
+          pmf?: number | null
+          positioning_headline?: string | null
           positioning_statement?: string | null
+          positioning_subheadline?: string | null
           regions?: string | null
-          score?: string | null
+          reliability?: number | null
+          roi?: number | null
+          scalability?: number | null
+          tam?: number | null
+          tech?: number | null
           trends?: string | null
           use_cases?: string | null
         }
         Update: {
           abstract?: string | null
+          awareness?: number | null
+          ca_customization?: string | null
+          ca_interoperability?: string | null
+          ca_other?: string | null
+          ca_reliability?: string | null
+          ca_resiliance?: string | null
+          ca_scalability?: string | null
           challenges?: string | null
+          complexity?: number | null
+          compliance?: number | null
+          customization?: number | null
           definition?: string | null
           id?: number
           industry_id?: number | null
+          interoperability?: number | null
           name?: string | null
-          personas?: string | null
+          personas_1?: string | null
+          personas_2?: string | null
+          personas_3?: string | null
+          pmf?: number | null
+          positioning_headline?: string | null
           positioning_statement?: string | null
+          positioning_subheadline?: string | null
           regions?: string | null
-          score?: string | null
+          reliability?: number | null
+          roi?: number | null
+          scalability?: number | null
+          tam?: number | null
+          tech?: number | null
           trends?: string | null
           use_cases?: string | null
         }
         Relationships: [
           {
             foreignKeyName: "segments_industry_fk"
-            columns: ["industry_id"]
-            isOneToOne: false
-            referencedRelation: "industries"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      segments_scores: {
-        Row: {
-          awareness: number | null
-          complexity: number | null
-          compliance: number | null
-          custom: number | null
-          id: number
-          industry_id: number | null
-          interoperability: number | null
-          name: string | null
-          pmf: number | null
-          reliability: number | null
-          roi: number | null
-          scalability: number | null
-          tam: number | null
-          tech: number | null
-        }
-        Insert: {
-          awareness?: number | null
-          complexity?: number | null
-          compliance?: number | null
-          custom?: number | null
-          id: number
-          industry_id?: number | null
-          interoperability?: number | null
-          name?: string | null
-          pmf?: number | null
-          reliability?: number | null
-          roi?: number | null
-          scalability?: number | null
-          tam?: number | null
-          tech?: number | null
-        }
-        Update: {
-          awareness?: number | null
-          complexity?: number | null
-          compliance?: number | null
-          custom?: number | null
-          id?: number
-          industry_id?: number | null
-          interoperability?: number | null
-          name?: string | null
-          pmf?: number | null
-          reliability?: number | null
-          roi?: number | null
-          scalability?: number | null
-          tam?: number | null
-          tech?: number | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "segments_scores_industry_id_fkey"
             columns: ["industry_id"]
             isOneToOne: false
             referencedRelation: "industries"

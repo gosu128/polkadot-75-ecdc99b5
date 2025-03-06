@@ -7,7 +7,8 @@ import {
   AlertTriangle, 
   Lightbulb, 
   Star, 
-  Target
+  Target, 
+  Users 
 } from 'lucide-react';
 import { ResponsiveBar } from '@nivo/bar';
 import Footer from '@/components/Footer';
@@ -24,7 +25,9 @@ type Segment = {
   use_cases: string | null;
   score: string | null;
   positioning_statement: string | null;
-  pmf: number | null;  // PMF Score
+  personas: string | null;
+  pmf: number | null;
+  roi: number | null;
   scalability: number | null;
   customization: number | null;
   awareness: number | null;
@@ -34,7 +37,6 @@ type Segment = {
   interoperability: number | null;
   reliability: number | null;
   complexity: number | null;
-  roi: number | null;
 };
 
 type SegmentProfileProps = {
@@ -42,32 +44,15 @@ type SegmentProfileProps = {
   onBack: () => void;
 };
 
-// Function to format content, ensuring ":" are preserved, bolding key phrases
-const formatContent = (content: string | null) => {
-  if (!content) return <p className="font-inter-light text-gray-700 italic">No information available</p>;
+// Helper function to display a score
+const ScoreItem = ({ label, value }: { label: string; value: number | null }) => (
+  <div className="flex justify-between px-6 py-3 border-b">
+    <span className="font-inter-bold text-gray-900">{label}</span>
+    <span className="text-gray-700">{value !== null ? value : 'N/A'}</span>
+  </div>
+);
 
-  return (
-    <div className="font-inter-light text-gray-700 space-y-4 text-left">
-      {content.split('\n').map((line, index) => {
-        if (line.includes(':')) {
-          const parts = line.split(':');
-          const boldText = parts[0]?.trim();
-          const remainingText = parts.slice(1).join(':').trim();
-
-          return (
-            <p key={index}>
-              <span className="font-inter-bold">{boldText}:</span> {remainingText}
-            </p>
-          );
-        }
-
-        return <p key={index}>{line.trim()}</p>;
-      })}
-    </div>
-  );
-};
-
-// Section header component - Keep Unbounded for section titles
+// Section Header Component
 const SectionHeader = ({ icon: Icon, title }: { icon: React.ElementType; title: string }) => (
   <h3 className="text-2xl font-unbounded text-gray-900 flex items-center mb-4">
     <Icon className="mr-2 text-indigo-600 w-6 h-6" />
@@ -89,117 +74,55 @@ const SegmentProfile = ({ segment, onBack }: SegmentProfileProps) => {
     );
   }
 
-  // Parse individual score data for visualization
-  const scoreData = [
-    { category: "Scalability", score: segment.scalability },
-    { category: "Customization", score: segment.customization },
-    { category: "Awareness", score: segment.awareness },
-    { category: "Tech", score: segment.tech },
-    { category: "TAM", score: segment.tam },
-    { category: "Compliance", score: segment.compliance },
-    { category: "Interoperability", score: segment.interoperability },
-    { category: "Reliability", score: segment.reliability },
-    { category: "Complexity", score: segment.complexity },
-    { category: "ROI", score: segment.roi },
-  ].filter(item => item.score !== null); // Remove any null values
-
   return (
     <div className="flex flex-col min-h-screen">
-      {/* Main content container with extra padding at the top */}
       <div className="w-full max-w-6xl mx-auto px-8 py-24 flex-grow"> 
         {/* Header Section */}
         <div className="mb-12">
           <h2 className="text-4xl font-unbounded font-bold text-gray-900 mt-1">{segment.name}</h2>
           <button 
             onClick={onBack} 
-            className="mt-4 px-4 py-2 text-sm text-gray-600 hover:bg-gray-200 rounded-md transition font-inter-light">
+            className="mt-4 px-4 py-2 text-sm text-gray-600 hover:bg-gray-200 rounded-md transition">
             ← Back
           </button>
         </div>
 
-        {/* SINGLE COLUMN LAYOUT WITH PROPER SPACING */}
-        <div className="space-y-12">
-          {/* Overview */}
-          <div>
-            <SectionHeader icon={Info} title="Overview" />
-            {formatContent(segment.abstract)}
+        {/* Section 1: Segment Overview */}
+        <div>
+          <SectionHeader icon={Info} title="Segment Overview" />
+          <div className="text-gray-700 space-y-6">
+            {segment.abstract && <p>{segment.abstract}</p>}
+            {segment.definition && <p>{segment.definition}</p>}
+            {segment.trends && <p><strong>Market Trends:</strong> {segment.trends}</p>}
+            {segment.regions && <p><strong>Geographical Hotspots:</strong> {segment.regions}</p>}
           </div>
+        </div>
 
-          {/* Definition */}
-          {segment.definition && (
-            <div>
-              <SectionHeader icon={BookText} title="Definition" />
-              {formatContent(segment.definition)}
+        {/* --- NEW DIVIDER --- */}
+        <div className="my-12 border-t-4 border-indigo-600 w-full"></div>
+
+        {/* Section 2: Polkadot-Market-Fit Score */}
+        <div>
+          <SectionHeader icon={Star} title="Polkadot-Market-Fit Score (PMF Score)" />
+          <div className="bg-gray-100 rounded-lg p-6 shadow-md">
+            <div className="text-3xl font-bold text-center text-indigo-700 mb-6">
+              {segment.pmf !== null ? segment.pmf : 'N/A'}
             </div>
-          )}
 
-          {/* Market Trends */}
-          {segment.trends && (
-            <div>
-              <SectionHeader icon={TrendingUp} title="Market Trends" />
-              {formatContent(segment.trends)}
+            {/* Individual Score Breakdown */}
+            <div className="grid grid-cols-2 gap-4 bg-white rounded-lg shadow p-4">
+              <ScoreItem label="ROI Score" value={segment.roi} />
+              <ScoreItem label="Scalability Score" value={segment.scalability} />
+              <ScoreItem label="Customization Score" value={segment.customization} />
+              <ScoreItem label="Awareness Score" value={segment.awareness} />
+              <ScoreItem label="Tech Score" value={segment.tech} />
+              <ScoreItem label="TAM Score" value={segment.tam} />
+              <ScoreItem label="Compliance Score" value={segment.compliance} />
+              <ScoreItem label="Interoperability Score" value={segment.interoperability} />
+              <ScoreItem label="Reliability Score" value={segment.reliability} />
+              <ScoreItem label="Complexity Score" value={segment.complexity} />
             </div>
-          )}
-
-          {/* Key Regions */}
-          {segment.regions && (
-            <div>
-              <SectionHeader icon={Globe} title="Key Regions" />
-              {formatContent(segment.regions)}
-            </div>
-          )}
-
-          {/* Challenges */}
-          {segment.challenges && (
-            <div>
-              <SectionHeader icon={AlertTriangle} title="Challenges" />
-              {formatContent(segment.challenges)}
-            </div>
-          )}
-
-          {/* Use Cases */}
-          {segment.use_cases && (
-            <div>
-              <SectionHeader icon={Lightbulb} title="Use Cases" />
-              {formatContent(segment.use_cases)}
-            </div>
-          )}
-
-          {/* Positioning Statement */}
-          {segment.positioning_statement && (
-            <div>
-              <SectionHeader icon={Target} title="Positioning Statement" />
-              {formatContent(segment.positioning_statement)}
-            </div>
-          )}
-
-          {/* POLKADOT-MARKET-FIT SCORE */}
-          {segment.pmf !== null && (
-            <div>
-              <SectionHeader icon={Star} title="Polkadot-Market-Fit Score (PMF Score)" />
-              <p className="font-inter-bold text-3xl text-gray-900">{segment.pmf} / 10</p>
-
-              {/* Score Table */}
-              <div className="mt-6">
-                <table className="w-full border-collapse border border-gray-300">
-                  <thead className="bg-gray-100">
-                    <tr>
-                      <th className="border border-gray-300 px-4 py-2 text-left">Criteria</th>
-                      <th className="border border-gray-300 px-4 py-2 text-left">Score</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {scoreData.map((item, index) => (
-                      <tr key={index} className="border border-gray-300">
-                        <td className="border border-gray-300 px-4 py-2">{item.category}</td>
-                        <td className="border border-gray-300 px-4 py-2">{item.score}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          )}
+          </div>
         </div>
       </div>
     </div>
@@ -207,4 +130,3 @@ const SegmentProfile = ({ segment, onBack }: SegmentProfileProps) => {
 };
 
 export default SegmentProfile;
-

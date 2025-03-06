@@ -7,6 +7,17 @@ import {
   Lightbulb, 
   Star, 
   Target, 
+  ClipboardList, 
+  Layers, 
+  MapPin, 
+  BarChart3, 
+  Settings, 
+  CheckCircle, 
+  ShieldCheck, 
+  RefreshCw, 
+  Link2, 
+  Grid, 
+  AlertTriangle 
 } from 'lucide-react';
 import { ResponsiveBar } from '@nivo/bar';
 import Footer from '@/components/Footer';
@@ -39,7 +50,7 @@ type SegmentProfileProps = {
   onBack: () => void;
 };
 
-// Function to format content while keeping ":" and bolding key phrases
+// **Function to format content while keeping ":" and bolding key phrases**
 const formatContent = (content: string | null) => {
   if (!content) return <p className="text-gray-700 italic">No information available</p>;
 
@@ -72,14 +83,15 @@ const SectionHeader = ({ icon: Icon, title }: { icon: React.ElementType; title: 
   </h2>
 );
 
-// **Sub-section Header Component** (For Topics within Sections)
-const SubSectionHeader = ({ title }: { title: string }) => (
-  <h3 className="text-xl font-semibold text-gray-800 mt-6 mb-3">
+// **Sub-section Header Component** (Now Left-aligned + Icons)
+const SubSectionHeader = ({ icon: Icon, title }: { icon: React.ElementType; title: string }) => (
+  <h3 className="text-xl font-semibold text-gray-800 mt-6 mb-3 flex items-center">
+    <Icon className="mr-2 text-indigo-600 w-5 h-5" />
     {title}
   </h3>
 );
 
-// Function to format and display scores with **1 decimal place**
+// **Function to format and display scores with 1 decimal place**
 const ScoreItem = ({ label, value }: { label: string; value: number | null }) => (
   <div className="flex justify-between px-6 py-3 border-b">
     <span className="font-semibold text-gray-900">{label}</span>
@@ -118,15 +130,12 @@ const SegmentProfile = ({ segment, onBack }: SegmentProfileProps) => {
         <div>
           <SectionHeader icon={Info} title="Segment Overview" />
           <div className="space-y-6">
-            {segment.abstract && <div><SubSectionHeader title="Abstract" />{formatContent(segment.abstract)}</div>}
-            {segment.definition && <div><SubSectionHeader title="Definition" />{formatContent(segment.definition)}</div>}
-            {segment.trends && <div><SubSectionHeader title="Market Trends" />{formatContent(segment.trends)}</div>}
-            {segment.regions && <div><SubSectionHeader title="Geographical Hotspots" />{formatContent(segment.regions)}</div>}
+            {segment.abstract && <div><SubSectionHeader icon={ClipboardList} title="Abstract" />{formatContent(segment.abstract)}</div>}
+            {segment.definition && <div><SubSectionHeader icon={Layers} title="Definition" />{formatContent(segment.definition)}</div>}
+            {segment.trends && <div><SubSectionHeader icon={BarChart3} title="Market Trends" />{formatContent(segment.trends)}</div>}
+            {segment.regions && <div><SubSectionHeader icon={MapPin} title="Geographical Hotspots" />{formatContent(segment.regions)}</div>}
           </div>
         </div>
-
-        {/* --- DIVIDER --- */}
-        <div className="my-12 border-t-4 border-indigo-600 w-full"></div>
 
         {/* Section 2: Use Cases */}
         {segment.use_cases && (
@@ -135,9 +144,6 @@ const SegmentProfile = ({ segment, onBack }: SegmentProfileProps) => {
             {formatContent(segment.use_cases)}
           </div>
         )}
-
-        {/* --- DIVIDER --- */}
-        <div className="my-12 border-t-4 border-indigo-600 w-full"></div>
 
         {/* Section 3: Polkadot-Market-Fit Score */}
         <div>
@@ -168,4 +174,3 @@ const SegmentProfile = ({ segment, onBack }: SegmentProfileProps) => {
 };
 
 export default SegmentProfile;
-

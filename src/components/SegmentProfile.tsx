@@ -204,5 +204,3 @@ const SegmentProfile = ({ segment, onBack }: SegmentProfileProps) => {
 };
 
 export default SegmentProfile;
-export default SegmentProfile;
-

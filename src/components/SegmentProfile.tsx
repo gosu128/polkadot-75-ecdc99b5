@@ -194,6 +194,9 @@ const SegmentProfile = ({
         {formatContent(segment.usecases_general)}
         <SubsectionHeader icon={Lightbulb} title="Web3 Use Cases" />
         {formatContent(segment.usecases_web3)}
+        
+{/* Section 3: Personas */}
+<SectionHeader icon={Users} title="Personas" />
 
       {/* Persona 1 */}
 {segment.personas_1 && (

@@ -4,20 +4,14 @@ import {
   BookText, 
   TrendingUp, 
   Globe, 
+  AlertTriangle, 
   Lightbulb, 
   Star, 
   Target, 
-  ClipboardList, 
-  Users, 
-  Network, 
-  Shield, 
-  Layers, 
-  BarChart3, 
-  CheckCircle, 
-  Compass, 
-  ClipboardCheck 
+  Users 
 } from 'lucide-react';
 import { ResponsiveBar } from '@nivo/bar';
+import Footer from '@/components/Footer';
 
 type Segment = {
   id: number;
@@ -28,29 +22,20 @@ type Segment = {
   trends: string | null;
   regions: string | null;
   use_cases: string | null;
-  pmf: number | null;
-  roi: number | null;
-  scalability: number | null;
-  customization: number | null;
-  awareness: number | null;
-  tech: number | null;
-  tam: number | null;
-  compliance: number | null;
-  interoperability: number | null;
-  reliability: number | null;
-  complexity: number | null;
-  positioning_statement: string | null;
-  positioning_headline: string | null;
-  positioning_subheadline: string | null;
   personas_1: string | null;
   personas_2: string | null;
   personas_3: string | null;
+  positioning_statement: string | null;
+  positioning_headline: string | null;
+  positioning_subheadline: string | null;
   ca_interoperability: string | null;
   ca_resiliance: string | null;
   ca_scalability: string | null;
   ca_customization: string | null;
   ca_reliability: string | null;
   ca_other: string | null;
+  pmf: number | null;
+  scores: { key: string; value: number }[] | null;
 };
 
 type SegmentProfileProps = {
@@ -58,23 +43,38 @@ type SegmentProfileProps = {
   onBack: () => void;
 };
 
-// Helper function for formatting text content
+// Function to format text while ensuring ":" is bold
 const formatContent = (content: string | null) => {
-  if (!content) return <p className="text-gray-900 italic">No information available</p>;
-  return <p className="text-gray-900">{content}</p>;
+  if (!content) return <p className="font-inter-light text-gray-700 italic">No information available</p>;
+
+  return (
+    <div className="font-inter-light text-gray-700 space-y-4 text-left">
+      {content.split('\n').map((line, index) => {
+        if (line.includes(':')) {
+          const parts = line.split(':');
+          return (
+            <p key={index}>
+              <span className="font-inter-bold">{parts[0].trim()}:</span> {parts.slice(1).join(':').trim()}
+            </p>
+          );
+        }
+        return <p key={index}>{line.trim()}</p>;
+      })}
+    </div>
+  );
 };
 
-// **Main Section Headers**
-const MainSectionHeader = ({ icon: Icon, title, id }: { icon: React.ElementType; title: string; id: string }) => (
-  <h2 id={id} className="text-3xl font-unbounded text-polkadot-pink flex items-center mt-16 mb-6 border-b-4 border-polkadot-pink pb-2">
-    <Icon className="mr-3 text-polkadot-pink w-7 h-7" />
+// Section header component
+const SectionHeader = ({ icon: Icon, title }: { icon: React.ElementType; title: string }) => (
+  <h2 className="text-2xl text-polkadot-pink font-unbounded flex items-center mt-12 mb-4">
+    <Icon className="mr-2 text-polkadot-pink w-6 h-6" />
     {title}
   </h2>
 );
 
-// **Sub-Section Headers**
-const SubSectionHeader = ({ icon: Icon, title }: { icon: React.ElementType; title: string }) => (
-  <h3 className="text-lg font-bold text-gray-900 flex items-center mt-6">
+// Subsection header component
+const SubsectionHeader = ({ icon: Icon, title }: { icon: React.ElementType; title: string }) => (
+  <h3 className="text-lg text-black font-semibold flex items-center mb-2">
     <Icon className="mr-2 text-gray-700 w-5 h-5" />
     {title}
   </h3>
@@ -85,9 +85,7 @@ const SegmentProfile = ({ segment, onBack }: SegmentProfileProps) => {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen text-center">
         <h2 className="text-2xl font-bold text-red-600">Error: Segment data not found</h2>
-        <button 
-          onClick={onBack} 
-          className="mt-4 px-4 py-2 bg-gray-800 text-white rounded-md">
+        <button onClick={onBack} className="mt-4 px-4 py-2 bg-gray-800 text-white rounded-md">
           ← Back to Selection
         </button>
       </div>
@@ -95,93 +93,87 @@ const SegmentProfile = ({ segment, onBack }: SegmentProfileProps) => {
   }
 
   return (
-    <div className="flex flex-col min-h-screen">
-      <div className="w-full max-w-6xl mx-auto px-8 py-24 flex-grow">
+    <div className="flex flex-col min-h-screen text-left px-8 py-24">
+      {/* Header */}
+      <div className="mb-12">
+        <h2 className="text-4xl font-unbounded font-bold text-gray-900">{segment.name}</h2>
+        <button onClick={onBack} className="mt-4 px-4 py-2 text-sm text-gray-600 hover:bg-gray-200 rounded-md transition">
+          ← Back
+        </button>
+      </div>
 
-        {/* Header Section */}
-        <div className="mb-8">
-          <h2 className="text-4xl font-unbounded font-bold text-gray-900 mt-1">{segment.name}</h2>
-          <button 
-            onClick={onBack} 
-            className="mt-4 px-4 py-2 text-sm text-gray-600 hover:bg-gray-200 rounded-md transition">
-            ← Back
-          </button>
-        </div>
+      {/* Main Sections */}
+      <div className="space-y-12">
 
-        {/* Main Sections */}
-        <MainSectionHeader icon={Info} title="Overview" id="Overview" />
-        <SubSectionHeader icon={BookText} title="Abstract" />
+        {/* Section 1: Overview */}
+        <SectionHeader icon={Info} title="Overview" />
+        <SubsectionHeader icon={BookText} title="Abstract" />
         {formatContent(segment.abstract)}
-        <SubSectionHeader icon={BookText} title="Definition" />
+        <SubsectionHeader icon={BookText} title="Definition" />
         {formatContent(segment.definition)}
-        <SubSectionHeader icon={TrendingUp} title="Market Trends" />
+        <SubsectionHeader icon={TrendingUp} title="Market Trends" />
         {formatContent(segment.trends)}
-        <SubSectionHeader icon={Globe} title="Geographical Hotspots" />
+        <SubsectionHeader icon={Globe} title="Geographical Hotspots" />
         {formatContent(segment.regions)}
 
-        <MainSectionHeader icon={Lightbulb} title="Use Cases" id="Use-Cases" />
-        <SubSectionHeader icon={ClipboardList} title="General Use Cases" />
-        <p className="text-gray-900 italic">To be added</p>
-        <SubSectionHeader icon={ClipboardList} title="Web3 Use Cases" />
+        {/* Section 2: Use Cases */}
+        <SectionHeader icon={Lightbulb} title="Use Cases" />
+        <SubsectionHeader icon={Lightbulb} title="General Use Cases" />
+        <p className="text-gray-500 italic">[Placeholder]</p>
+        <SubsectionHeader icon={Lightbulb} title="Web3 Use Cases" />
         {formatContent(segment.use_cases)}
 
-        <MainSectionHeader icon={Users} title="Personas" id="Personas" />
-        <SubSectionHeader icon={User} title="Persona Group 1" />
+        {/* Section 3: Personas */}
+        <SectionHeader icon={Users} title="Personas" />
+        <SubsectionHeader icon={Users} title="Persona Group 1" />
         {formatContent(segment.personas_1)}
-        <SubSectionHeader icon={User} title="Persona Group 2" />
+        <SubsectionHeader icon={Users} title="Persona Group 2" />
         {formatContent(segment.personas_2)}
-        <SubSectionHeader icon={User} title="Persona Group 3" />
+        <SubsectionHeader icon={Users} title="Persona Group 3" />
         {formatContent(segment.personas_3)}
 
-        <MainSectionHeader icon={Compass} title="Messaging Strategy" id="Messaging-Strategy" />
-        <SubSectionHeader icon={Target} title="Positioning Statement" />
+        {/* Section 4: Messaging Strategy */}
+        <SectionHeader icon={Target} title="Messaging Strategy" />
+        <SubsectionHeader icon={Target} title="Positioning Statement" />
         {formatContent(segment.positioning_statement)}
-        <SubSectionHeader icon={AlignLeft} title="Headline" />
+        <SubsectionHeader icon={Target} title="Headline" />
         {formatContent(segment.positioning_headline)}
-        <SubSectionHeader icon={AlignLeft} title="Subline" />
+        <SubsectionHeader icon={Target} title="Subline" />
         {formatContent(segment.positioning_subheadline)}
 
-        <MainSectionHeader icon={ClipboardCheck} title="Capability Assessment" id="Capability-Assessment" />
-        <SubSectionHeader icon={Network} title="Interoperability" />
+        {/* Section 5: Capability Assessment */}
+        <SectionHeader icon={Star} title="Capability Assessment" />
+        <SubsectionHeader icon={Star} title="Interoperability" />
         {formatContent(segment.ca_interoperability)}
-        <SubSectionHeader icon={Shield} title="Resilience" />
+        <SubsectionHeader icon={Star} title="Resilience" />
         {formatContent(segment.ca_resiliance)}
-        <SubSectionHeader icon={BarChart3} title="Scalability" />
+        <SubsectionHeader icon={Star} title="Scalability" />
         {formatContent(segment.ca_scalability)}
-        <SubSectionHeader icon={Layers} title="Flexibility" />
+        <SubsectionHeader icon={Star} title="Flexibility" />
         {formatContent(segment.ca_customization)}
-        <SubSectionHeader icon={CheckCircle} title="Reliability" />
+        <SubsectionHeader icon={Star} title="Reliability" />
         {formatContent(segment.ca_reliability)}
-        <SubSectionHeader icon={ClipboardList} title="Other" />
+        <SubsectionHeader icon={Star} title="Other" />
         {formatContent(segment.ca_other)}
 
-        <MainSectionHeader icon={Star} title="Polkadot-Market-Fit Score" id="Polkadot-Market-Fit-Score" />
-        <div className="text-5xl font-bold text-polkadot-pink text-center py-4">{segment.pmf?.toFixed(1) ?? "N/A"}</div>
-
-        {/* PMF Scores Table */}
-        <div className="mt-6 border border-gray-300 rounded-lg overflow-hidden">
-          <div className="grid grid-cols-2 bg-gray-100 px-6 py-3 font-semibold text-gray-900">
-            <div>Criteria</div>
-            <div>Score</div>
+        {/* Section 6: Polkadot-Market-Fit Score */}
+        <SectionHeader icon={Star} title="Polkadot-Market-Fit Score" />
+        <h3 className="text-4xl font-bold text-center text-gray-900">{segment.pmf}</h3>
+        {segment.scores && (
+          <div className="h-64 w-full">
+            <ResponsiveBar
+              data={segment.scores}
+              keys={["value"]}
+              indexBy="key"
+              margin={{ top: 20, right: 30, bottom: 50, left: 120 }}
+              padding={0.3}
+              layout="horizontal"
+              colors={["#e6007a"]}
+              axisBottom={{ legend: "Score (out of 10)", legendPosition: "middle", legendOffset: 40 }}
+              enableLabel={true}
+            />
           </div>
-          {[
-            ["ROI", segment.roi],
-            ["Scalability", segment.scalability],
-            ["Customization", segment.customization],
-            ["Awareness", segment.awareness],
-            ["Tech", segment.tech],
-            ["TAM", segment.tam],
-            ["Compliance", segment.compliance],
-            ["Interoperability", segment.interoperability],
-            ["Reliability", segment.reliability],
-            ["Complexity", segment.complexity],
-          ].map(([label, value], i) => (
-            <div key={i} className="grid grid-cols-2 px-6 py-3 border-b last:border-none">
-              <div>{label}</div>
-              <div>{value !== null ? value.toFixed(1) : "N/A"}</div>
-            </div>
-          ))}
-        </div>
+        )}
 
       </div>
     </div>

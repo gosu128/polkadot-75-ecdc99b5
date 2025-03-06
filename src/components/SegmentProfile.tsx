@@ -298,53 +298,37 @@ const SegmentProfile = ({
         {formatContent(segment.ca_other)}
 
         {/* Section 6: Polkadot-Market-Fit Score */}
-<SectionHeader icon={Star} title="Polkadot-Market-Fit Score" />
-<div className="flex flex-col md:flex-row items-start gap-6">
-  {/* PMF Score Box */}
-  <div className="flex flex-col items-center justify-center p-6 bg-gradient-to-br from-polkadot-pink/10 to-white rounded-xl shadow-sm">
-    <h3 className="text-sm uppercase tracking-wider text-polkadot-pink/70 font-semibold mb-2">PMF-SCORE</h3>
-    <p className="text-5xl font-bold text-polkadot-pink">{scoreData?.pmf || segment.pmf || "N/A"}</p>
-  </div>
-
-  {/* Score Breakdown Table with Dynamic Colors */}
-  <div className="flex-1 overflow-hidden">
-    <h3 className="text-sm uppercase tracking-wider text-gray-500 font-semibold mb-2">Score Breakdown</h3>
-    <div className="overflow-x-auto">
-      <table className="w-full rounded-lg overflow-hidden border-collapse">
-        <thead>
-          <tr className="bg-gradient-to-r from-polkadot-pink to-[#9B87F5] text-white">
-            <th className="py-2 px-4 text-left font-medium">Criteria</th>
-            <th className="py-2 px-4 text-center font-medium">Score</th>
-          </tr>
-        </thead>
-        <tbody>
-          {formattedScores.map((score, index) => {
-            // Function to calculate the background color dynamically
-            const getColor = (value: number) => {
-              const red = Math.round(255 - (value - 1) * (255 - 63) / 9);  // Red fades from #FF6B6B to #3FCF60
-              const green = Math.round(107 + (value - 1) * (207 - 107) / 9);
-              return `rgb(${red}, ${green}, 100)`;
-            };
-
-            return (
-              <tr key={index} className={index % 2 === 0 ? 'bg-gray-50' : 'bg-white'}>
-                <td className="py-2 px-4 border-t border-gray-200">{score.name}</td>
-                <td className="py-2 px-4 text-center border-t border-gray-200">
-                  <span
-                    className="inline-block min-w-12 py-1 px-2 rounded-full text-sm font-medium text-white"
-                    style={{ backgroundColor: getColor(score.value) }}
-                  >
-                    {score.value.toFixed(1)}
-                  </span>
-                </td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
-    </div>
-  </div>
-</div>
+        <SectionHeader icon={Star} title="Polkadot-Market-Fit Score" />
+        <div className="flex flex-col md:flex-row items-start gap-6">
+          <div className="flex flex-col items-center justify-center p-6 bg-gradient-to-br from-polkadot-pink/10 to-white rounded-xl shadow-sm">
+            <h3 className="text-sm uppercase tracking-wider text-polkadot-pink/70 font-semibold mb-2">PMF-SCORE</h3>
+            <p className="text-5xl font-bold text-polkadot-pink">{scoreData?.pmf || segment.pmf || "N/A"}</p>
+          </div>
+          
+          <div className="flex-1 overflow-hidden">
+            <h3 className="text-sm uppercase tracking-wider text-gray-500 font-semibold mb-2">Score Breakdown</h3>
+            <div className="overflow-x-auto">
+              <table className="w-full rounded-lg overflow-hidden border-collapse">
+                <thead>
+                  <tr className="bg-gradient-to-r from-polkadot-pink to-[#9B87F5] text-white">
+                    <th className="py-2 px-4 text-left font-medium">Criteria</th>
+                    <th className="py-2 px-4 text-center font-medium">Score</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {formattedScores.map((score, index) => <tr key={index} className={index % 2 === 0 ? 'bg-gray-50' : 'bg-white'}>
+                      <td className="py-2 px-4 border-t border-gray-200">{score.name}</td>
+                      <td className="py-2 px-4 text-center border-t border-gray-200">
+                        <span className="inline-block min-w-12 py-1 px-2 bg-gray-100 rounded-full text-sm font-medium">
+                          {score.value.toFixed(1)}
+                        </span>
+                      </td>
+                    </tr>)}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
       </div>
     </div>;
 };

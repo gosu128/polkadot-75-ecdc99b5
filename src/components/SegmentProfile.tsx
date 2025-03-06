@@ -206,6 +206,21 @@ const SegmentProfile = ({
       {segment.personas_1.split('\n').slice(1).map((line, index) => {
         if (line.includes(':')) {
           const parts = line.split(':');
+
+          // Highlight the "What They Need" section
+          if (parts[0].trim() === "What They Need") {
+            return (
+              <div key={index} className="p-4 bg-polkadot-pink/10 border-l-4 border-polkadot-pink rounded-md shadow-sm">
+                <p className="font-inter-bold text-polkadot-pink">{parts[0].trim()}:</p>
+                <ul className="list-decimal pl-5 text-gray-700 mt-2 space-y-1">
+                  {parts.slice(1).join(':').trim().split('\n').map((point, idx) => (
+                    <li key={idx}>{point.trim()}</li>
+                  ))}
+                </ul>
+              </div>
+            );
+          }
+
           return (
             <p key={index}>
               <span className="font-inter-bold">{parts[0].trim()}:</span> {parts.slice(1).join(':').trim()}
@@ -226,6 +241,21 @@ const SegmentProfile = ({
       {segment.personas_2.split('\n').slice(1).map((line, index) => {
         if (line.includes(':')) {
           const parts = line.split(':');
+
+          // Highlight the "What They Need" section
+          if (parts[0].trim() === "What They Need") {
+            return (
+              <div key={index} className="p-4 bg-polkadot-pink/10 border-l-4 border-polkadot-pink rounded-md shadow-sm">
+                <p className="font-inter-bold text-polkadot-pink">{parts[0].trim()}:</p>
+                <ul className="list-decimal pl-5 text-gray-700 mt-2 space-y-1">
+                  {parts.slice(1).join(':').trim().split('\n').map((point, idx) => (
+                    <li key={idx}>{point.trim()}</li>
+                  ))}
+                </ul>
+              </div>
+            );
+          }
+
           return (
             <p key={index}>
               <span className="font-inter-bold">{parts[0].trim()}:</span> {parts.slice(1).join(':').trim()}
@@ -246,6 +276,21 @@ const SegmentProfile = ({
       {segment.personas_3.split('\n').slice(1).map((line, index) => {
         if (line.includes(':')) {
           const parts = line.split(':');
+
+          // Highlight the "What They Need" section
+          if (parts[0].trim() === "What They Need") {
+            return (
+              <div key={index} className="p-4 bg-polkadot-pink/10 border-l-4 border-polkadot-pink rounded-md shadow-sm">
+                <p className="font-inter-bold text-polkadot-pink">{parts[0].trim()}:</p>
+                <ul className="list-decimal pl-5 text-gray-700 mt-2 space-y-1">
+                  {parts.slice(1).join(':').trim().split('\n').map((point, idx) => (
+                    <li key={idx}>{point.trim()}</li>
+                  ))}
+                </ul>
+              </div>
+            );
+          }
+
           return (
             <p key={index}>
               <span className="font-inter-bold">{parts[0].trim()}:</span> {parts.slice(1).join(':').trim()}

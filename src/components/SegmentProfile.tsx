@@ -64,19 +64,26 @@ const formatContent = (content: string | null) => {
   );
 };
 
-// Section Header Component
+// **Section Header Component** (For Major Sections)
 const SectionHeader = ({ icon: Icon, title }: { icon: React.ElementType; title: string }) => (
-  <h3 className="text-2xl font-unbounded text-gray-900 flex items-center mb-4">
-    <Icon className="mr-2 text-indigo-600 w-6 h-6" />
+  <h2 className="text-3xl font-unbounded text-gray-900 flex items-center mb-6 border-b-4 border-indigo-600 pb-2">
+    <Icon className="mr-3 text-indigo-600 w-7 h-7" />
+    {title}
+  </h2>
+);
+
+// **Sub-section Header Component** (For Topics within Sections)
+const SubSectionHeader = ({ title }: { title: string }) => (
+  <h3 className="text-xl font-semibold text-gray-800 mt-6 mb-3">
     {title}
   </h3>
 );
 
-// Function to display a score
+// Function to format and display scores with **1 decimal place**
 const ScoreItem = ({ label, value }: { label: string; value: number | null }) => (
   <div className="flex justify-between px-6 py-3 border-b">
     <span className="font-semibold text-gray-900">{label}</span>
-    <span className="text-gray-700">{value !== null ? value : 'N/A'}</span>
+    <span className="text-gray-700">{value !== null ? value.toFixed(1) : 'N/A'}</span>
   </div>
 );
 
@@ -111,10 +118,10 @@ const SegmentProfile = ({ segment, onBack }: SegmentProfileProps) => {
         <div>
           <SectionHeader icon={Info} title="Segment Overview" />
           <div className="space-y-6">
-            {segment.abstract && <div><SectionHeader icon={BookText} title="Abstract" />{formatContent(segment.abstract)}</div>}
-            {segment.definition && <div><SectionHeader icon={BookText} title="Definition" />{formatContent(segment.definition)}</div>}
-            {segment.trends && <div><SectionHeader icon={TrendingUp} title="Market Trends" />{formatContent(segment.trends)}</div>}
-            {segment.regions && <div><SectionHeader icon={Globe} title="Geographical Hotspots" />{formatContent(segment.regions)}</div>}
+            {segment.abstract && <div><SubSectionHeader title="Abstract" />{formatContent(segment.abstract)}</div>}
+            {segment.definition && <div><SubSectionHeader title="Definition" />{formatContent(segment.definition)}</div>}
+            {segment.trends && <div><SubSectionHeader title="Market Trends" />{formatContent(segment.trends)}</div>}
+            {segment.regions && <div><SubSectionHeader title="Geographical Hotspots" />{formatContent(segment.regions)}</div>}
           </div>
         </div>
 
@@ -137,7 +144,7 @@ const SegmentProfile = ({ segment, onBack }: SegmentProfileProps) => {
           <SectionHeader icon={Star} title="Polkadot-Market-Fit Score (PMF Score)" />
           <div className="bg-gray-100 rounded-lg p-6 shadow-md">
             <div className="text-3xl font-bold text-center text-indigo-700 mb-6">
-              {segment.pmf !== null ? segment.pmf : 'N/A'}
+              {segment.pmf !== null ? segment.pmf.toFixed(1) : 'N/A'}
             </div>
 
             {/* Individual Score Breakdown */}
@@ -161,3 +168,4 @@ const SegmentProfile = ({ segment, onBack }: SegmentProfileProps) => {
 };
 
 export default SegmentProfile;
+

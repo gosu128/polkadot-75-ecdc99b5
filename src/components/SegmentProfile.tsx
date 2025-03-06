@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { 
   Info, 
   BookText, 
@@ -11,15 +11,12 @@ import {
   Users 
 } from 'lucide-react';
 import { ResponsiveBar } from '@nivo/bar';
-import { createClient } from '@supabase/supabase-js';
 import Footer from '@/components/Footer';
 
-const supabase = createClient('https://qhxgyizmewdtvwebpmie.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFoeGd5aXptZXdkdHZ3ZWJwbWllIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDExNjk0NjAsImV4cCI6MjA1Njc0NTQ2MH0.MxQbO5TTL1vbfohLB2dHtKOotwp0sUGDQfcpBgT1EL8');
-
 type Segment = {
-  id: string;
+  id: number;
   name: string;
-  industry_id: string;
+  industry_id: number;
   abstract: string | null;
   definition: string | null;
   trends: string | null;
@@ -31,87 +28,181 @@ type Segment = {
   personas: string | null;
 };
 
-type SegmentScore = {
-  "Polkadot-Market-Fit Score": number;
-  "ROI Score": number;
-  "Scalability Score": number;
-  "Customization Score": number;
-  "Awareness Score": number;
-  "Tech Score": number;
-  "TAM Score": number;
-  "Compliance Score": number;
-  "Interoperability Score": number;
-  "Reliability Score": number;
-  "Complexity Score": number;
-};
-
 type SegmentProfileProps = {
   segment: Segment | null;
   onBack: () => void;
 };
 
+// Function to format content, ensuring ":" are preserved, bolding key phrases
+const formatContent = (content: string | null) => {
+  if (!content) return <p className="font-inter-light text-gray-700 italic">No information available</p>;
+
+  return (
+    <div className="font-inter-light text-gray-700 space-y-4 text-left">
+      {content.split('\n').map((line, index) => {
+        if (line.includes(':')) {
+          const parts = line.split(':');
+          const boldText = parts[0]?.trim();
+          const remainingText = parts.slice(1).join(':').trim();
+
+          return (
+            <p key={index}>
+              <span className="font-inter-bold">{boldText}:</span> {remainingText}
+            </p>
+          );
+        }
+
+        return <p key={index}>{line.trim()}</p>;
+      })}
+    </div>
+  );
+};
+
+// Section header component - Keep Unbounded for section titles
+const SectionHeader = ({ icon: Icon, title }: { icon: React.ElementType; title: string }) => (
+  <h3 className="text-2xl font-unbounded text-gray-900 flex items-center mb-4">
+    <Icon className="mr-2 text-indigo-600 w-6 h-6" />
+    {title}
+  </h3>
+);
+
 const SegmentProfile = ({ segment, onBack }: SegmentProfileProps) => {
-  const [scores, setScores] = useState<SegmentScore | null>(null);
+  if (!segment) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-screen text-center">
+        <h2 className="text-2xl font-bold text-red-600">Error: Segment data not found</h2>
+        <button 
+          onClick={onBack} 
+          className="mt-4 px-4 py-2 bg-gray-800 text-white rounded-md">
+          ← Back to Selection
+        </button>
+      </div>
+    );
+  }
 
-  useEffect(() => {
-    if (segment) {
-      fetchSegmentScores(segment.id);
+  // Parse score data safely
+  const scoreData = React.useMemo(() => {
+    if (!segment?.score) return null;
+    try {
+      const parsedData = JSON.parse(segment.score);
+      if (!Array.isArray(parsedData)) return null; 
+
+      return parsedData.map((item: any) => ({
+        category: item.key || "Unknown",
+        score: typeof item.value === "number" ? item.value : 0,
+      }));
+    } catch (e) {
+      console.error("Error parsing score data:", e);
+      return null;
     }
-  }, [segment]);
-
-  const fetchSegmentScores = async (segmentId: string) => {
-    const { data, error } = await supabase
-      .from('segments_score')
-      .select('*')
-      .eq('segment_id', segmentId)
-      .single();
-
-    if (error) {
-      console.error('Error fetching scores:', error);
-    } else {
-      setScores(data);
-    }
-  };
+  }, [segment?.score]);
 
   return (
     <div className="flex flex-col min-h-screen">
+      {/* Main content container with extra padding at the top */}
       <div className="w-full max-w-6xl mx-auto px-8 py-24 flex-grow"> 
         {/* Header Section */}
         <div className="mb-12">
-          <h2 className="text-4xl font-unbounded font-bold text-gray-900 mt-1">{segment?.name}</h2>
+          <h2 className="text-4xl font-unbounded font-bold text-gray-900 mt-1">{segment.name}</h2>
           <button 
             onClick={onBack} 
-            className="mt-4 px-4 py-2 text-sm text-gray-600 hover:bg-gray-200 rounded-md transition">
+            className="mt-4 px-4 py-2 text-sm text-gray-600 hover:bg-gray-200 rounded-md transition font-inter-light">
             ← Back
           </button>
         </div>
 
-        {/* Segment Scores Section */}
-        {scores && (
-          <div className="mt-12">
-            <h3 className="text-2xl font-unbounded text-gray-900 flex items-center mb-4">
-              <Star className="mr-2 text-indigo-600 w-6 h-6" />
-              Segment Scores
-            </h3>
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-4 text-gray-700">
-              {Object.entries(scores).map(([key, value]) => (
-                <div key={key}>
-                  <strong>{key}:</strong> {value}
-                </div>
-              ))}
-            </div>
+        {/* SINGLE COLUMN LAYOUT WITH PROPER SPACING */}
+        <div className="space-y-12">
+          {/* Overview */}
+          <div>
+            <SectionHeader icon={Info} title="Overview" />
+            {formatContent(segment.abstract)}
           </div>
-        )}
 
-        <button 
-          onClick={onBack} 
-          className="mt-6 px-4 py-2 text-sm text-gray-600 hover:bg-gray-200 rounded-md transition">
-          ← Back
-        </button>
+          {/* Definition */}
+          {segment.definition && (
+            <div>
+              <SectionHeader icon={BookText} title="Definition" />
+              {formatContent(segment.definition)}
+            </div>
+          )}
+
+          {/* Market Trends */}
+          {segment.trends && (
+            <div>
+              <SectionHeader icon={TrendingUp} title="Market Trends" />
+              {formatContent(segment.trends)}
+            </div>
+          )}
+
+          {/* Key Regions */}
+          {segment.regions && (
+            <div>
+              <SectionHeader icon={Globe} title="Key Regions" />
+              {formatContent(segment.regions)}
+            </div>
+          )}
+
+          {/* Challenges */}
+          {segment.challenges && (
+            <div>
+              <SectionHeader icon={AlertTriangle} title="Challenges" />
+              {formatContent(segment.challenges)}
+            </div>
+          )}
+
+          {/* Use Cases */}
+          {segment.use_cases && (
+            <div>
+              <SectionHeader icon={Lightbulb} title="Use Cases" />
+              {formatContent(segment.use_cases)}
+            </div>
+          )}
+
+          {/* Positioning Statement */}
+          {segment.positioning_statement && (
+            <div>
+              <SectionHeader icon={Target} title="Positioning Statement" />
+              {formatContent(segment.positioning_statement)}
+            </div>
+          )}
+
+          {/* Personas */}
+          {segment.personas && (
+            <div>
+              <SectionHeader icon={Users} title="Target Personas" />
+              {formatContent(segment.personas)}
+            </div>
+          )}
+
+          {/* SCORE SECTION - Horizontal Bar Chart */}
+          {scoreData && (
+            <div>
+              <SectionHeader icon={Star} title="Segment Score" />
+              <div className="h-64 w-full">
+                <ResponsiveBar
+                  data={scoreData}
+                  keys={["score"]}
+                  indexBy="category"
+                  margin={{ top: 20, right: 30, bottom: 50, left: 120 }}
+                  padding={0.3}
+                  layout="horizontal"
+                  colors={["#6366F1"]}
+                  borderColor={{ from: 'color', modifiers: [['darker', 1.6]] }}
+                  axisBottom={{ legend: "Score (out of 10)", legendPosition: "middle", legendOffset: 40 }}
+                  axisLeft={{ tickSize: 0, tickPadding: 5 }}
+                  enableLabel={true}
+                  labelTextColor={{ from: 'color', modifiers: [['darker', 3]] }}
+                />
+              </div>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
 };
 
+export default SegmentProfile;
 export default SegmentProfile;
 

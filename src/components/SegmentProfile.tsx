@@ -196,13 +196,67 @@ const SegmentProfile = ({
         {formatContent(segment.usecases_web3)}
 
         {/* Section 3: Personas */}
-        <SectionHeader icon={Users} title="Personas" />
-        <SubsectionHeader icon={Users} title={segment.personas_1?.split('\n')[0] || "Persona Group 1"} />
-        {formatContent(segment.personas_1)}
-        <SubsectionHeader icon={Users} title={segment.personas_2?.split('\n')[0] || "Persona Group 2"} />
-        {formatContent(segment.personas_2)}
-        <SubsectionHeader icon={Users} title={segment.personas_3?.split('\n')[0] || "Persona Group 3"} />
-        {formatContent(segment.personas_3)}
+<SectionHeader icon={Users} title="Personas" />
+
+{/* Persona 1 */}
+{segment.personas_1 && (
+  <div className="mb-6">
+    <SubsectionHeader icon={Users} title={segment.personas_1.split('\n')[0] || "Persona Group 1"} />
+    <div className="text-gray-700 space-y-4 text-left font-inter-light">
+      {segment.personas_1.split('\n').slice(1).map((line, index) => {
+        if (line.includes(':')) {
+          const parts = line.split(':');
+          return (
+            <p key={index}>
+              <span className="font-inter-bold">{parts[0].trim()}:</span> {parts.slice(1).join(':').trim()}
+            </p>
+          );
+        }
+        return <p key={index} className="my-2">{line.trim()}</p>;
+      })}
+    </div>
+  </div>
+)}
+
+{/* Persona 2 */}
+{segment.personas_2 && (
+  <div className="mb-6">
+    <SubsectionHeader icon={Users} title={segment.personas_2.split('\n')[0] || "Persona Group 2"} />
+    <div className="text-gray-700 space-y-4 text-left font-inter-light">
+      {segment.personas_2.split('\n').slice(1).map((line, index) => {
+        if (line.includes(':')) {
+          const parts = line.split(':');
+          return (
+            <p key={index}>
+              <span className="font-inter-bold">{parts[0].trim()}:</span> {parts.slice(1).join(':').trim()}
+            </p>
+          );
+        }
+        return <p key={index} className="my-2">{line.trim()}</p>;
+      })}
+    </div>
+  </div>
+)}
+
+{/* Persona 3 */}
+{segment.personas_3 && (
+  <div className="mb-6">
+    <SubsectionHeader icon={Users} title={segment.personas_3.split('\n')[0] || "Persona Group 3"} />
+    <div className="text-gray-700 space-y-4 text-left font-inter-light">
+      {segment.personas_3.split('\n').slice(1).map((line, index) => {
+        if (line.includes(':')) {
+          const parts = line.split(':');
+          return (
+            <p key={index}>
+              <span className="font-inter-bold">{parts[0].trim()}:</span> {parts.slice(1).join(':').trim()}
+            </p>
+          );
+        }
+        return <p key={index} className="my-2">{line.trim()}</p>;
+      })}
+    </div>
+  </div>
+)}
 
         {/* Section 4: Messaging Strategy */}
         <SectionHeader icon={Target} title="Messaging Strategy" />

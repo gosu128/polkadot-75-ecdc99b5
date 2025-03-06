@@ -195,10 +195,7 @@ const SegmentProfile = ({
         <SubsectionHeader icon={Lightbulb} title="Web3 Use Cases" />
         {formatContent(segment.usecases_web3)}
 
-       {/* Section 3: Personas */}
-<SectionHeader icon={Users} title="Personas" />
-
-{/* Persona 1 */}
+      {/* Persona 1 */}
 {segment.personas_1 && (
   <div className="mb-6">
     <SubsectionHeader icon={Users} title={segment.personas_1.split('\n')[0] || "Persona Group 1"} />
@@ -206,11 +203,11 @@ const SegmentProfile = ({
       {segment.personas_1.split('\n').slice(1).map((line, index) => {
         if (line.includes('What They Need:')) {
           return (
-            <div key={index} className="p-4 bg-polkadot-pink/10 border border-polkadot-pink rounded-md shadow-sm">
-              <p className="font-inter-bold text-polkadot-pink mb-2">What They Need:</p>
+            <div key={index} className="p-4 bg-[#9B87F5]/10 border border-[#9B87F5] rounded-md shadow-sm">
+              <p className="font-inter-bold text-[#9B87F5] mb-2">What They Need:</p>
               <ol className="list-decimal pl-5 text-gray-700 space-y-1">
-                {segment.personas_1.split('\n').slice(index + 1).map((point, idx) => (
-                  <li key={idx}>{point.replace(/^\d+\.\s*/, '').trim()}</li> // Removes double numbering
+                {segment.personas_1.split('\n').slice(index + 2).map((point, idx) => (
+                  <li key={idx}>{point.replace(/^\d+\.\s*/, '').trim()}</li>
                 ))}
               </ol>
             </div>
@@ -232,10 +229,10 @@ const SegmentProfile = ({
       {segment.personas_2.split('\n').slice(1).map((line, index) => {
         if (line.includes('What They Need:')) {
           return (
-            <div key={index} className="p-4 bg-polkadot-pink/10 border border-polkadot-pink rounded-md shadow-sm">
-              <p className="font-inter-bold text-polkadot-pink mb-2">What They Need:</p>
+            <div key={index} className="p-4 bg-[#9B87F5]/10 border border-[#9B87F5] rounded-md shadow-sm">
+              <p className="font-inter-bold text-[#9B87F5] mb-2">What They Need:</p>
               <ol className="list-decimal pl-5 text-gray-700 space-y-1">
-                {segment.personas_2.split('\n').slice(index + 1).map((point, idx) => (
+                {segment.personas_2.split('\n').slice(index + 2).map((point, idx) => (
                   <li key={idx}>{point.replace(/^\d+\.\s*/, '').trim()}</li>
                 ))}
               </ol>
@@ -258,10 +255,10 @@ const SegmentProfile = ({
       {segment.personas_3.split('\n').slice(1).map((line, index) => {
         if (line.includes('What They Need:')) {
           return (
-            <div key={index} className="p-4 bg-polkadot-pink/10 border border-polkadot-pink rounded-md shadow-sm">
-              <p className="font-inter-bold text-polkadot-pink mb-2">What They Need:</p>
+            <div key={index} className="p-4 bg-[#9B87F5]/10 border border-[#9B87F5] rounded-md shadow-sm">
+              <p className="font-inter-bold text-[#9B87F5] mb-2">What They Need:</p>
               <ol className="list-decimal pl-5 text-gray-700 space-y-1">
-                {segment.personas_3.split('\n').slice(index + 1).map((point, idx) => (
+                {segment.personas_3.split('\n').slice(index + 2).map((point, idx) => (
                   <li key={idx}>{point.replace(/^\d+\.\s*/, '').trim()}</li>
                 ))}
               </ol>
@@ -275,7 +272,6 @@ const SegmentProfile = ({
     </div>
   </div>
 )}
-
 
         {/* Section 4: Messaging Strategy */}
         <SectionHeader icon={Target} title="Messaging Strategy" />

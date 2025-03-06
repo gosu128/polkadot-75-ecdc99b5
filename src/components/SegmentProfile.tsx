@@ -1,5 +1,4 @@
-
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { 
   Info, 
   BookText, 
@@ -13,80 +12,61 @@ import {
 } from 'lucide-react';
 import { ResponsiveBar } from '@nivo/bar';
 import Footer from '@/components/Footer';
-import { supabase } from '@/integrations/supabase/client';
-
-// Initialize Supabase Client
-const supabaseClient = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-);
 
 type Segment = {
-  id: string;
+  id: number;
   name: string;
-  industry_id: string;
+  industry_id: number;
   abstract: string | null;
   definition: string | null;
   trends: string | null;
   regions: string | null;
   challenges: string | null;
   use_cases: string | null;
+  score: string | null;
   positioning_statement: string | null;
   personas: string | null;
 };
 
-type Industry = {
-  id: number;
-  name: string;
-};
-
-type Score = {
-  segment_id: string;
-  polkadot_market_fit: number;
-  roi: number;
-  scalability: number;
-  customization: number;
-  awareness: number;
-  tech: number;
-  tam: number;
-  compliance: number;
-  interoperability: number;
-  reliability: number;
-  complexity: number;
-};
-
 type SegmentProfileProps = {
   segment: Segment | null;
-  industry?: Industry | null;
   onBack: () => void;
 };
 
-const SegmentProfile = ({ segment, industry, onBack }: SegmentProfileProps) => {
-  const [scoreData, setScoreData] = useState<Score | null>(null);
-  const [loading, setLoading] = useState(true);
+// Function to format content, ensuring ":" are preserved, bolding key phrases
+const formatContent = (content: string | null) => {
+  if (!content) return <p className="font-inter-light text-gray-700 italic">No information available</p>;
 
-  useEffect(() => {
-    if (!segment) return;
+  return (
+    <div className="font-inter-light text-gray-700 space-y-4 text-left">
+      {content.split('\n').map((line, index) => {
+        if (line.includes(':')) {
+          const parts = line.split(':');
+          const boldText = parts[0]?.trim();
+          const remainingText = parts.slice(1).join(':').trim();
 
-    // Fetch scores from Supabase
-    const fetchScores = async () => {
-      const { data, error } = await supabase
-        .from('segments_scores')
-        .select('*')
-        .eq('segment_id', segment.id)
-        .single();
+          return (
+            <p key={index}>
+              <span className="font-inter-bold">{boldText}:</span> {remainingText}
+            </p>
+          );
+        }
 
-      if (error) {
-        console.error('Error fetching scores:', error);
-      } else {
-        setScoreData(data);
-      }
-      setLoading(false);
-    };
+        return <p key={index}>{line.trim()}</p>;
+      })}
+    </div>
+  );
+};
 
-    fetchScores();
-  }, [segment]);
+// Section header component - Keep Unbounded for section titles
+const SectionHeader = ({ icon: Icon, title }: { icon: React.ElementType; title: string }) => (
+  <h3 className="text-2xl font-unbounded text-gray-900 flex items-center mb-4">
+    <Icon className="mr-2 text-indigo-600 w-6 h-6" />
+    {title}
+  </h3>
+);
 
+const SegmentProfile = ({ segment, onBack }: SegmentProfileProps) => {
   if (!segment) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen text-center">
@@ -100,6 +80,23 @@ const SegmentProfile = ({ segment, industry, onBack }: SegmentProfileProps) => {
     );
   }
 
+  // Parse score data safely
+  const scoreData = React.useMemo(() => {
+    if (!segment?.score) return null;
+    try {
+      const parsedData = JSON.parse(segment.score);
+      if (!Array.isArray(parsedData)) return null; 
+
+      return parsedData.map((item: any) => ({
+        category: item.key || "Unknown",
+        score: typeof item.value === "number" ? item.value : 0,
+      }));
+    } catch (e) {
+      console.error("Error parsing score data:", e);
+      return null;
+    }
+  }, [segment?.score]);
+
   return (
     <div className="flex flex-col min-h-screen">
       {/* Main content container with extra padding at the top */}
@@ -107,12 +104,9 @@ const SegmentProfile = ({ segment, industry, onBack }: SegmentProfileProps) => {
         {/* Header Section */}
         <div className="mb-12">
           <h2 className="text-4xl font-unbounded font-bold text-gray-900 mt-1">{segment.name}</h2>
-          {industry && (
-            <p className="text-gray-600 mt-2">Industry: {industry.name}</p>
-          )}
           <button 
             onClick={onBack} 
-            className="mt-4 px-4 py-2 text-sm text-gray-600 hover:bg-gray-200 rounded-md transition">
+            className="mt-4 px-4 py-2 text-sm text-gray-600 hover:bg-gray-200 rounded-md transition font-inter-light">
             ← Back
           </button>
         </div>
@@ -120,66 +114,74 @@ const SegmentProfile = ({ segment, industry, onBack }: SegmentProfileProps) => {
         {/* SINGLE COLUMN LAYOUT WITH PROPER SPACING */}
         <div className="space-y-12">
           {/* Overview */}
-          {segment.abstract && (
-            <div>
-              <h3 className="text-2xl font-unbounded text-gray-900 mb-4 flex items-center">
-                <Info className="mr-2 text-indigo-600 w-6 h-6" /> Overview
-              </h3>
-              <p className="text-gray-700">{segment.abstract}</p>
-            </div>
-          )}
+          <div>
+            <SectionHeader icon={Info} title="Overview" />
+            {formatContent(segment.abstract)}
+          </div>
 
           {/* Definition */}
           {segment.definition && (
             <div>
-              <h3 className="text-2xl font-unbounded text-gray-900 mb-4 flex items-center">
-                <BookText className="mr-2 text-indigo-600 w-6 h-6" /> Definition
-              </h3>
-              <p className="text-gray-700">{segment.definition}</p>
+              <SectionHeader icon={BookText} title="Definition" />
+              {formatContent(segment.definition)}
             </div>
           )}
 
           {/* Market Trends */}
           {segment.trends && (
             <div>
-              <h3 className="text-2xl font-unbounded text-gray-900 mb-4 flex items-center">
-                <TrendingUp className="mr-2 text-indigo-600 w-6 h-6" /> Market Trends
-              </h3>
-              <p className="text-gray-700">{segment.trends}</p>
+              <SectionHeader icon={TrendingUp} title="Market Trends" />
+              {formatContent(segment.trends)}
             </div>
           )}
 
-          {/* Geographical Hotspots */}
+          {/* Key Regions */}
           {segment.regions && (
             <div>
-              <h3 className="text-2xl font-unbounded text-gray-900 mb-4 flex items-center">
-                <Globe className="mr-2 text-indigo-600 w-6 h-6" /> Geographical Hotspots
-              </h3>
-              <p className="text-gray-700">{segment.regions}</p>
+              <SectionHeader icon={Globe} title="Key Regions" />
+              {formatContent(segment.regions)}
             </div>
           )}
 
-          {/* POLKADOT-MARKET-FIT SCORE SECTION */}
-          {!loading && scoreData && (
+          {/* Challenges */}
+          {segment.challenges && (
             <div>
-              <h3 className="text-2xl font-unbounded text-gray-900 mb-4 flex items-center">
-                <Star className="mr-2 text-indigo-600 w-6 h-6" /> Polkadot-Market-Fit Score
-              </h3>
+              <SectionHeader icon={AlertTriangle} title="Challenges" />
+              {formatContent(segment.challenges)}
+            </div>
+          )}
+
+          {/* Use Cases */}
+          {segment.use_cases && (
+            <div>
+              <SectionHeader icon={Lightbulb} title="Use Cases" />
+              {formatContent(segment.use_cases)}
+            </div>
+          )}
+
+          {/* Positioning Statement */}
+          {segment.positioning_statement && (
+            <div>
+              <SectionHeader icon={Target} title="Positioning Statement" />
+              {formatContent(segment.positioning_statement)}
+            </div>
+          )}
+
+          {/* Personas */}
+          {segment.personas && (
+            <div>
+              <SectionHeader icon={Users} title="Target Personas" />
+              {formatContent(segment.personas)}
+            </div>
+          )}
+
+          {/* SCORE SECTION - Horizontal Bar Chart */}
+          {scoreData && (
+            <div>
+              <SectionHeader icon={Star} title="Segment Score" />
               <div className="h-64 w-full">
                 <ResponsiveBar
-                  data={[
-                    { category: 'PMF Score', score: scoreData.polkadot_market_fit },
-                    { category: 'ROI Score', score: scoreData.roi },
-                    { category: 'Scalability', score: scoreData.scalability },
-                    { category: 'Customization', score: scoreData.customization },
-                    { category: 'Awareness', score: scoreData.awareness },
-                    { category: 'Tech Score', score: scoreData.tech },
-                    { category: 'TAM Score', score: scoreData.tam },
-                    { category: 'Compliance', score: scoreData.compliance },
-                    { category: 'Interoperability', score: scoreData.interoperability },
-                    { category: 'Reliability', score: scoreData.reliability },
-                    { category: 'Complexity', score: scoreData.complexity },
-                  ]}
+                  data={scoreData}
                   keys={["score"]}
                   indexBy="category"
                   margin={{ top: 20, right: 30, bottom: 50, left: 120 }}

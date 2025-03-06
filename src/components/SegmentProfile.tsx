@@ -11,15 +11,9 @@ import {
   Layers, 
   MapPin, 
   BarChart3, 
-  Settings, 
   CheckCircle, 
-  ShieldCheck, 
-  RefreshCw, 
-  Link2, 
-  Grid, 
-  AlertTriangle, 
-  MessageCircle, 
-  User 
+  User, 
+  AlignLeft
 } from 'lucide-react';
 import { ResponsiveBar } from '@nivo/bar';
 import Footer from '@/components/Footer';
@@ -33,7 +27,6 @@ type Segment = {
   trends: string | null;
   regions: string | null;
   use_cases: string | null;
-  score: string | null;
   pmf: number | null;
   roi: number | null;
   scalability: number | null;
@@ -58,7 +51,7 @@ type SegmentProfileProps = {
   onBack: () => void;
 };
 
-// **Function to format content while keeping ":" and bolding key phrases**
+// Function to format content properly
 const formatContent = (content: string | null) => {
   if (!content) return <p className="text-gray-700 italic">No information available</p>;
 
@@ -83,7 +76,7 @@ const formatContent = (content: string | null) => {
   );
 };
 
-// **Section Header Component** (For Major Sections)
+// Section Headers
 const SectionHeader = ({ icon: Icon, title }: { icon: React.ElementType; title: string }) => (
   <h2 className="text-3xl font-unbounded text-gray-900 flex items-center mt-12 mb-6 border-b-4 border-indigo-600 pb-2">
     <Icon className="mr-3 text-indigo-600 w-7 h-7" />
@@ -91,7 +84,7 @@ const SectionHeader = ({ icon: Icon, title }: { icon: React.ElementType; title: 
   </h2>
 );
 
-// **Sub-section Header Component** (Now Left-aligned + Icons)
+// Sub-section Headers
 const SubSectionHeader = ({ icon: Icon, title }: { icon: React.ElementType; title: string }) => (
   <h3 className="text-xl font-semibold text-gray-800 mt-6 mb-3 flex items-center">
     <Icon className="mr-2 text-indigo-600 w-5 h-5" />
@@ -99,7 +92,6 @@ const SubSectionHeader = ({ icon: Icon, title }: { icon: React.ElementType; titl
   </h3>
 );
 
-// **Function to format and display scores with 1 decimal place**
 const ScoreItem = ({ label, value }: { label: string; value: number | null }) => (
   <div className="flex justify-between px-6 py-3 border-b">
     <span className="font-semibold text-gray-900">{label}</span>
@@ -143,31 +135,42 @@ const SegmentProfile = ({ segment, onBack }: SegmentProfileProps) => {
           {segment.regions && <div><SubSectionHeader icon={MapPin} title="Geographical Hotspots" />{formatContent(segment.regions)}</div>}
         </div>
 
-        {/* Section 2: Messaging Strategy */}
-        <SectionHeader icon={MessageCircle} title="Messaging Strategy" />
+        {/* Section 2: Messaging Strategy (Left-Aligned) */}
+        <SectionHeader icon={AlignLeft} title="Messaging Strategy" />
         {segment.positioning_headline && <SubSectionHeader icon={Target} title="Headline" />}
-        <p className="text-xl font-semibold text-indigo-700">{segment.positioning_headline}</p>
+        <p className="text-xl font-semibold text-indigo-700 text-left">{segment.positioning_headline}</p>
 
         {segment.positioning_subheadline && <SubSectionHeader icon={CheckCircle} title="Subline" />}
-        <p className="text-lg text-gray-700">{segment.positioning_subheadline}</p>
+        <p className="text-lg text-gray-700 text-left">{segment.positioning_subheadline}</p>
 
         {segment.positioning_statement && <SubSectionHeader icon={ClipboardList} title="Positioning Statement" />}
-        {formatContent(segment.positioning_statement)}
+        <div className="text-left">{formatContent(segment.positioning_statement)}</div>
 
-        {/* Section 3: Persona Profiles */}
+        {/* Section 3: Persona Profiles (Better Formatting) */}
         <SectionHeader icon={User} title="Persona Profiles" />
-        <div className="grid grid-cols-3 gap-6">
-          {segment.personas_1 && <p className="p-4 border rounded-lg text-center bg-gray-50">{segment.personas_1}</p>}
-          {segment.personas_2 && <p className="p-4 border rounded-lg text-center bg-gray-50">{segment.personas_2}</p>}
-          {segment.personas_3 && <p className="p-4 border rounded-lg text-center bg-gray-50">{segment.personas_3}</p>}
+        <div className="space-y-6">
+          {segment.personas_1 && <div><p className="text-lg font-bold text-indigo-700">{segment.personas_1}</p></div>}
+          {segment.personas_2 && <div><p className="text-lg font-bold text-indigo-700">{segment.personas_2}</p></div>}
+          {segment.personas_3 && <div><p className="text-lg font-bold text-indigo-700">{segment.personas_3}</p></div>}
         </div>
 
-        {/* Section 4: Polkadot-Market-Fit Score */}
+        {/* Section 4: Polkadot-Market-Fit Score + Score Table */}
         <SectionHeader icon={Star} title="Polkadot-Market-Fit Score (PMF Score)" />
-        <div className="bg-gray-100 rounded-lg p-6 shadow-md">
-          <div className="text-3xl font-bold text-center text-indigo-700 mb-6">
-            {segment.pmf !== null ? segment.pmf.toFixed(1) : 'N/A'}
-          </div>
+        <div className="bg-gray-100 rounded-lg p-6 shadow-md text-center text-3xl font-bold text-indigo-700 mb-6">
+          {segment.pmf !== null ? segment.pmf.toFixed(1) : 'N/A'}
+        </div>
+
+        <div className="grid grid-cols-2 gap-4">
+          {ScoreItem({ label: "ROI", value: segment.roi })}
+          {ScoreItem({ label: "Scalability", value: segment.scalability })}
+          {ScoreItem({ label: "Customization", value: segment.customization })}
+          {ScoreItem({ label: "Awareness", value: segment.awareness })}
+          {ScoreItem({ label: "Tech", value: segment.tech })}
+          {ScoreItem({ label: "TAM", value: segment.tam })}
+          {ScoreItem({ label: "Compliance", value: segment.compliance })}
+          {ScoreItem({ label: "Interoperability", value: segment.interoperability })}
+          {ScoreItem({ label: "Reliability", value: segment.reliability })}
+          {ScoreItem({ label: "Complexity", value: segment.complexity })}
         </div>
       </div>
     </div>
@@ -175,4 +178,5 @@ const SegmentProfile = ({ segment, onBack }: SegmentProfileProps) => {
 };
 
 export default SegmentProfile;
+
 

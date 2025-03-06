@@ -74,7 +74,7 @@ const SectionHeader = ({
   icon: React.ElementType;
   title: string;
 }) => <div className="mt-6 mb-2">
-    <h2 className="text-2xl text-polkadot-pink font-unbounded flex items-center">
+    <h2 className="text-polkadot-pink font-unbounded flex items-center text-xl">
       <Icon className="mr-2 text-polkadot-pink w-6 h-6" />
       {title}
     </h2>
@@ -88,7 +88,7 @@ const SubsectionHeader = ({
 }: {
   icon: React.ElementType;
   title: string;
-}) => <h3 className="text-lg text-black font-semibold flex items-center mb-1 mt-3">
+}) => <h3 className="text-black font-semibold flex items-center mb-1 mt-3 text-lg">
     <Icon className="mr-2 text-gray-700 w-5 h-5" />
     {title}
   </h3>;

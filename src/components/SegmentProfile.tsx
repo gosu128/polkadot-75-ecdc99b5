@@ -1,206 +1,67 @@
-import React from 'react';
-import { 
-  Info, 
-  BookText, 
-  TrendingUp, 
-  Globe, 
-  AlertTriangle, 
-  Lightbulb, 
-  Star, 
-  Target, 
-  Users 
-} from 'lucide-react';
-import { ResponsiveBar } from '@nivo/bar';
-import Footer from '@/components/Footer';
+import { useEffect, useState } from 'react';
+import { createClient } from '@supabase/supabase-js';
 
-type Segment = {
-  id: number;
-  name: string;
-  industry_id: number;
-  abstract: string | null;
-  definition: string | null;
-  trends: string | null;
-  regions: string | null;
-  challenges: string | null;
-  use_cases: string | null;
-  score: string | null;
-  positioning_statement: string | null;
-  personas: string | null;
-};
+const supabase = createClient('YOUR_SUPABASE_URL', 'YOUR_SUPABASE_ANON_KEY');
 
-type SegmentProfileProps = {
-  segment: Segment | null;
-  onBack: () => void;
-};
+const SegmentProfile = ({ segment, onBack }) => {
+  const [scores, setScores] = useState(null);
 
-// Function to format content, ensuring ":" are preserved, bolding key phrases
-const formatContent = (content: string | null) => {
-  if (!content) return <p className="font-inter-light text-gray-700 italic">No information available</p>;
-
-  return (
-    <div className="font-inter-light text-gray-700 space-y-4 text-left">
-      {content.split('\n').map((line, index) => {
-        if (line.includes(':')) {
-          const parts = line.split(':');
-          const boldText = parts[0]?.trim();
-          const remainingText = parts.slice(1).join(':').trim();
-
-          return (
-            <p key={index}>
-              <span className="font-inter-bold">{boldText}:</span> {remainingText}
-            </p>
-          );
-        }
-
-        return <p key={index}>{line.trim()}</p>;
-      })}
-    </div>
-  );
-};
-
-// Section header component - Keep Unbounded for section titles
-const SectionHeader = ({ icon: Icon, title }: { icon: React.ElementType; title: string }) => (
-  <h3 className="text-2xl font-unbounded text-gray-900 flex items-center mb-4">
-    <Icon className="mr-2 text-indigo-600 w-6 h-6" />
-    {title}
-  </h3>
-);
-
-const SegmentProfile = ({ segment, onBack }: SegmentProfileProps) => {
-  if (!segment) {
-    return (
-      <div className="flex flex-col items-center justify-center min-h-screen text-center">
-        <h2 className="text-2xl font-bold text-red-600">Error: Segment data not found</h2>
-        <button 
-          onClick={onBack} 
-          className="mt-4 px-4 py-2 bg-gray-800 text-white rounded-md">
-          ← Back to Selection
-        </button>
-      </div>
-    );
-  }
-
-  // Parse score data safely
-  const scoreData = React.useMemo(() => {
-    if (!segment?.score) return null;
-    try {
-      const parsedData = JSON.parse(segment.score);
-      if (!Array.isArray(parsedData)) return null; 
-
-      return parsedData.map((item: any) => ({
-        category: item.key || "Unknown",
-        score: typeof item.value === "number" ? item.value : 0,
-      }));
-    } catch (e) {
-      console.error("Error parsing score data:", e);
-      return null;
+  useEffect(() => {
+    if (segment) {
+      fetchSegmentScores(segment.id);
     }
-  }, [segment?.score]);
+  }, [segment]);
+
+  const fetchSegmentScores = async (segmentId) => {
+    const { data, error } = await supabase
+      .from('segments_score')
+      .select('*')
+      .eq('segment_id', segmentId)
+      .single();
+
+    if (error) {
+      console.error('Error fetching segment scores:', error);
+    } else {
+      setScores(data);
+    }
+  };
 
   return (
     <div className="flex flex-col min-h-screen">
-      {/* Main content container with extra padding at the top */}
       <div className="w-full max-w-6xl mx-auto px-8 py-24 flex-grow"> 
-        {/* Header Section */}
-        <div className="mb-12">
-          <h2 className="text-4xl font-unbounded font-bold text-gray-900 mt-1">{segment.name}</h2>
-          <button 
-            onClick={onBack} 
-            className="mt-4 px-4 py-2 text-sm text-gray-600 hover:bg-gray-200 rounded-md transition font-inter-light">
-            ← Back
-          </button>
-        </div>
+        <h2 className="text-4xl font-unbounded font-bold text-gray-900 mt-1">{segment.name}</h2>
 
-        {/* SINGLE COLUMN LAYOUT WITH PROPER SPACING */}
-        <div className="space-y-12">
-          {/* Overview */}
-          <div>
-            <SectionHeader icon={Info} title="Overview" />
-            {formatContent(segment.abstract)}
+        {/* NEW SCORE SECTION */}
+        {scores && (
+          <div className="mt-12">
+            <h3 className="text-2xl font-unbounded text-gray-900 flex items-center mb-4">
+              Segment Scores
+            </h3>
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-4 text-gray-700">
+              <div><strong>Polkadot-Market-Fit:</strong> {scores["Polkadot-Market-Fit Score"]}</div>
+              <div><strong>ROI:</strong> {scores["ROI Score"]}</div>
+              <div><strong>Scalability:</strong> {scores["Scalability Score"]}</div>
+              <div><strong>Customization:</strong> {scores["Customization Score"]}</div>
+              <div><strong>Awareness:</strong> {scores["Awareness Score"]}</div>
+              <div><strong>Tech:</strong> {scores["Tech Score"]}</div>
+              <div><strong>TAM:</strong> {scores["TAM Score"]}</div>
+              <div><strong>Compliance:</strong> {scores["Compliance Score"]}</div>
+              <div><strong>Interoperability:</strong> {scores["Interoperability Score"]}</div>
+              <div><strong>Reliability:</strong> {scores["Reliability Score"]}</div>
+              <div><strong>Complexity:</strong> {scores["Complexity Score"]}</div>
+            </div>
           </div>
+        )}
 
-          {/* Definition */}
-          {segment.definition && (
-            <div>
-              <SectionHeader icon={BookText} title="Definition" />
-              {formatContent(segment.definition)}
-            </div>
-          )}
-
-          {/* Market Trends */}
-          {segment.trends && (
-            <div>
-              <SectionHeader icon={TrendingUp} title="Market Trends" />
-              {formatContent(segment.trends)}
-            </div>
-          )}
-
-          {/* Key Regions */}
-          {segment.regions && (
-            <div>
-              <SectionHeader icon={Globe} title="Key Regions" />
-              {formatContent(segment.regions)}
-            </div>
-          )}
-
-          {/* Challenges */}
-          {segment.challenges && (
-            <div>
-              <SectionHeader icon={AlertTriangle} title="Challenges" />
-              {formatContent(segment.challenges)}
-            </div>
-          )}
-
-          {/* Use Cases */}
-          {segment.use_cases && (
-            <div>
-              <SectionHeader icon={Lightbulb} title="Use Cases" />
-              {formatContent(segment.use_cases)}
-            </div>
-          )}
-
-          {/* Positioning Statement */}
-          {segment.positioning_statement && (
-            <div>
-              <SectionHeader icon={Target} title="Positioning Statement" />
-              {formatContent(segment.positioning_statement)}
-            </div>
-          )}
-
-          {/* Personas */}
-          {segment.personas && (
-            <div>
-              <SectionHeader icon={Users} title="Target Personas" />
-              {formatContent(segment.personas)}
-            </div>
-          )}
-
-          {/* SCORE SECTION - Horizontal Bar Chart */}
-          {scoreData && (
-            <div>
-              <SectionHeader icon={Star} title="Segment Score" />
-              <div className="h-64 w-full">
-                <ResponsiveBar
-                  data={scoreData}
-                  keys={["score"]}
-                  indexBy="category"
-                  margin={{ top: 20, right: 30, bottom: 50, left: 120 }}
-                  padding={0.3}
-                  layout="horizontal"
-                  colors={["#6366F1"]}
-                  borderColor={{ from: 'color', modifiers: [['darker', 1.6]] }}
-                  axisBottom={{ legend: "Score (out of 10)", legendPosition: "middle", legendOffset: 40 }}
-                  axisLeft={{ tickSize: 0, tickPadding: 5 }}
-                  enableLabel={true}
-                  labelTextColor={{ from: 'color', modifiers: [['darker', 3]] }}
-                />
-              </div>
-            </div>
-          )}
-        </div>
+        <button 
+          onClick={onBack} 
+          className="mt-6 px-4 py-2 text-sm text-gray-600 hover:bg-gray-200 rounded-md transition">
+          ← Back
+        </button>
       </div>
     </div>
   );
 };
 
 export default SegmentProfile;
+

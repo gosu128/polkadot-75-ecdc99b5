@@ -17,7 +17,9 @@ import {
   RefreshCw, 
   Link2, 
   Grid, 
-  AlertTriangle 
+  AlertTriangle, 
+  MessageCircle, 
+  User 
 } from 'lucide-react';
 import { ResponsiveBar } from '@nivo/bar';
 import Footer from '@/components/Footer';
@@ -43,6 +45,12 @@ type Segment = {
   interoperability: number | null;
   reliability: number | null;
   complexity: number | null;
+  positioning_statement: string | null;
+  positioning_headline: string | null;
+  positioning_subheadline: string | null;
+  personas_1: string | null;
+  personas_2: string | null;
+  personas_3: string | null;
 };
 
 type SegmentProfileProps = {
@@ -127,45 +135,38 @@ const SegmentProfile = ({ segment, onBack }: SegmentProfileProps) => {
         </div>
 
         {/* Section 1: Segment Overview */}
-        <div>
-          <SectionHeader icon={Info} title="Segment Overview" />
-          <div className="space-y-6">
-            {segment.abstract && <div><SubSectionHeader icon={ClipboardList} title="Abstract" />{formatContent(segment.abstract)}</div>}
-            {segment.definition && <div><SubSectionHeader icon={Layers} title="Definition" />{formatContent(segment.definition)}</div>}
-            {segment.trends && <div><SubSectionHeader icon={BarChart3} title="Market Trends" />{formatContent(segment.trends)}</div>}
-            {segment.regions && <div><SubSectionHeader icon={MapPin} title="Geographical Hotspots" />{formatContent(segment.regions)}</div>}
-          </div>
+        <SectionHeader icon={Info} title="Segment Overview" />
+        <div className="space-y-6">
+          {segment.abstract && <div><SubSectionHeader icon={ClipboardList} title="Abstract" />{formatContent(segment.abstract)}</div>}
+          {segment.definition && <div><SubSectionHeader icon={Layers} title="Definition" />{formatContent(segment.definition)}</div>}
+          {segment.trends && <div><SubSectionHeader icon={BarChart3} title="Market Trends" />{formatContent(segment.trends)}</div>}
+          {segment.regions && <div><SubSectionHeader icon={MapPin} title="Geographical Hotspots" />{formatContent(segment.regions)}</div>}
         </div>
 
-        {/* Section 2: Use Cases */}
-        {segment.use_cases && (
-          <div>
-            <SectionHeader icon={Lightbulb} title="Use Cases" />
-            {formatContent(segment.use_cases)}
-          </div>
-        )}
+        {/* Section 2: Messaging Strategy */}
+        <SectionHeader icon={MessageCircle} title="Messaging Strategy" />
+        {segment.positioning_headline && <SubSectionHeader icon={Target} title="Headline" />}
+        <p className="text-xl font-semibold text-indigo-700">{segment.positioning_headline}</p>
 
-        {/* Section 3: Polkadot-Market-Fit Score */}
-        <div>
-          <SectionHeader icon={Star} title="Polkadot-Market-Fit Score (PMF Score)" />
-          <div className="bg-gray-100 rounded-lg p-6 shadow-md">
-            <div className="text-3xl font-bold text-center text-indigo-700 mb-6">
-              {segment.pmf !== null ? segment.pmf.toFixed(1) : 'N/A'}
-            </div>
+        {segment.positioning_subheadline && <SubSectionHeader icon={CheckCircle} title="Subline" />}
+        <p className="text-lg text-gray-700">{segment.positioning_subheadline}</p>
 
-            {/* Individual Score Breakdown */}
-            <div className="grid grid-cols-2 gap-4 bg-white rounded-lg shadow p-4">
-              <ScoreItem label="ROI Score" value={segment.roi} />
-              <ScoreItem label="Scalability Score" value={segment.scalability} />
-              <ScoreItem label="Customization Score" value={segment.customization} />
-              <ScoreItem label="Awareness Score" value={segment.awareness} />
-              <ScoreItem label="Tech Score" value={segment.tech} />
-              <ScoreItem label="TAM Score" value={segment.tam} />
-              <ScoreItem label="Compliance Score" value={segment.compliance} />
-              <ScoreItem label="Interoperability Score" value={segment.interoperability} />
-              <ScoreItem label="Reliability Score" value={segment.reliability} />
-              <ScoreItem label="Complexity Score" value={segment.complexity} />
-            </div>
+        {segment.positioning_statement && <SubSectionHeader icon={ClipboardList} title="Positioning Statement" />}
+        {formatContent(segment.positioning_statement)}
+
+        {/* Section 3: Persona Profiles */}
+        <SectionHeader icon={User} title="Persona Profiles" />
+        <div className="grid grid-cols-3 gap-6">
+          {segment.personas_1 && <p className="p-4 border rounded-lg text-center bg-gray-50">{segment.personas_1}</p>}
+          {segment.personas_2 && <p className="p-4 border rounded-lg text-center bg-gray-50">{segment.personas_2}</p>}
+          {segment.personas_3 && <p className="p-4 border rounded-lg text-center bg-gray-50">{segment.personas_3}</p>}
+        </div>
+
+        {/* Section 4: Polkadot-Market-Fit Score */}
+        <SectionHeader icon={Star} title="Polkadot-Market-Fit Score (PMF Score)" />
+        <div className="bg-gray-100 rounded-lg p-6 shadow-md">
+          <div className="text-3xl font-bold text-center text-indigo-700 mb-6">
+            {segment.pmf !== null ? segment.pmf.toFixed(1) : 'N/A'}
           </div>
         </div>
       </div>
@@ -174,3 +175,4 @@ const SegmentProfile = ({ segment, onBack }: SegmentProfileProps) => {
 };
 
 export default SegmentProfile;
+

@@ -77,6 +77,65 @@ export type Database = {
           },
         ]
       }
+      segments_scores: {
+        Row: {
+          awareness: number | null
+          complexity: number | null
+          compliance: number | null
+          custom: number | null
+          id: number
+          industry_id: number | null
+          interoperability: number | null
+          name: string | null
+          pmf: number | null
+          reliability: number | null
+          roi: number | null
+          scalability: number | null
+          tam: number | null
+          tech: number | null
+        }
+        Insert: {
+          awareness?: number | null
+          complexity?: number | null
+          compliance?: number | null
+          custom?: number | null
+          id: number
+          industry_id?: number | null
+          interoperability?: number | null
+          name?: string | null
+          pmf?: number | null
+          reliability?: number | null
+          roi?: number | null
+          scalability?: number | null
+          tam?: number | null
+          tech?: number | null
+        }
+        Update: {
+          awareness?: number | null
+          complexity?: number | null
+          compliance?: number | null
+          custom?: number | null
+          id?: number
+          industry_id?: number | null
+          interoperability?: number | null
+          name?: string | null
+          pmf?: number | null
+          reliability?: number | null
+          roi?: number | null
+          scalability?: number | null
+          tam?: number | null
+          tech?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "segments_scores_industry_id_fkey"
+            columns: ["industry_id"]
+            isOneToOne: false
+            referencedRelation: "industries"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never

@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import { 
   Info, 
@@ -12,10 +13,10 @@ import {
 } from 'lucide-react';
 import { ResponsiveBar } from '@nivo/bar';
 import Footer from '@/components/Footer';
-import { createClient } from '@supabase/supabase-js';
+import { supabase } from '@/integrations/supabase/client';
 
 // Initialize Supabase Client
-const supabase = createClient(
+const supabaseClient = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 );
@@ -32,6 +33,11 @@ type Segment = {
   use_cases: string | null;
   positioning_statement: string | null;
   personas: string | null;
+};
+
+type Industry = {
+  id: number;
+  name: string;
 };
 
 type Score = {
@@ -51,10 +57,11 @@ type Score = {
 
 type SegmentProfileProps = {
   segment: Segment | null;
+  industry?: Industry | null;
   onBack: () => void;
 };
 
-const SegmentProfile = ({ segment, onBack }: SegmentProfileProps) => {
+const SegmentProfile = ({ segment, industry, onBack }: SegmentProfileProps) => {
   const [scoreData, setScoreData] = useState<Score | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -100,6 +107,9 @@ const SegmentProfile = ({ segment, onBack }: SegmentProfileProps) => {
         {/* Header Section */}
         <div className="mb-12">
           <h2 className="text-4xl font-unbounded font-bold text-gray-900 mt-1">{segment.name}</h2>
+          {industry && (
+            <p className="text-gray-600 mt-2">Industry: {industry.name}</p>
+          )}
           <button 
             onClick={onBack} 
             className="mt-4 px-4 py-2 text-sm text-gray-600 hover:bg-gray-200 rounded-md transition">

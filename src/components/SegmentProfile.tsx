@@ -195,7 +195,7 @@ const SegmentProfile = ({
         <SubsectionHeader icon={Lightbulb} title="Web3 Use Cases" />
         {formatContent(segment.usecases_web3)}
 
-        {/* Section 3: Personas */}
+       {/* Section 3: Personas */}
 <SectionHeader icon={Users} title="Personas" />
 
 {/* Persona 1 */}
@@ -204,27 +204,16 @@ const SegmentProfile = ({
     <SubsectionHeader icon={Users} title={segment.personas_1.split('\n')[0] || "Persona Group 1"} />
     <div className="text-gray-700 space-y-4 text-left font-inter-light">
       {segment.personas_1.split('\n').slice(1).map((line, index) => {
-        if (line.includes(':')) {
-          const parts = line.split(':');
-
-          // Highlight the "What They Need" section
-          if (parts[0].trim() === "What They Need") {
-            return (
-              <div key={index} className="p-4 bg-polkadot-pink/10 border-l-4 border-polkadot-pink rounded-md shadow-sm">
-                <p className="font-inter-bold text-polkadot-pink">{parts[0].trim()}:</p>
-                <ul className="list-decimal pl-5 text-gray-700 mt-2 space-y-1">
-                  {parts.slice(1).join(':').trim().split('\n').map((point, idx) => (
-                    <li key={idx}>{point.trim()}</li>
-                  ))}
-                </ul>
-              </div>
-            );
-          }
-
+        if (line.includes('What They Need:')) {
           return (
-            <p key={index}>
-              <span className="font-inter-bold">{parts[0].trim()}:</span> {parts.slice(1).join(':').trim()}
-            </p>
+            <div key={index} className="p-4 bg-polkadot-pink/10 border border-polkadot-pink rounded-md shadow-sm">
+              <p className="font-inter-bold text-polkadot-pink mb-2">{line.trim()}</p>
+              <ul className="list-decimal pl-5 text-gray-700 space-y-1">
+                {segment.personas_1.split('\n').slice(index + 1).map((point, idx) => (
+                  <li key={idx}>{point.trim()}</li>
+                ))}
+              </ul>
+            </div>
           );
         }
         return <p key={index} className="my-2">{line.trim()}</p>;
@@ -239,27 +228,16 @@ const SegmentProfile = ({
     <SubsectionHeader icon={Users} title={segment.personas_2.split('\n')[0] || "Persona Group 2"} />
     <div className="text-gray-700 space-y-4 text-left font-inter-light">
       {segment.personas_2.split('\n').slice(1).map((line, index) => {
-        if (line.includes(':')) {
-          const parts = line.split(':');
-
-          // Highlight the "What They Need" section
-          if (parts[0].trim() === "What They Need") {
-            return (
-              <div key={index} className="p-4 bg-polkadot-pink/10 border-l-4 border-polkadot-pink rounded-md shadow-sm">
-                <p className="font-inter-bold text-polkadot-pink">{parts[0].trim()}:</p>
-                <ul className="list-decimal pl-5 text-gray-700 mt-2 space-y-1">
-                  {parts.slice(1).join(':').trim().split('\n').map((point, idx) => (
-                    <li key={idx}>{point.trim()}</li>
-                  ))}
-                </ul>
-              </div>
-            );
-          }
-
+        if (line.includes('What They Need:')) {
           return (
-            <p key={index}>
-              <span className="font-inter-bold">{parts[0].trim()}:</span> {parts.slice(1).join(':').trim()}
-            </p>
+            <div key={index} className="p-4 bg-polkadot-pink/10 border border-polkadot-pink rounded-md shadow-sm">
+              <p className="font-inter-bold text-polkadot-pink mb-2">{line.trim()}</p>
+              <ul className="list-decimal pl-5 text-gray-700 space-y-1">
+                {segment.personas_2.split('\n').slice(index + 1).map((point, idx) => (
+                  <li key={idx}>{point.trim()}</li>
+                ))}
+              </ul>
+            </div>
           );
         }
         return <p key={index} className="my-2">{line.trim()}</p>;
@@ -274,27 +252,16 @@ const SegmentProfile = ({
     <SubsectionHeader icon={Users} title={segment.personas_3.split('\n')[0] || "Persona Group 3"} />
     <div className="text-gray-700 space-y-4 text-left font-inter-light">
       {segment.personas_3.split('\n').slice(1).map((line, index) => {
-        if (line.includes(':')) {
-          const parts = line.split(':');
-
-          // Highlight the "What They Need" section
-          if (parts[0].trim() === "What They Need") {
-            return (
-              <div key={index} className="p-4 bg-polkadot-pink/10 border-l-4 border-polkadot-pink rounded-md shadow-sm">
-                <p className="font-inter-bold text-polkadot-pink">{parts[0].trim()}:</p>
-                <ul className="list-decimal pl-5 text-gray-700 mt-2 space-y-1">
-                  {parts.slice(1).join(':').trim().split('\n').map((point, idx) => (
-                    <li key={idx}>{point.trim()}</li>
-                  ))}
-                </ul>
-              </div>
-            );
-          }
-
+        if (line.includes('What They Need:')) {
           return (
-            <p key={index}>
-              <span className="font-inter-bold">{parts[0].trim()}:</span> {parts.slice(1).join(':').trim()}
-            </p>
+            <div key={index} className="p-4 bg-polkadot-pink/10 border border-polkadot-pink rounded-md shadow-sm">
+              <p className="font-inter-bold text-polkadot-pink mb-2">{line.trim()}</p>
+              <ul className="list-decimal pl-5 text-gray-700 space-y-1">
+                {segment.personas_3.split('\n').slice(index + 1).map((point, idx) => (
+                  <li key={idx}>{point.trim()}</li>
+                ))}
+              </ul>
+            </div>
           );
         }
         return <p key={index} className="my-2">{line.trim()}</p>;

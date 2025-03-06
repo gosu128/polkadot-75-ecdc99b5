@@ -207,16 +207,18 @@ const SegmentProfile = ({
         if (line.includes('What They Need:')) {
           return (
             <div key={index} className="p-4 bg-polkadot-pink/10 border border-polkadot-pink rounded-md shadow-sm">
-              <p className="font-inter-bold text-polkadot-pink mb-2">{line.trim()}</p>
-              <ul className="list-decimal pl-5 text-gray-700 space-y-1">
+              <p className="font-inter-bold text-polkadot-pink mb-2">What They Need:</p>
+              <ol className="list-decimal pl-5 text-gray-700 space-y-1">
                 {segment.personas_1.split('\n').slice(index + 1).map((point, idx) => (
-                  <li key={idx}>{point.trim()}</li>
+                  <li key={idx}>{point.replace(/^\d+\.\s*/, '').trim()}</li> // Removes double numbering
                 ))}
-              </ul>
+              </ol>
             </div>
           );
         }
-        return <p key={index} className="my-2">{line.trim()}</p>;
+        return index < segment.personas_1.split('\n').indexOf('What They Need:') ? (
+          <p key={index} className="my-2">{line.trim()}</p>
+        ) : null;
       })}
     </div>
   </div>
@@ -231,16 +233,18 @@ const SegmentProfile = ({
         if (line.includes('What They Need:')) {
           return (
             <div key={index} className="p-4 bg-polkadot-pink/10 border border-polkadot-pink rounded-md shadow-sm">
-              <p className="font-inter-bold text-polkadot-pink mb-2">{line.trim()}</p>
-              <ul className="list-decimal pl-5 text-gray-700 space-y-1">
+              <p className="font-inter-bold text-polkadot-pink mb-2">What They Need:</p>
+              <ol className="list-decimal pl-5 text-gray-700 space-y-1">
                 {segment.personas_2.split('\n').slice(index + 1).map((point, idx) => (
-                  <li key={idx}>{point.trim()}</li>
+                  <li key={idx}>{point.replace(/^\d+\.\s*/, '').trim()}</li>
                 ))}
-              </ul>
+              </ol>
             </div>
           );
         }
-        return <p key={index} className="my-2">{line.trim()}</p>;
+        return index < segment.personas_2.split('\n').indexOf('What They Need:') ? (
+          <p key={index} className="my-2">{line.trim()}</p>
+        ) : null;
       })}
     </div>
   </div>
@@ -255,20 +259,23 @@ const SegmentProfile = ({
         if (line.includes('What They Need:')) {
           return (
             <div key={index} className="p-4 bg-polkadot-pink/10 border border-polkadot-pink rounded-md shadow-sm">
-              <p className="font-inter-bold text-polkadot-pink mb-2">{line.trim()}</p>
-              <ul className="list-decimal pl-5 text-gray-700 space-y-1">
+              <p className="font-inter-bold text-polkadot-pink mb-2">What They Need:</p>
+              <ol className="list-decimal pl-5 text-gray-700 space-y-1">
                 {segment.personas_3.split('\n').slice(index + 1).map((point, idx) => (
-                  <li key={idx}>{point.trim()}</li>
+                  <li key={idx}>{point.replace(/^\d+\.\s*/, '').trim()}</li>
                 ))}
-              </ul>
+              </ol>
             </div>
           );
         }
-        return <p key={index} className="my-2">{line.trim()}</p>;
+        return index < segment.personas_3.split('\n').indexOf('What They Need:') ? (
+          <p key={index} className="my-2">{line.trim()}</p>
+        ) : null;
       })}
     </div>
   </div>
 )}
+
 
         {/* Section 4: Messaging Strategy */}
         <SectionHeader icon={Target} title="Messaging Strategy" />

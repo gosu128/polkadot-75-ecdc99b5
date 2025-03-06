@@ -74,7 +74,7 @@ const SectionHeader = ({
   icon: React.ElementType;
   title: string;
 }) => <div className="mt-6 mb-2">
-    <h2 className="text-polkadot-pink font-unbounded flex items-center text-xl">
+    <h2 className="text-polkadot-pink font-unbounded flex items-center text-xl font-semibold">
       <Icon className="mr-2 text-polkadot-pink w-6 h-6" />
       {title}
     </h2>

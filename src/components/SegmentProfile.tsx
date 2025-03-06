@@ -12,24 +12,30 @@ import {
 } from 'lucide-react';
 import { ResponsiveBar } from '@nivo/bar';
 import Footer from '@/components/Footer';
-import { supabase } from '@/lib/supabaseClient'; // Ensure Supabase is correctly imported
+import { createClient } from '@supabase/supabase-js';
+
+// Initialize Supabase Client
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+);
 
 type Segment = {
-  id: number;
+  id: string;
   name: string;
-  industry_id: number;
+  industry_id: string;
   abstract: string | null;
   definition: string | null;
   trends: string | null;
   regions: string | null;
   challenges: string | null;
   use_cases: string | null;
-  score: string | null;
   positioning_statement: string | null;
   personas: string | null;
 };
 
-type ScoreData = {
+type Score = {
+  segment_id: string;
   polkadot_market_fit: number;
   roi: number;
   scalability: number;
@@ -49,29 +55,29 @@ type SegmentProfileProps = {
 };
 
 const SegmentProfile = ({ segment, onBack }: SegmentProfileProps) => {
-  const [scores, setScores] = useState<ScoreData | null>(null);
+  const [scoreData, setScoreData] = useState<Score | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (segment) {
-      const fetchScores = async () => {
-        console.log("Fetching scores for segment ID:", segment.id); // Debugging log
+    if (!segment) return;
 
-        const { data, error } = await supabase
-          .from('segments_scores')
-          .select('*')
-          .eq('segment_id', segment.id)
-          .single();
+    // Fetch scores from Supabase
+    const fetchScores = async () => {
+      const { data, error } = await supabase
+        .from('segments_scores')
+        .select('*')
+        .eq('segment_id', segment.id)
+        .single();
 
-        if (error) {
-          console.error("Error fetching segment scores:", error);
-        } else {
-          console.log("Fetched segment scores:", data);
-          setScores(data);
-        }
-      };
+      if (error) {
+        console.error('Error fetching scores:', error);
+      } else {
+        setScoreData(data);
+      }
+      setLoading(false);
+    };
 
-      fetchScores();
-    }
+    fetchScores();
   }, [segment]);
 
   if (!segment) {
@@ -104,15 +110,21 @@ const SegmentProfile = ({ segment, onBack }: SegmentProfileProps) => {
         {/* SINGLE COLUMN LAYOUT WITH PROPER SPACING */}
         <div className="space-y-12">
           {/* Overview */}
-          <div>
-            <SectionHeader icon={Info} title="Overview" />
-            <p className="text-gray-700">{segment.abstract}</p>
-          </div>
+          {segment.abstract && (
+            <div>
+              <h3 className="text-2xl font-unbounded text-gray-900 mb-4 flex items-center">
+                <Info className="mr-2 text-indigo-600 w-6 h-6" /> Overview
+              </h3>
+              <p className="text-gray-700">{segment.abstract}</p>
+            </div>
+          )}
 
           {/* Definition */}
           {segment.definition && (
             <div>
-              <SectionHeader icon={BookText} title="Definition" />
+              <h3 className="text-2xl font-unbounded text-gray-900 mb-4 flex items-center">
+                <BookText className="mr-2 text-indigo-600 w-6 h-6" /> Definition
+              </h3>
               <p className="text-gray-700">{segment.definition}</p>
             </div>
           )}
@@ -120,69 +132,43 @@ const SegmentProfile = ({ segment, onBack }: SegmentProfileProps) => {
           {/* Market Trends */}
           {segment.trends && (
             <div>
-              <SectionHeader icon={TrendingUp} title="Market Trends" />
+              <h3 className="text-2xl font-unbounded text-gray-900 mb-4 flex items-center">
+                <TrendingUp className="mr-2 text-indigo-600 w-6 h-6" /> Market Trends
+              </h3>
               <p className="text-gray-700">{segment.trends}</p>
             </div>
           )}
 
-          {/* Key Regions */}
+          {/* Geographical Hotspots */}
           {segment.regions && (
             <div>
-              <SectionHeader icon={Globe} title="Key Regions" />
+              <h3 className="text-2xl font-unbounded text-gray-900 mb-4 flex items-center">
+                <Globe className="mr-2 text-indigo-600 w-6 h-6" /> Geographical Hotspots
+              </h3>
               <p className="text-gray-700">{segment.regions}</p>
             </div>
           )}
 
-          {/* Challenges */}
-          {segment.challenges && (
+          {/* POLKADOT-MARKET-FIT SCORE SECTION */}
+          {!loading && scoreData && (
             <div>
-              <SectionHeader icon={AlertTriangle} title="Challenges" />
-              <p className="text-gray-700">{segment.challenges}</p>
-            </div>
-          )}
-
-          {/* Use Cases */}
-          {segment.use_cases && (
-            <div>
-              <SectionHeader icon={Lightbulb} title="Use Cases" />
-              <p className="text-gray-700">{segment.use_cases}</p>
-            </div>
-          )}
-
-          {/* Positioning Statement */}
-          {segment.positioning_statement && (
-            <div>
-              <SectionHeader icon={Target} title="Positioning Statement" />
-              <p className="text-gray-700">{segment.positioning_statement}</p>
-            </div>
-          )}
-
-          {/* Personas */}
-          {segment.personas && (
-            <div>
-              <SectionHeader icon={Users} title="Target Personas" />
-              <p className="text-gray-700">{segment.personas}</p>
-            </div>
-          )}
-
-          {/* SCORE SECTION - Horizontal Bar Chart */}
-          {scores && (
-            <div>
-              <SectionHeader icon={Star} title="Segment Score" />
+              <h3 className="text-2xl font-unbounded text-gray-900 mb-4 flex items-center">
+                <Star className="mr-2 text-indigo-600 w-6 h-6" /> Polkadot-Market-Fit Score
+              </h3>
               <div className="h-64 w-full">
                 <ResponsiveBar
                   data={[
-                    { category: "Market Fit", score: scores.polkadot_market_fit },
-                    { category: "ROI", score: scores.roi },
-                    { category: "Scalability", score: scores.scalability },
-                    { category: "Customization", score: scores.customization },
-                    { category: "Awareness", score: scores.awareness },
-                    { category: "Tech", score: scores.tech },
-                    { category: "TAM", score: scores.tam },
-                    { category: "Compliance", score: scores.compliance },
-                    { category: "Interoperability", score: scores.interoperability },
-                    { category: "Reliability", score: scores.reliability },
-                    { category: "Complexity", score: scores.complexity },
+                    { category: 'PMF Score', score: scoreData.polkadot_market_fit },
+                    { category: 'ROI Score', score: scoreData.roi },
+                    { category: 'Scalability', score: scoreData.scalability },
+                    { category: 'Customization', score: scoreData.customization },
+                    { category: 'Awareness', score: scoreData.awareness },
+                    { category: 'Tech Score', score: scoreData.tech },
+                    { category: 'TAM Score', score: scoreData.tam },
+                    { category: 'Compliance', score: scoreData.compliance },
+                    { category: 'Interoperability', score: scoreData.interoperability },
+                    { category: 'Reliability', score: scoreData.reliability },
+                    { category: 'Complexity', score: scoreData.complexity },
                   ]}
                   keys={["score"]}
                   indexBy="category"
@@ -204,13 +190,5 @@ const SegmentProfile = ({ segment, onBack }: SegmentProfileProps) => {
     </div>
   );
 };
-
-// Section header component - Keeps Unbounded font for titles
-const SectionHeader = ({ icon: Icon, title }: { icon: React.ElementType; title: string }) => (
-  <h3 className="text-2xl font-unbounded text-gray-900 flex items-center mb-4">
-    <Icon className="mr-2 text-indigo-600 w-6 h-6" />
-    {title}
-  </h3>
-);
 
 export default SegmentProfile;

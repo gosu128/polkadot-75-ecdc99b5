@@ -8,18 +8,16 @@ import {
   Star, 
   Target, 
   ClipboardList, 
+  Users, 
+  Network, 
+  Shield, 
   Layers, 
-  MapPin, 
   BarChart3, 
   CheckCircle, 
-  User, 
-  AlignLeft, 
   Compass, 
-  ClipboardCheck, 
-  Navigation 
+  ClipboardCheck 
 } from 'lucide-react';
 import { ResponsiveBar } from '@nivo/bar';
-import Footer from '@/components/Footer';
 
 type Segment = {
   id: number;
@@ -47,12 +45,12 @@ type Segment = {
   personas_1: string | null;
   personas_2: string | null;
   personas_3: string | null;
-  ca_1: string | null;
-  ca_2: string | null;
-  ca_3: string | null;
-  ca_4: string | null;
-  ca_5: string | null;
-  ca_6: string | null;
+  ca_interoperability: string | null;
+  ca_resiliance: string | null;
+  ca_scalability: string | null;
+  ca_customization: string | null;
+  ca_reliability: string | null;
+  ca_other: string | null;
 };
 
 type SegmentProfileProps = {
@@ -60,36 +58,26 @@ type SegmentProfileProps = {
   onBack: () => void;
 };
 
-// Function to format content properly
+// Helper function for formatting text content
 const formatContent = (content: string | null) => {
   if (!content) return <p className="text-gray-900 italic">No information available</p>;
-
-  return (
-    <div className="text-gray-900 space-y-4 text-left">
-      {content.split('\n').map((line, index) => {
-        if (line.includes(':')) {
-          const parts = line.split(':');
-          const boldText = parts[0]?.trim();
-          const remainingText = parts.slice(1).join(':').trim();
-
-          return (
-            <p key={index}>
-              <span className="font-semibold">{boldText}:</span> {remainingText}
-            </p>
-          );
-        }
-        return <p key={index}>{line.trim()}</p>;
-      })}
-    </div>
-  );
+  return <p className="text-gray-900">{content}</p>;
 };
 
-// Section Headers
-const SectionHeader = ({ icon: Icon, title, id }: { icon: React.ElementType; title: string; id: string }) => (
-  <h2 id={id} className="text-3xl font-unbounded text-gray-900 flex items-center mt-16 mb-6 border-b-4 border-polkadot-pink pb-2">
+// **Main Section Headers**
+const MainSectionHeader = ({ icon: Icon, title, id }: { icon: React.ElementType; title: string; id: string }) => (
+  <h2 id={id} className="text-3xl font-unbounded text-polkadot-pink flex items-center mt-16 mb-6 border-b-4 border-polkadot-pink pb-2">
     <Icon className="mr-3 text-polkadot-pink w-7 h-7" />
     {title}
   </h2>
+);
+
+// **Sub-Section Headers**
+const SubSectionHeader = ({ icon: Icon, title }: { icon: React.ElementType; title: string }) => (
+  <h3 className="text-lg font-bold text-gray-900 flex items-center mt-6">
+    <Icon className="mr-2 text-gray-700 w-5 h-5" />
+    {title}
+  </h3>
 );
 
 const SegmentProfile = ({ segment, onBack }: SegmentProfileProps) => {
@@ -108,7 +96,7 @@ const SegmentProfile = ({ segment, onBack }: SegmentProfileProps) => {
 
   return (
     <div className="flex flex-col min-h-screen">
-      <div className="w-full max-w-6xl mx-auto px-8 py-24 flex-grow"> 
+      <div className="w-full max-w-6xl mx-auto px-8 py-24 flex-grow">
 
         {/* Header Section */}
         <div className="mb-8">
@@ -120,55 +108,80 @@ const SegmentProfile = ({ segment, onBack }: SegmentProfileProps) => {
           </button>
         </div>
 
-        {/* Navigation Bar */}
-        <div className="sticky top-0 bg-white shadow-md py-3 flex space-x-4 justify-center z-50 border-b border-gray-300">
-          {["Overview", "Messaging Strategy", "Persona Profiles", "Capability Assessment", "Polkadot-Market-Fit Score"].map((section) => (
-            <a key={section} href={`#${section.replace(/ /g, "-")}`} className="text-gray-900 font-semibold px-4 py-2 rounded-md hover:bg-polkadot-pink hover:text-white transition">
-              {section}
-            </a>
+        {/* Main Sections */}
+        <MainSectionHeader icon={Info} title="Overview" id="Overview" />
+        <SubSectionHeader icon={BookText} title="Abstract" />
+        {formatContent(segment.abstract)}
+        <SubSectionHeader icon={BookText} title="Definition" />
+        {formatContent(segment.definition)}
+        <SubSectionHeader icon={TrendingUp} title="Market Trends" />
+        {formatContent(segment.trends)}
+        <SubSectionHeader icon={Globe} title="Geographical Hotspots" />
+        {formatContent(segment.regions)}
+
+        <MainSectionHeader icon={Lightbulb} title="Use Cases" id="Use-Cases" />
+        <SubSectionHeader icon={ClipboardList} title="General Use Cases" />
+        <p className="text-gray-900 italic">To be added</p>
+        <SubSectionHeader icon={ClipboardList} title="Web3 Use Cases" />
+        {formatContent(segment.use_cases)}
+
+        <MainSectionHeader icon={Users} title="Personas" id="Personas" />
+        <SubSectionHeader icon={User} title="Persona Group 1" />
+        {formatContent(segment.personas_1)}
+        <SubSectionHeader icon={User} title="Persona Group 2" />
+        {formatContent(segment.personas_2)}
+        <SubSectionHeader icon={User} title="Persona Group 3" />
+        {formatContent(segment.personas_3)}
+
+        <MainSectionHeader icon={Compass} title="Messaging Strategy" id="Messaging-Strategy" />
+        <SubSectionHeader icon={Target} title="Positioning Statement" />
+        {formatContent(segment.positioning_statement)}
+        <SubSectionHeader icon={AlignLeft} title="Headline" />
+        {formatContent(segment.positioning_headline)}
+        <SubSectionHeader icon={AlignLeft} title="Subline" />
+        {formatContent(segment.positioning_subheadline)}
+
+        <MainSectionHeader icon={ClipboardCheck} title="Capability Assessment" id="Capability-Assessment" />
+        <SubSectionHeader icon={Network} title="Interoperability" />
+        {formatContent(segment.ca_interoperability)}
+        <SubSectionHeader icon={Shield} title="Resilience" />
+        {formatContent(segment.ca_resiliance)}
+        <SubSectionHeader icon={BarChart3} title="Scalability" />
+        {formatContent(segment.ca_scalability)}
+        <SubSectionHeader icon={Layers} title="Flexibility" />
+        {formatContent(segment.ca_customization)}
+        <SubSectionHeader icon={CheckCircle} title="Reliability" />
+        {formatContent(segment.ca_reliability)}
+        <SubSectionHeader icon={ClipboardList} title="Other" />
+        {formatContent(segment.ca_other)}
+
+        <MainSectionHeader icon={Star} title="Polkadot-Market-Fit Score" id="Polkadot-Market-Fit-Score" />
+        <div className="text-5xl font-bold text-polkadot-pink text-center py-4">{segment.pmf?.toFixed(1) ?? "N/A"}</div>
+
+        {/* PMF Scores Table */}
+        <div className="mt-6 border border-gray-300 rounded-lg overflow-hidden">
+          <div className="grid grid-cols-2 bg-gray-100 px-6 py-3 font-semibold text-gray-900">
+            <div>Criteria</div>
+            <div>Score</div>
+          </div>
+          {[
+            ["ROI", segment.roi],
+            ["Scalability", segment.scalability],
+            ["Customization", segment.customization],
+            ["Awareness", segment.awareness],
+            ["Tech", segment.tech],
+            ["TAM", segment.tam],
+            ["Compliance", segment.compliance],
+            ["Interoperability", segment.interoperability],
+            ["Reliability", segment.reliability],
+            ["Complexity", segment.complexity],
+          ].map(([label, value], i) => (
+            <div key={i} className="grid grid-cols-2 px-6 py-3 border-b last:border-none">
+              <div>{label}</div>
+              <div>{value !== null ? value.toFixed(1) : "N/A"}</div>
+            </div>
           ))}
         </div>
-
-        {/* Sections */}
-        <SectionHeader icon={Info} title="Overview" id="Overview" />
-        <div className="space-y-6">
-          {segment.abstract && <div>{formatContent(segment.abstract)}</div>}
-          {segment.definition && <div>{formatContent(segment.definition)}</div>}
-          {segment.trends && <div>{formatContent(segment.trends)}</div>}
-          {segment.regions && <div>{formatContent(segment.regions)}</div>}
-        </div>
-
-        <SectionHeader icon={Compass} title="Messaging Strategy" id="Messaging-Strategy" />
-        <div className="space-y-4">
-          {segment.positioning_statement && <p><strong>Positioning Statement:</strong> {segment.positioning_statement}</p>}
-          {segment.positioning_headline && <p><strong>Headline:</strong> {segment.positioning_headline}</p>}
-          {segment.positioning_subheadline && <p><strong>Subline:</strong> {segment.positioning_subheadline}</p>}
-        </div>
-
-        <SectionHeader icon={User} title="Persona Profiles" id="Persona-Profiles" />
-        <div className="space-y-8">
-          {[segment.personas_1, segment.personas_2, segment.personas_3].map((persona, i) =>
-            persona ? (
-              <div key={i} className="text-gray-900">
-                <p className="text-lg font-bold text-polkadot-pink">{persona.split('\n')[0]}</p>
-                <p className="mt-2">{persona.split('\n').slice(1).join('\n')}</p>
-              </div>
-            ) : null
-          )}
-        </div>
-
-        <SectionHeader icon={ClipboardCheck} title="Capability Assessment" id="Capability-Assessment" />
-        <div className="space-y-4">
-          {segment.ca_1 && <p><strong>Capability 1:</strong> {segment.ca_1}</p>}
-          {segment.ca_2 && <p><strong>Capability 2:</strong> {segment.ca_2}</p>}
-          {segment.ca_3 && <p><strong>Capability 3:</strong> {segment.ca_3}</p>}
-          {segment.ca_4 && <p><strong>Capability 4:</strong> {segment.ca_4}</p>}
-          {segment.ca_5 && <p><strong>Capability 5:</strong> {segment.ca_5}</p>}
-          {segment.ca_6 && <p><strong>Capability 6:</strong> {segment.ca_6}</p>}
-        </div>
-
-        <SectionHeader icon={Star} title="Polkadot-Market-Fit Score" id="Polkadot-Market-Fit-Score" />
-        <div className="text-3xl font-bold text-polkadot-pink">{segment.pmf?.toFixed(1) ?? "N/A"}</div>
 
       </div>
     </div>

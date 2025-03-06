@@ -77,7 +77,7 @@ const formatContent = (content: string | null) => {
 
 // **Section Header Component** (For Major Sections)
 const SectionHeader = ({ icon: Icon, title }: { icon: React.ElementType; title: string }) => (
-  <h2 className="text-3xl font-unbounded text-gray-900 flex items-center mb-6 border-b-4 border-indigo-600 pb-2">
+  <h2 className="text-3xl font-unbounded text-gray-900 flex items-center mt-12 mb-6 border-b-4 border-indigo-600 pb-2">
     <Icon className="mr-3 text-indigo-600 w-7 h-7" />
     {title}
   </h2>

@@ -78,7 +78,6 @@ const formatContent = (content: string | null) => {
             </p>
           );
         }
-
         return <p key={index}>{line.trim()}</p>;
       })}
     </div>
@@ -91,21 +90,6 @@ const SectionHeader = ({ icon: Icon, title, id }: { icon: React.ElementType; tit
     <Icon className="mr-3 text-polkadot-pink w-7 h-7" />
     {title}
   </h2>
-);
-
-// Sub-section Headers
-const SubSectionHeader = ({ icon: Icon, title }: { icon: React.ElementType; title: string }) => (
-  <h3 className="text-xl font-semibold text-gray-900 mt-6 mb-3 flex items-center">
-    <Icon className="mr-2 text-polkadot-pink w-5 h-5" />
-    {title}
-  </h3>
-);
-
-const ScoreItem = ({ label, value }: { label: string; value: number | null }) => (
-  <div className="flex justify-between px-6 py-3 border-b">
-    <span className="font-semibold text-gray-900">{label}</span>
-    <span className="text-gray-900">{value !== null ? value.toFixed(1) : 'N/A'}</span>
-  </div>
 );
 
 const SegmentProfile = ({ segment, onBack }: SegmentProfileProps) => {
@@ -126,17 +110,8 @@ const SegmentProfile = ({ segment, onBack }: SegmentProfileProps) => {
     <div className="flex flex-col min-h-screen">
       <div className="w-full max-w-6xl mx-auto px-8 py-24 flex-grow"> 
 
-        {/* Navigation Bar */}
-        <div className="sticky top-0 bg-white shadow-md py-3 flex space-x-4 justify-center z-50">
-          {["Overview", "Messaging Strategy", "Persona Profiles", "Capability Assessment", "Polkadot-Market-Fit Score"].map((section) => (
-            <a key={section} href={`#${section.replace(/ /g, "-")}`} className="text-gray-900 font-semibold hover:text-polkadot-pink transition">
-              {section}
-            </a>
-          ))}
-        </div>
-
         {/* Header Section */}
-        <div className="mb-12">
+        <div className="mb-8">
           <h2 className="text-4xl font-unbounded font-bold text-gray-900 mt-1">{segment.name}</h2>
           <button 
             onClick={onBack} 
@@ -145,17 +120,30 @@ const SegmentProfile = ({ segment, onBack }: SegmentProfileProps) => {
           </button>
         </div>
 
+        {/* Navigation Bar */}
+        <div className="sticky top-0 bg-white shadow-md py-3 flex space-x-4 justify-center z-50 border-b border-gray-300">
+          {["Overview", "Messaging Strategy", "Persona Profiles", "Capability Assessment", "Polkadot-Market-Fit Score"].map((section) => (
+            <a key={section} href={`#${section.replace(/ /g, "-")}`} className="text-gray-900 font-semibold px-4 py-2 rounded-md hover:bg-polkadot-pink hover:text-white transition">
+              {section}
+            </a>
+          ))}
+        </div>
+
         {/* Sections */}
         <SectionHeader icon={Info} title="Overview" id="Overview" />
         <div className="space-y-6">
-          {segment.abstract && <div><SubSectionHeader icon={ClipboardList} title="Abstract" />{formatContent(segment.abstract)}</div>}
-          {segment.definition && <div><SubSectionHeader icon={Layers} title="Definition" />{formatContent(segment.definition)}</div>}
-          {segment.trends && <div><SubSectionHeader icon={BarChart3} title="Market Trends" />{formatContent(segment.trends)}</div>}
-          {segment.regions && <div><SubSectionHeader icon={MapPin} title="Geographical Hotspots" />{formatContent(segment.regions)}</div>}
+          {segment.abstract && <div>{formatContent(segment.abstract)}</div>}
+          {segment.definition && <div>{formatContent(segment.definition)}</div>}
+          {segment.trends && <div>{formatContent(segment.trends)}</div>}
+          {segment.regions && <div>{formatContent(segment.regions)}</div>}
         </div>
 
         <SectionHeader icon={Compass} title="Messaging Strategy" id="Messaging-Strategy" />
-        <div>{formatContent(segment.positioning_statement)}</div>
+        <div className="space-y-4">
+          {segment.positioning_statement && <p><strong>Positioning Statement:</strong> {segment.positioning_statement}</p>}
+          {segment.positioning_headline && <p><strong>Headline:</strong> {segment.positioning_headline}</p>}
+          {segment.positioning_subheadline && <p><strong>Subline:</strong> {segment.positioning_subheadline}</p>}
+        </div>
 
         <SectionHeader icon={User} title="Persona Profiles" id="Persona-Profiles" />
         <div className="space-y-8">
@@ -170,10 +158,13 @@ const SegmentProfile = ({ segment, onBack }: SegmentProfileProps) => {
         </div>
 
         <SectionHeader icon={ClipboardCheck} title="Capability Assessment" id="Capability-Assessment" />
-        <div className="grid grid-cols-2 gap-4">
-          {[segment.ca_1, segment.ca_2, segment.ca_3, segment.ca_4, segment.ca_5, segment.ca_6].map((value, i) => (
-            <ScoreItem key={i} label={`Capability ${i + 1}`} value={parseFloat(value || "0")} />
-          ))}
+        <div className="space-y-4">
+          {segment.ca_1 && <p><strong>Capability 1:</strong> {segment.ca_1}</p>}
+          {segment.ca_2 && <p><strong>Capability 2:</strong> {segment.ca_2}</p>}
+          {segment.ca_3 && <p><strong>Capability 3:</strong> {segment.ca_3}</p>}
+          {segment.ca_4 && <p><strong>Capability 4:</strong> {segment.ca_4}</p>}
+          {segment.ca_5 && <p><strong>Capability 5:</strong> {segment.ca_5}</p>}
+          {segment.ca_6 && <p><strong>Capability 6:</strong> {segment.ca_6}</p>}
         </div>
 
         <SectionHeader icon={Star} title="Polkadot-Market-Fit Score" id="Polkadot-Market-Fit-Score" />
@@ -185,5 +176,3 @@ const SegmentProfile = ({ segment, onBack }: SegmentProfileProps) => {
 };
 
 export default SegmentProfile;
-
-

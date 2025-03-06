@@ -48,7 +48,7 @@ const formatContent = (content: string | null) => {
   if (!content) return <p className="font-inter-light text-gray-700 italic">No information available</p>;
 
   return (
-    <div className="font-inter-light text-gray-700 space-y-4 text-left">
+    <div className="font-inter-light text-gray-700 space-y-2 text-left">
       {content.split('\n').map((line, index) => {
         if (line.includes(':')) {
           const parts = line.split(':');
@@ -66,15 +66,18 @@ const formatContent = (content: string | null) => {
 
 // Section header component
 const SectionHeader = ({ icon: Icon, title }: { icon: React.ElementType; title: string }) => (
-  <h2 className="text-2xl text-polkadot-pink font-unbounded flex items-center mt-12 mb-4">
-    <Icon className="mr-2 text-polkadot-pink w-6 h-6" />
-    {title}
-  </h2>
+  <div className="mt-12 mb-2">
+    <h2 className="text-2xl text-polkadot-pink font-unbounded flex items-center">
+      <Icon className="mr-2 text-polkadot-pink w-6 h-6" />
+      {title}
+    </h2>
+    <hr className="border-polkadot-pink my-2" />
+  </div>
 );
 
 // Subsection header component
 const SubsectionHeader = ({ icon: Icon, title }: { icon: React.ElementType; title: string }) => (
-  <h3 className="text-lg text-black font-semibold flex items-center mb-2">
+  <h3 className="text-lg text-black font-semibold flex items-center mb-1">
     <Icon className="mr-2 text-gray-700 w-5 h-5" />
     {title}
   </h3>
@@ -103,7 +106,7 @@ const SegmentProfile = ({ segment, onBack }: SegmentProfileProps) => {
       </div>
 
       {/* Main Sections */}
-      <div className="space-y-12">
+      <div className="space-y-10">
 
         {/* Section 1: Overview */}
         <SectionHeader icon={Info} title="Overview" />
@@ -125,11 +128,11 @@ const SegmentProfile = ({ segment, onBack }: SegmentProfileProps) => {
 
         {/* Section 3: Personas */}
         <SectionHeader icon={Users} title="Personas" />
-        <SubsectionHeader icon={Users} title="Persona Group 1" />
+        <SubsectionHeader icon={Users} title={segment.personas_1?.split('\n')[0] || "Persona Group 1"} />
         {formatContent(segment.personas_1)}
-        <SubsectionHeader icon={Users} title="Persona Group 2" />
+        <SubsectionHeader icon={Users} title={segment.personas_2?.split('\n')[0] || "Persona Group 2"} />
         {formatContent(segment.personas_2)}
-        <SubsectionHeader icon={Users} title="Persona Group 3" />
+        <SubsectionHeader icon={Users} title={segment.personas_3?.split('\n')[0] || "Persona Group 3"} />
         {formatContent(segment.personas_3)}
 
         {/* Section 4: Messaging Strategy */}
@@ -158,26 +161,30 @@ const SegmentProfile = ({ segment, onBack }: SegmentProfileProps) => {
 
         {/* Section 6: Polkadot-Market-Fit Score */}
         <SectionHeader icon={Star} title="Polkadot-Market-Fit Score" />
-        <h3 className="text-4xl font-bold text-center text-gray-900">{segment.pmf}</h3>
-        {segment.scores && (
-          <div className="h-64 w-full">
-            <ResponsiveBar
-              data={segment.scores}
-              keys={["value"]}
-              indexBy="key"
-              margin={{ top: 20, right: 30, bottom: 50, left: 120 }}
-              padding={0.3}
-              layout="horizontal"
-              colors={["#e6007a"]}
-              axisBottom={{ legend: "Score (out of 10)", legendPosition: "middle", legendOffset: 40 }}
-              enableLabel={true}
-            />
-          </div>
-        )}
+        <h3 className="text-4xl font-bold text-gray-900">{segment.pmf}</h3>
 
+        {segment.scores && (
+          <table className="w-full mt-4 border-collapse border border-gray-300">
+            <thead>
+              <tr className="bg-polkadot-pink text-white">
+                <th className="p-2 text-left">Criteria</th>
+                <th className="p-2 text-left">Score</th>
+              </tr>
+            </thead>
+            <tbody>
+              {segment.scores.map((score, index) => (
+                <tr key={index} className="border border-gray-300">
+                  <td className="p-2">{score.key}</td>
+                  <td className="p-2">{score.value.toFixed(1)}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
       </div>
     </div>
   );
 };
 
 export default SegmentProfile;
+

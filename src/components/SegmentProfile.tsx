@@ -7,8 +7,7 @@ import {
   AlertTriangle, 
   Lightbulb, 
   Star, 
-  Target, 
-  Users 
+  Target
 } from 'lucide-react';
 import { ResponsiveBar } from '@nivo/bar';
 import Footer from '@/components/Footer';
@@ -25,8 +24,17 @@ type Segment = {
   use_cases: string | null;
   score: string | null;
   positioning_statement: string | null;
-  personas: string | null;
-  pmf: number | null;  // Added PMF Score
+  pmf: number | null;  // PMF Score
+  scalability: number | null;
+  customization: number | null;
+  awareness: number | null;
+  tech: number | null;
+  tam: number | null;
+  compliance: number | null;
+  interoperability: number | null;
+  reliability: number | null;
+  complexity: number | null;
+  roi: number | null;
 };
 
 type SegmentProfileProps = {
@@ -81,22 +89,19 @@ const SegmentProfile = ({ segment, onBack }: SegmentProfileProps) => {
     );
   }
 
-  // Parse score data safely
-  const scoreData = React.useMemo(() => {
-    if (!segment?.score) return null;
-    try {
-      const parsedData = JSON.parse(segment.score);
-      if (!Array.isArray(parsedData)) return null; 
-
-      return parsedData.map((item: any) => ({
-        category: item.key || "Unknown",
-        score: typeof item.value === "number" ? item.value : 0,
-      }));
-    } catch (e) {
-      console.error("Error parsing score data:", e);
-      return null;
-    }
-  }, [segment?.score]);
+  // Parse individual score data for visualization
+  const scoreData = [
+    { category: "Scalability", score: segment.scalability },
+    { category: "Customization", score: segment.customization },
+    { category: "Awareness", score: segment.awareness },
+    { category: "Tech", score: segment.tech },
+    { category: "TAM", score: segment.tam },
+    { category: "Compliance", score: segment.compliance },
+    { category: "Interoperability", score: segment.interoperability },
+    { category: "Reliability", score: segment.reliability },
+    { category: "Complexity", score: segment.complexity },
+    { category: "ROI", score: segment.roi },
+  ].filter(item => item.score !== null); // Remove any null values
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -168,42 +173,31 @@ const SegmentProfile = ({ segment, onBack }: SegmentProfileProps) => {
             </div>
           )}
 
-          {/* Personas */}
-          {segment.personas && (
-            <div>
-              <SectionHeader icon={Users} title="Target Personas" />
-              {formatContent(segment.personas)}
-            </div>
-          )}
-
-          {/* SCORE SECTION - Horizontal Bar Chart */}
-          {scoreData && (
-            <div>
-              <SectionHeader icon={Star} title="Segment Score" />
-              <div className="h-64 w-full">
-                <ResponsiveBar
-                  data={scoreData}
-                  keys={["score"]}
-                  indexBy="category"
-                  margin={{ top: 20, right: 30, bottom: 50, left: 120 }}
-                  padding={0.3}
-                  layout="horizontal"
-                  colors={["#6366F1"]}
-                  borderColor={{ from: 'color', modifiers: [['darker', 1.6]] }}
-                  axisBottom={{ legend: "Score (out of 10)", legendPosition: "middle", legendOffset: 40 }}
-                  axisLeft={{ tickSize: 0, tickPadding: 5 }}
-                  enableLabel={true}
-                  labelTextColor={{ from: 'color', modifiers: [['darker', 3]] }}
-                />
-              </div>
-            </div>
-          )}
-
-          {/* PMF SCORE DISPLAY - Added this section */}
+          {/* POLKADOT-MARKET-FIT SCORE */}
           {segment.pmf !== null && (
             <div>
               <SectionHeader icon={Star} title="Polkadot-Market-Fit Score (PMF Score)" />
               <p className="font-inter-bold text-3xl text-gray-900">{segment.pmf} / 10</p>
+
+              {/* Score Table */}
+              <div className="mt-6">
+                <table className="w-full border-collapse border border-gray-300">
+                  <thead className="bg-gray-100">
+                    <tr>
+                      <th className="border border-gray-300 px-4 py-2 text-left">Criteria</th>
+                      <th className="border border-gray-300 px-4 py-2 text-left">Score</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {scoreData.map((item, index) => (
+                      <tr key={index} className="border border-gray-300">
+                        <td className="border border-gray-300 px-4 py-2">{item.category}</td>
+                        <td className="border border-gray-300 px-4 py-2">{item.score}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             </div>
           )}
         </div>
@@ -213,3 +207,4 @@ const SegmentProfile = ({ segment, onBack }: SegmentProfileProps) => {
 };
 
 export default SegmentProfile;
+

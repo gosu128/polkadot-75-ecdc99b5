@@ -104,17 +104,17 @@ const PMFScores = () => {
                     {sortField === "name" && <span className="ml-1">{sortDirection === "asc" ? "↑" : "↓"}</span>}
                   </div>
                 </th>
-                {renderSortableHeader("pmf", "PMF Score")}
-                {renderSortableHeader("interoperability", "Interop.")}
+                {renderSortableHeader("pmf", "PMF")}
+                {renderSortableHeader("interoperability", "INT")}
                 {renderSortableHeader("roi", "ROI")}
-                {renderSortableHeader("scalability", "Scalab.")}
-                {renderSortableHeader("customization", "Custom.")}
-                {renderSortableHeader("awareness", "Aware.")}
-                {renderSortableHeader("tech", "Tech")}
+                {renderSortableHeader("scalability", "SCA")}
+                {renderSortableHeader("customization", "CUS")}
+                {renderSortableHeader("awareness", "AWA")}
+                {renderSortableHeader("tech", "TEC")}
                 {renderSortableHeader("tam", "TAM")}
-                {renderSortableHeader("compliance", "Compl.")}
-                {renderSortableHeader("complexity", "Complex.")}
-                {renderSortableHeader("reliability", "Reliab.")}
+                {renderSortableHeader("compliance", "CPL")}
+                {renderSortableHeader("complexity", "CPX")}
+                {renderSortableHeader("reliability", "REL")}
               </tr>
             </thead>
             <tbody>

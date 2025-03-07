@@ -30,10 +30,11 @@ const PMFScores = () => {
 
   useEffect(() => {
     const fetchSegments = async () => {
-      const {
-        data,
-        error
-      } = await supabase.from("segments").select("id, name, interoperability, roi, scalability, customization, awareness, tech, tam, compliance, complexity, reliability, pmf").order("name");
+      const { data, error } = await supabase
+        .from("segments")
+        .select("id, name, interoperability, roi, scalability, customization, awareness, tech, tam, compliance, complexity, reliability, pmf")
+        .order("name");
+
       if (error) {
         console.error("Error fetching PMF scores:", error);
       } else {
@@ -58,7 +59,7 @@ const PMFScores = () => {
     } else if (score <= 4) {
       scoreClass = "text-rose-600";
     }
-    
+
     return `${baseClasses} ${scoreClass} ${isHovered ? "scale-105 font-bold shadow-sm rounded-md" : ""}`;
   };
 
@@ -84,28 +85,37 @@ const PMFScores = () => {
   // Column headers with sorting
   const renderSortableHeader = (field: SortField, label: string) => {
     const isCurrentSortField = sortField === field;
-    const sortIcon = isCurrentSortField ? sortDirection === "asc" ? "↑" : "↓" : "";
-    return <th className="py-3 px-2 text-center text-xs md:text-sm whitespace-nowrap cursor-pointer hover:bg-white/20 transition-colors" onClick={() => handleSort(field)}>
+    const sortIcon = isCurrentSortField ? (sortDirection === "asc" ? "↑" : "↓") : "";
+    return (
+      <th
+        className="py-3 px-2 text-center text-xs md:text-sm whitespace-nowrap cursor-pointer hover:bg-white/20 transition-colors"
+        onClick={() => handleSort(field)}
+      >
         <div className="flex items-center justify-center font-bold font-unbounded">
-          <span className="writing-vertical md:writing-normal">{label}</span>
+          <span>{label}</span>
           {isCurrentSortField && <span className="ml-1">{sortIcon}</span>}
         </div>
-      </th>;
+      </th>
+    );
   };
 
-  return <div className="w-full bg-white min-h-screen">
+  return (
+    <div className="w-full bg-white min-h-screen">
       <Header />
       <div className="max-w-6xl mx-auto p-4 pt-32">
         <h1 className="text-4xl font-unbounded font-bold text-polkadot-pink mb-8 flex items-center my-[40px]">
           <Star className="w-8 h-8 mr-2 text-polkadot-pink" />
           Polkadot-Market-Fit™ Scoring Results
         </h1>
-        
+
         <div className="overflow-auto rounded-xl shadow-xl">
           <table className="w-full border-collapse rounded-xl overflow-hidden text-xs md:text-sm">
             <thead>
               <tr className="bg-gradient-to-r from-polkadot-pink to-[#9B87F5] text-white">
-                <th className="py-3 px-4 text-left text-xs md:text-sm font-bold font-unbounded whitespace-nowrap cursor-pointer hover:bg-white/20 transition-colors" onClick={() => handleSort("name")}>
+                <th
+                  className="py-3 px-4 text-left text-xs md:text-sm font-bold font-unbounded whitespace-nowrap cursor-pointer hover:bg-white/20 transition-colors"
+                  onClick={() => handleSort("name")}
+                >
                   <div className="flex items-center">
                     <span>Segment</span>
                     {sortField === "name" && <span className="ml-1">{sortDirection === "asc" ? "↑" : "↓"}</span>}
@@ -125,38 +135,36 @@ const PMFScores = () => {
               </tr>
             </thead>
             <tbody>
-              {sortedSegments.map(segment => <tr key={segment.id} className="border-b border-gray-200 hover:bg-gray-50 transition-colors font-unbounded">
+              {sortedSegments.map((segment) => (
+                <tr key={segment.id} className="border-b border-gray-200 hover:bg-gray-50 transition-colors font-unbounded">
                   <td className="py-3 px-4 text-gray-800 whitespace-nowrap text-xs md:text-sm">{segment.name}</td>
-                  <td className={`py-2 px-2 text-center text-xs md:text-sm transition-all duration-200 font-unbounded ${segment.pmf >= 8 ? "text-emerald-600" : segment.pmf <= 4 ? "text-rose-600" : "text-blue-600"} ${hoveredCell === `${segment.id}-pmf` ? "scale-105 shadow-sm rounded-md" : ""}`} onMouseEnter={() => setHoveredCell(`${segment.id}-pmf`)} onMouseLeave={() => setHoveredCell(null)}>
-                    <div className="flex items-center justify-center gap-1">
-                      <span className={`${hoveredCell === `${segment.id}-pmf` ? "scale-110" : ""} transition-transform`}>
-                        {segment.pmf.toFixed(1)}
-                      </span>
-                      {segment.pmf >= 8 && <span className="text-xs">★</span>}
-                    </div>
+                  <td
+                    className={`py-2 px-2 text-center text-xs md:text-sm transition-all duration-200 font-unbounded ${
+                      segment.pmf >= 8 ? "text-emerald-600" : segment.pmf <= 4 ? "text-rose-600" : "text-blue-600"
+                    } ${hoveredCell === `${segment.id}-pmf` ? "scale-105 shadow-sm rounded-md" : ""}`}
+                    onMouseEnter={() => setHoveredCell(`${segment.id}-pmf`)}
+                    onMouseLeave={() => setHoveredCell(null)}
+                  >
+                    {segment.pmf.toFixed(1)}
                   </td>
-                  <td className={getCellStyle(segment.interoperability, segment.id, "interop")} onMouseEnter={() => setHoveredCell(`${segment.id}-interop`)} onMouseLeave={() => setHoveredCell(null)}>
-                    {segment.interoperability.toFixed(1)}
-                  </td>
-                  <td className={getCellStyle(segment.roi, segment.id, "roi")} onMouseEnter={() => setHoveredCell(`${segment.id}-roi`)} onMouseLeave={() => setHoveredCell(null)}>
-                    {segment.roi.toFixed(1)}
-                  </td>
-                  <td className={getCellStyle(segment.scalability, segment.id, "scalability")} onMouseEnter={() => setHoveredCell(`${segment.id}-scalability`)} onMouseLeave={() => setHoveredCell(null)}>
-                    {segment.scalability.toFixed(1)}
-                  </td>
-                  <td className={getCellStyle(segment.customization, segment.id, "customization")} onMouseEnter={() => setHoveredCell(`${segment.id}-customization`)} onMouseLeave={() => setHoveredCell(null)}>
-                    {segment.customization.toFixed(1)}
-                  </td>
-                  <td className={getCellStyle(segment.awareness, segment.id, "awareness")} onMouseEnter={() => setHoveredCell(`${segment.id}-awareness`)} onMouseLeave={() => setHoveredCell(null)}>
-                    {segment.awareness.toFixed(1)}
-                  </td>
-                </tr>)}
+                  <td className={getCellStyle(segment.interoperability, segment.id, "interop")}>{segment.interoperability.toFixed(1)}</td>
+                  <td className={getCellStyle(segment.roi, segment.id, "roi")}>{segment.roi.toFixed(1)}</td>
+                  <td className={getCellStyle(segment.scalability, segment.id, "scalability")}>{segment.scalability.toFixed(1)}</td>
+                  <td className={getCellStyle(segment.customization, segment.id, "customization")}>{segment.customization.toFixed(1)}</td>
+                  <td className={getCellStyle(segment.awareness, segment.id, "awareness")}>{segment.awareness.toFixed(1)}</td>
+                  <td className={getCellStyle(segment.tech, segment.id, "tech")}>{segment.tech.toFixed(1)}</td>
+                  <td className={getCellStyle(segment.tam, segment.id, "tam")}>{segment.tam.toFixed(1)}</td>
+                  <td className={getCellStyle(segment.compliance, segment.id, "compliance")}>{segment.compliance.toFixed(1)}</td>
+                  <td className={getCellStyle(segment.complexity, segment.id, "complexity")}>{segment.complexity.toFixed(1)}</td>
+                  <td className={getCellStyle(segment.reliability, segment.id, "reliability")}>{segment.reliability.toFixed(1)}</td>
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>
       </div>
-    </div>;
+    </div>
+  );
 };
 
 export default PMFScores;
-

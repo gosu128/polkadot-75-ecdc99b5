@@ -10,7 +10,7 @@ const Header = () => {
   // Navigation items
   const navItems = [
     { name: "Case Studies", link: "/case-studies" },
-    { name: "PMF-Scores", link: "/PMFScores" },
+    { name: "PMF-Scores", link: "/pmf-scores" },
     { name: "Methodology", link: "/methodology" },
     { name: "Whitepaper", link: "/whitepaper" }
   ];

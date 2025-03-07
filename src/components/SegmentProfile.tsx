@@ -205,7 +205,7 @@ const SegmentProfile = ({
       {segment.personas_1.split('\n').slice(1).map((line, index) => {
             if (line.includes('What They Need:')) {
               return <div key={index} className="p-4 bg-[#9B87F5]/10 border border-[#9B87F5] rounded-md shadow-sm">
-              <p className="font-inter-bold text-[#9B87F5] mb-2">What They Need:</p>
+              <p className="font-inter-bold text-[#9B87F5] mb-2 font-bold">What They Need:</p>
               <ol className="list-decimal pl-5 text-gray-700 space-y-1">
                 {segment.personas_1.split('\n').slice(index + 2).map((point, idx) => <li key={idx}>{point.replace(/^\d+\.\s*/, '').trim()}</li>)}
               </ol>

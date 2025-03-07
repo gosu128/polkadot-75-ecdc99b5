@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Star } from "lucide-react";
@@ -52,7 +51,7 @@ const PMFScores = () => {
   const getCellStyle = (score: number, id: number, metric: string) => {
     const isHovered = hoveredCell === `${id}-${metric}`;
     const baseClasses = "py-2 px-2 text-center text-xs md:text-sm transition-all duration-200 font-unbounded";
-    // Only color the text based on score, no background color
+
     let scoreClass = "";
     if (score >= 8) {
       scoreClass = "text-emerald-600";
@@ -65,10 +64,8 @@ const PMFScores = () => {
 
   const handleSort = (field: SortField) => {
     if (sortField === field) {
-      // Toggle direction if clicking the same field
       setSortDirection(sortDirection === "asc" ? "desc" : "asc");
     } else {
-      // New field, default to ascending
       setSortField(field);
       setSortDirection("asc");
     }
@@ -88,8 +85,8 @@ const PMFScores = () => {
   const renderSortableHeader = (field: SortField, label: string) => {
     const isCurrentSortField = sortField === field;
     const sortIcon = isCurrentSortField ? sortDirection === "asc" ? "↑" : "↓" : "";
-    return <th className="py-4 px-2 text-center whitespace-nowrap cursor-pointer hover:bg-white/20 transition-colors" onClick={() => handleSort(field)}>
-        <div className="flex items-center justify-center text-xs md:text-sm font-bold font-unbounded">
+    return <th className="py-3 px-2 text-center text-xs md:text-sm whitespace-nowrap cursor-pointer hover:bg-white/20 transition-colors" onClick={() => handleSort(field)}>
+        <div className="flex items-center justify-center font-bold font-unbounded">
           <span className="writing-vertical md:writing-normal">{label}</span>
           {isCurrentSortField && <span className="ml-1">{sortIcon}</span>}
         </div>
@@ -105,10 +102,10 @@ const PMFScores = () => {
         </h1>
         
         <div className="overflow-auto rounded-xl shadow-xl">
-          <table className="w-full border-collapse rounded-xl overflow-hidden text-xs md:text-base">
+          <table className="w-full border-collapse rounded-xl overflow-hidden text-xs md:text-sm">
             <thead>
               <tr className="bg-gradient-to-r from-polkadot-pink to-[#9B87F5] text-white">
-                <th className="py-4 px-4 text-left font-bold font-unbounded whitespace-nowrap cursor-pointer hover:bg-white/20 transition-colors" onClick={() => handleSort("name")}>
+                <th className="py-3 px-4 text-left text-xs md:text-sm font-bold font-unbounded whitespace-nowrap cursor-pointer hover:bg-white/20 transition-colors" onClick={() => handleSort("name")}>
                   <div className="flex items-center">
                     <span>Segment</span>
                     {sortField === "name" && <span className="ml-1">{sortDirection === "asc" ? "↑" : "↓"}</span>}
@@ -129,8 +126,8 @@ const PMFScores = () => {
             </thead>
             <tbody>
               {sortedSegments.map(segment => <tr key={segment.id} className="border-b border-gray-200 hover:bg-gray-50 transition-colors font-unbounded">
-                  <td className="py-4 px-4 text-gray-800 whitespace-nowrap font-unbounded">{segment.name}</td>
-                  <td className={`py-3 px-2 text-center font-unbounded whitespace-nowrap transition-all duration-200 ${segment.pmf >= 8 ? "text-emerald-600" : segment.pmf <= 4 ? "text-rose-600" : "text-blue-600"} ${hoveredCell === `${segment.id}-pmf` ? "scale-105 shadow-sm rounded-md" : ""}`} onMouseEnter={() => setHoveredCell(`${segment.id}-pmf`)} onMouseLeave={() => setHoveredCell(null)}>
+                  <td className="py-3 px-4 text-gray-800 whitespace-nowrap text-xs md:text-sm">{segment.name}</td>
+                  <td className={`py-2 px-2 text-center text-xs md:text-sm transition-all duration-200 font-unbounded ${segment.pmf >= 8 ? "text-emerald-600" : segment.pmf <= 4 ? "text-rose-600" : "text-blue-600"} ${hoveredCell === `${segment.id}-pmf` ? "scale-105 shadow-sm rounded-md" : ""}`} onMouseEnter={() => setHoveredCell(`${segment.id}-pmf`)} onMouseLeave={() => setHoveredCell(null)}>
                     <div className="flex items-center justify-center gap-1">
                       <span className={`${hoveredCell === `${segment.id}-pmf` ? "scale-110" : ""} transition-transform`}>
                         {segment.pmf.toFixed(1)}
@@ -153,33 +150,13 @@ const PMFScores = () => {
                   <td className={getCellStyle(segment.awareness, segment.id, "awareness")} onMouseEnter={() => setHoveredCell(`${segment.id}-awareness`)} onMouseLeave={() => setHoveredCell(null)}>
                     {segment.awareness.toFixed(1)}
                   </td>
-                  <td className={getCellStyle(segment.tech, segment.id, "tech")} onMouseEnter={() => setHoveredCell(`${segment.id}-tech`)} onMouseLeave={() => setHoveredCell(null)}>
-                    {segment.tech.toFixed(1)}
-                  </td>
-                  <td className={getCellStyle(segment.tam, segment.id, "tam")} onMouseEnter={() => setHoveredCell(`${segment.id}-tam`)} onMouseLeave={() => setHoveredCell(null)}>
-                    {segment.tam.toFixed(1)}
-                  </td>
-                  <td className={getCellStyle(segment.compliance, segment.id, "compliance")} onMouseEnter={() => setHoveredCell(`${segment.id}-compliance`)} onMouseLeave={() => setHoveredCell(null)}>
-                    {segment.compliance.toFixed(1)}
-                  </td>
-                  <td className={getCellStyle(segment.complexity, segment.id, "complexity")} onMouseEnter={() => setHoveredCell(`${segment.id}-complexity`)} onMouseLeave={() => setHoveredCell(null)}>
-                    {segment.complexity.toFixed(1)}
-                  </td>
-                  <td className={getCellStyle(segment.reliability, segment.id, "reliability")} onMouseEnter={() => setHoveredCell(`${segment.id}-reliability`)} onMouseLeave={() => setHoveredCell(null)}>
-                    {segment.reliability.toFixed(1)}
-                  </td>
                 </tr>)}
             </tbody>
           </table>
-        </div>
-        
-        <div className="mt-8 flex justify-center">
-          <a href="/" className="bg-gradient-to-r from-polkadot-pink to-[#9B87F5] text-white px-6 py-3 rounded-full font-unbounded shadow-md hover:shadow-lg transition-shadow duration-300">
-            ← Back to Home
-          </a>
         </div>
       </div>
     </div>;
 };
 
 export default PMFScores;
+

@@ -51,8 +51,7 @@ const PMFScores = () => {
 
   const getCellStyle = (score: number, id: number, metric: string) => {
     const isHovered = hoveredCell === `${id}-${metric}`;
-    const baseClasses = "py-3 px-2 text-center transition-all duration-200 font-unbounded";
-
+    const baseClasses = "py-2 px-2 text-center text-xs md:text-sm transition-all duration-200 font-unbounded";
     // Only color the text based on score, no background color
     let scoreClass = "";
     if (score >= 8) {

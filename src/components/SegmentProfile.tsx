@@ -126,9 +126,6 @@ const SegmentProfile = ({
   if (!segment) {
     return <div className="flex flex-col items-center justify-center min-h-screen text-center">
         <h2 className="text-2xl font-bold text-red-600">Error: Segment data not found</h2>
-        <button onClick={onBack} className="mt-4 px-4 py-2 bg-gray-800 text-white rounded-md">
-          ← Back to Selection
-        </button>
       </div>;
   }
 

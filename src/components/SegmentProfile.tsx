@@ -165,9 +165,6 @@ const SegmentProfile = ({
       {/* Header with more space at the top */}
       <div className="mb-8">
         <h2 className="text-4xl font-unbounded font-bold text-gray-900 my-[60px]">{segment.name}</h2>
-        <button onClick={onBack} className="mt-2 px-4 py-2 text-sm text-gray-600 hover:bg-gray-200 rounded-md transition">
-          ← Back
-        </button>
       </div>
 
       {/* Main Sections with less space and narrower design */}

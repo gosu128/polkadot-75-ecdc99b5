@@ -57,7 +57,7 @@ const formatContent = (content: string | null) => {
       {content.split('\n').map((line, index) => {
       if (line.includes(':')) {
         const parts = line.split(':');
-        return <p key={index}>
+        return <p key={index} className="py-[5px]">
               <span className="font-inter-bold font-semibold">{parts[0].trim()}:</span> {parts.slice(1).join(':').trim()}
             </p>;
       }

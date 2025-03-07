@@ -1,7 +1,9 @@
+
 import React, { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Star } from "lucide-react";
 import Header from "./Header";
+
 interface Segment {
   id: number;
   name: string;
@@ -17,13 +19,16 @@ interface Segment {
   reliability: number;
   pmf: number;
 }
+
 type SortField = keyof Segment;
+
 const PMFScores = () => {
   const [segments, setSegments] = useState<Segment[]>([]);
   const [loading, setLoading] = useState(true);
   const [hoveredCell, setHoveredCell] = useState<string | null>(null);
   const [sortField, setSortField] = useState<SortField>("name");
   const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc");
+
   useEffect(() => {
     const fetchSegments = async () => {
       const {
@@ -39,22 +44,26 @@ const PMFScores = () => {
     };
     fetchSegments();
   }, []);
+
   if (loading) {
     return <div className="text-center text-gray-500 mt-10">Loading...</div>;
   }
+
   const getCellStyle = (score: number, id: number, metric: string) => {
     const isHovered = hoveredCell === `${id}-${metric}`;
-    const baseClasses = "py-3 px-2 text-center transition-all duration-200";
+    const baseClasses = "py-3 px-2 text-center transition-all duration-200 font-unbounded";
 
-    // Score-based coloring (subtle)
+    // Only color the text based on score, no background color
     let scoreClass = "";
     if (score >= 8) {
-      scoreClass = "text-emerald-600 bg-emerald-50";
+      scoreClass = "text-emerald-600";
     } else if (score <= 4) {
-      scoreClass = "text-rose-600 bg-rose-50";
+      scoreClass = "text-rose-600";
     }
-    return `${baseClasses} ${scoreClass} ${isHovered ? "bg-gray-100 scale-105 font-bold shadow-sm rounded-md" : ""}`;
+    
+    return `${baseClasses} ${scoreClass} ${isHovered ? "scale-105 font-bold shadow-sm rounded-md" : ""}`;
   };
+
   const handleSort = (field: SortField) => {
     if (sortField === field) {
       // Toggle direction if clicking the same field
@@ -65,6 +74,7 @@ const PMFScores = () => {
       setSortDirection("asc");
     }
   };
+
   const sortedSegments = [...segments].sort((a, b) => {
     if (sortField === "name") {
       return sortDirection === "asc" ? a.name.localeCompare(b.name) : b.name.localeCompare(a.name);
@@ -80,12 +90,13 @@ const PMFScores = () => {
     const isCurrentSortField = sortField === field;
     const sortIcon = isCurrentSortField ? sortDirection === "asc" ? "↑" : "↓" : "";
     return <th className="py-4 px-2 text-center whitespace-nowrap cursor-pointer hover:bg-white/20 transition-colors" onClick={() => handleSort(field)}>
-        <div className="flex items-center justify-center text-xs md:text-sm font-medium">
+        <div className="flex items-center justify-center text-xs md:text-sm font-bold font-unbounded">
           <span className="writing-vertical md:writing-normal">{label}</span>
           {isCurrentSortField && <span className="ml-1">{sortIcon}</span>}
         </div>
       </th>;
   };
+
   return <div className="w-full bg-white min-h-screen">
       <Header />
       <div className="max-w-6xl mx-auto p-4 pt-32">
@@ -98,7 +109,7 @@ const PMFScores = () => {
           <table className="w-full border-collapse rounded-xl overflow-hidden text-sm md:text-base">
             <thead>
               <tr className="bg-gradient-to-r from-polkadot-pink to-[#9B87F5] text-white">
-                <th className="py-4 px-4 text-left font-medium whitespace-nowrap cursor-pointer hover:bg-white/20 transition-colors" onClick={() => handleSort("name")}>
+                <th className="py-4 px-4 text-left font-bold font-unbounded whitespace-nowrap cursor-pointer hover:bg-white/20 transition-colors" onClick={() => handleSort("name")}>
                   <div className="flex items-center">
                     <span>Segment</span>
                     {sortField === "name" && <span className="ml-1">{sortDirection === "asc" ? "↑" : "↓"}</span>}
@@ -118,9 +129,9 @@ const PMFScores = () => {
               </tr>
             </thead>
             <tbody>
-              {sortedSegments.map(segment => <tr key={segment.id} className="border-b border-gray-200 hover:bg-gray-50 transition-colors">
-                  <td className="py-4 px-4 font-semibold text-gray-800 whitespace-nowrap">{segment.name}</td>
-                  <td className={`py-3 px-2 text-center font-bold whitespace-nowrap transition-all duration-200 ${segment.pmf >= 8 ? "text-emerald-600 bg-emerald-50" : segment.pmf <= 4 ? "text-rose-600 bg-rose-50" : "text-blue-600"} ${hoveredCell === `${segment.id}-pmf` ? "scale-105 shadow-sm rounded-md" : ""}`} onMouseEnter={() => setHoveredCell(`${segment.id}-pmf`)} onMouseLeave={() => setHoveredCell(null)}>
+              {sortedSegments.map(segment => <tr key={segment.id} className="border-b border-gray-200 hover:bg-gray-50 transition-colors font-unbounded">
+                  <td className="py-4 px-4 text-gray-800 whitespace-nowrap font-unbounded">{segment.name}</td>
+                  <td className={`py-3 px-2 text-center font-unbounded whitespace-nowrap transition-all duration-200 ${segment.pmf >= 8 ? "text-emerald-600" : segment.pmf <= 4 ? "text-rose-600" : "text-blue-600"} ${hoveredCell === `${segment.id}-pmf` ? "scale-105 shadow-sm rounded-md" : ""}`} onMouseEnter={() => setHoveredCell(`${segment.id}-pmf`)} onMouseLeave={() => setHoveredCell(null)}>
                     <div className="flex items-center justify-center gap-1">
                       <span className={`${hoveredCell === `${segment.id}-pmf` ? "scale-110" : ""} transition-transform`}>
                         {segment.pmf.toFixed(1)}
@@ -171,4 +182,5 @@ const PMFScores = () => {
       </div>
     </div>;
 };
+
 export default PMFScores;

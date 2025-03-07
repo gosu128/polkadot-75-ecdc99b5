@@ -167,7 +167,7 @@ const SegmentProfile = ({
   return <div className="flex flex-col min-h-screen text-left px-4 sm:px-6 lg:px-8 py-16 lg:py-20 max-w-5xl mx-auto">
       {/* Header with more space at the top */}
       <div className="mb-8">
-        <h2 className="text-4xl font-unbounded font-bold text-gray-900">{segment.name}</h2>
+        <h2 className="text-4xl font-unbounded font-bold text-gray-900 my-[60px]">{segment.name}</h2>
         <button onClick={onBack} className="mt-2 px-4 py-2 text-sm text-gray-600 hover:bg-gray-200 rounded-md transition">
           ← Back
         </button>

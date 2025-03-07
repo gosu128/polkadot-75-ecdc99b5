@@ -14,10 +14,10 @@ const Header = () => {
         {/* Navigation Bar Below Title */}
         <nav className="mt-4 flex space-x-4">
           {[
-            { name: "Methodology", link: "/methodology" },
+            { name: "Case Studies", link: "/case-studies" },
             { name: "PMF-Scores", link: "/pmf-scores" },
-            { name: "Whitepaper", link: "/whitepaper" },
-            { name: "Project Background", link: "/project-background" }
+            { name: "Methodology", link: "/methodology" },
+            { name: "Whitepaper", link: "/whitepaper" }
           ].map((item, index) => (
             <a
               key={index}
@@ -37,6 +37,4 @@ const Header = () => {
 
 export default Header;
 
-
-export default Header;
 

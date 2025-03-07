@@ -106,7 +106,7 @@ const PMFScores = () => {
         </h1>
         
         <div className="overflow-auto rounded-xl shadow-xl">
-          <table className="w-full border-collapse rounded-xl overflow-hidden text-sm md:text-base">
+          <table className="w-full border-collapse rounded-xl overflow-hidden text-xs md:text-base">
             <thead>
               <tr className="bg-gradient-to-r from-polkadot-pink to-[#9B87F5] text-white">
                 <th className="py-4 px-4 text-left font-bold font-unbounded whitespace-nowrap cursor-pointer hover:bg-white/20 transition-colors" onClick={() => handleSort("name")}>

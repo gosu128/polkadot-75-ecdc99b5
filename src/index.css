@@ -80,6 +80,20 @@
   .btn-hover-effect:hover::after {
     @apply scale-x-100;
   }
+
+  /* Vertical text for responsive tables */
+  .writing-vertical {
+    writing-mode: vertical-lr;
+    transform: rotate(180deg);
+    white-space: nowrap;
+  }
+
+  @media (min-width: 768px) {
+    .writing-normal {
+      writing-mode: horizontal-tb;
+      transform: none;
+    }
+  }
 }
 
 @layer components {

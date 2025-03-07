@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Star } from "lucide-react";
@@ -19,10 +20,14 @@ interface Segment {
   pmf: number;
 }
 
+type SortField = keyof Segment;
+
 const PMFScores = () => {
   const [segments, setSegments] = useState<Segment[]>([]);
   const [loading, setLoading] = useState(true);
   const [hoveredCell, setHoveredCell] = useState<string | null>(null);
+  const [sortField, setSortField] = useState<SortField>("name");
+  const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc");
 
   useEffect(() => {
     const fetchSegments = async () => {
@@ -47,61 +52,110 @@ const PMFScores = () => {
   }
 
   const getCellStyle = (score: number, id: number, metric: string) => {
-    const isHovered = hoveredCell === ${id}-${metric};
+    const isHovered = hoveredCell === `${id}-${metric}`;
     const baseClasses = "py-3 px-2 text-center transition-all duration-200";
     
     // Score-based coloring (subtle)
     let scoreClass = "";
     if (score >= 8) {
-      scoreClass = "text-emerald-700";
+      scoreClass = "text-emerald-600 bg-emerald-50";
     } else if (score <= 4) {
-      scoreClass = "text-rose-700";
+      scoreClass = "text-rose-600 bg-rose-50";
     }
     
-    return ${baseClasses} ${scoreClass} ${isHovered ? "bg-gray-100 scale-105 font-bold" : ""};
+    return `${baseClasses} ${scoreClass} ${isHovered ? "bg-gray-100 scale-105 font-bold shadow-sm rounded-md" : ""}`;
+  };
+
+  const handleSort = (field: SortField) => {
+    if (sortField === field) {
+      // Toggle direction if clicking the same field
+      setSortDirection(sortDirection === "asc" ? "desc" : "asc");
+    } else {
+      // New field, default to ascending
+      setSortField(field);
+      setSortDirection("asc");
+    }
+  };
+
+  const sortedSegments = [...segments].sort((a, b) => {
+    if (sortField === "name") {
+      return sortDirection === "asc" 
+        ? a.name.localeCompare(b.name)
+        : b.name.localeCompare(a.name);
+    } else {
+      const aValue = a[sortField] || 0;
+      const bValue = b[sortField] || 0;
+      return sortDirection === "asc" ? aValue - bValue : bValue - aValue;
+    }
+  });
+
+  // Column headers with sorting
+  const renderSortableHeader = (field: SortField, label: string) => {
+    const isCurrentSortField = sortField === field;
+    const sortIcon = isCurrentSortField 
+      ? (sortDirection === "asc" ? "↑" : "↓") 
+      : "";
+    
+    return (
+      <th 
+        className="py-4 px-2 text-center whitespace-nowrap cursor-pointer hover:bg-white/20 transition-colors"
+        onClick={() => handleSort(field)}
+      >
+        <div className="flex items-center justify-center text-xs md:text-sm font-medium">
+          <span className="writing-vertical md:writing-normal">{label}</span>
+          {isCurrentSortField && <span className="ml-1">{sortIcon}</span>}
+        </div>
+      </th>
+    );
   };
 
   return (
     <div className="w-full bg-white min-h-screen">
       <Header />
-      <div className="max-w-6xl mx-auto p-6 pt-32">
+      <div className="max-w-6xl mx-auto p-4 pt-32">
         <h1 className="text-4xl font-unbounded font-bold text-polkadot-pink mb-8 flex items-center">
           <Star className="w-8 h-8 mr-2 text-polkadot-pink" />
           PMF Scores Overview
         </h1>
         
         <div className="overflow-auto rounded-xl shadow-xl">
-          <table className="w-full border-collapse rounded-xl overflow-hidden">
+          <table className="w-full border-collapse rounded-xl overflow-hidden text-sm md:text-base">
             <thead>
               <tr className="bg-gradient-to-r from-polkadot-pink to-[#9B87F5] text-white">
-                <th className="py-4 px-4 text-left font-medium whitespace-nowrap">Segment</th>
-                <th className="py-4 px-4 text-center font-bold whitespace-nowrap">PMF Score</th>
-                <th className="py-4 px-2 text-center whitespace-nowrap">Interop.</th>
-                <th className="py-4 px-2 text-center whitespace-nowrap">ROI</th>
-                <th className="py-4 px-2 text-center whitespace-nowrap">Scalability</th>
-                <th className="py-4 px-2 text-center whitespace-nowrap">Custom.</th>
-                <th className="py-4 px-2 text-center whitespace-nowrap">Awareness</th>
-                <th className="py-4 px-2 text-center whitespace-nowrap">Tech</th>
-                <th className="py-4 px-2 text-center whitespace-nowrap">TAM</th>
-                <th className="py-4 px-2 text-center whitespace-nowrap">Compliance</th>
-                <th className="py-4 px-2 text-center whitespace-nowrap">Complexity</th>
-                <th className="py-4 px-2 text-center whitespace-nowrap">Reliability</th>
+                <th className="py-4 px-4 text-left font-medium whitespace-nowrap cursor-pointer hover:bg-white/20 transition-colors"
+                    onClick={() => handleSort("name")}>
+                  <div className="flex items-center">
+                    <span>Segment</span>
+                    {sortField === "name" && <span className="ml-1">{sortDirection === "asc" ? "↑" : "↓"}</span>}
+                  </div>
+                </th>
+                {renderSortableHeader("pmf", "PMF Score")}
+                {renderSortableHeader("interoperability", "Interop.")}
+                {renderSortableHeader("roi", "ROI")}
+                {renderSortableHeader("scalability", "Scalab.")}
+                {renderSortableHeader("customization", "Custom.")}
+                {renderSortableHeader("awareness", "Aware.")}
+                {renderSortableHeader("tech", "Tech")}
+                {renderSortableHeader("tam", "TAM")}
+                {renderSortableHeader("compliance", "Compl.")}
+                {renderSortableHeader("complexity", "Complex.")}
+                {renderSortableHeader("reliability", "Reliab.")}
               </tr>
             </thead>
             <tbody>
-              {segments.map((segment) => (
+              {sortedSegments.map((segment) => (
                 <tr key={segment.id} className="border-b border-gray-200 hover:bg-gray-50 transition-colors">
                   <td className="py-4 px-4 font-semibold text-gray-800 whitespace-nowrap">{segment.name}</td>
                   <td 
-                    className={py-3 px-4 text-center font-bold whitespace-nowrap ${
-                      segment.pmf >= 8 ? "text-emerald-600" : 
-                      segment.pmf <= 4 ? "text-rose-600" : "text-blue-600"
-                    }}
-                    onMouseEnter={() => setHoveredCell(${segment.id}-pmf)}
+                    className={`py-3 px-2 text-center font-bold whitespace-nowrap transition-all duration-200 ${
+                      segment.pmf >= 8 ? "text-emerald-600 bg-emerald-50" : 
+                      segment.pmf <= 4 ? "text-rose-600 bg-rose-50" : "text-blue-600"
+                    } ${hoveredCell === `${segment.id}-pmf` ? "scale-105 shadow-sm rounded-md" : ""}`}
+                    onMouseEnter={() => setHoveredCell(`${segment.id}-pmf`)}
                     onMouseLeave={() => setHoveredCell(null)}
                   >
                     <div className="flex items-center justify-center gap-1">
-                      <span className={${hoveredCell === ${segment.id}-pmf ? "scale-110" : ""} transition-transform}>
+                      <span className={`${hoveredCell === `${segment.id}-pmf` ? "scale-110" : ""} transition-transform`}>
                         {segment.pmf.toFixed(1)}
                       </span>
                       {segment.pmf >= 8 && <span className="text-xs">★</span>}
@@ -109,70 +163,70 @@ const PMFScores = () => {
                   </td>
                   <td 
                     className={getCellStyle(segment.interoperability, segment.id, "interop")}
-                    onMouseEnter={() => setHoveredCell(${segment.id}-interop)}
+                    onMouseEnter={() => setHoveredCell(`${segment.id}-interop`)}
                     onMouseLeave={() => setHoveredCell(null)}
                   >
                     {segment.interoperability.toFixed(1)}
                   </td>
                   <td 
                     className={getCellStyle(segment.roi, segment.id, "roi")}
-                    onMouseEnter={() => setHoveredCell(${segment.id}-roi)}
+                    onMouseEnter={() => setHoveredCell(`${segment.id}-roi`)}
                     onMouseLeave={() => setHoveredCell(null)}
                   >
                     {segment.roi.toFixed(1)}
                   </td>
                   <td 
                     className={getCellStyle(segment.scalability, segment.id, "scalability")}
-                    onMouseEnter={() => setHoveredCell(${segment.id}-scalability)}
+                    onMouseEnter={() => setHoveredCell(`${segment.id}-scalability`)}
                     onMouseLeave={() => setHoveredCell(null)}
                   >
                     {segment.scalability.toFixed(1)}
                   </td>
                   <td 
                     className={getCellStyle(segment.customization, segment.id, "customization")}
-                    onMouseEnter={() => setHoveredCell(${segment.id}-customization)}
+                    onMouseEnter={() => setHoveredCell(`${segment.id}-customization`)}
                     onMouseLeave={() => setHoveredCell(null)}
                   >
                     {segment.customization.toFixed(1)}
                   </td>
                   <td 
                     className={getCellStyle(segment.awareness, segment.id, "awareness")}
-                    onMouseEnter={() => setHoveredCell(${segment.id}-awareness)}
+                    onMouseEnter={() => setHoveredCell(`${segment.id}-awareness`)}
                     onMouseLeave={() => setHoveredCell(null)}
                   >
                     {segment.awareness.toFixed(1)}
                   </td>
                   <td 
                     className={getCellStyle(segment.tech, segment.id, "tech")}
-                    onMouseEnter={() => setHoveredCell(${segment.id}-tech)}
+                    onMouseEnter={() => setHoveredCell(`${segment.id}-tech`)}
                     onMouseLeave={() => setHoveredCell(null)}
                   >
                     {segment.tech.toFixed(1)}
                   </td>
                   <td 
                     className={getCellStyle(segment.tam, segment.id, "tam")}
-                    onMouseEnter={() => setHoveredCell(${segment.id}-tam)}
+                    onMouseEnter={() => setHoveredCell(`${segment.id}-tam`)}
                     onMouseLeave={() => setHoveredCell(null)}
                   >
                     {segment.tam.toFixed(1)}
                   </td>
                   <td 
                     className={getCellStyle(segment.compliance, segment.id, "compliance")}
-                    onMouseEnter={() => setHoveredCell(${segment.id}-compliance)}
+                    onMouseEnter={() => setHoveredCell(`${segment.id}-compliance`)}
                     onMouseLeave={() => setHoveredCell(null)}
                   >
                     {segment.compliance.toFixed(1)}
                   </td>
                   <td 
                     className={getCellStyle(segment.complexity, segment.id, "complexity")}
-                    onMouseEnter={() => setHoveredCell(${segment.id}-complexity)}
+                    onMouseEnter={() => setHoveredCell(`${segment.id}-complexity`)}
                     onMouseLeave={() => setHoveredCell(null)}
                   >
                     {segment.complexity.toFixed(1)}
                   </td>
                   <td 
                     className={getCellStyle(segment.reliability, segment.id, "reliability")}
-                    onMouseEnter={() => setHoveredCell(${segment.id}-reliability)}
+                    onMouseEnter={() => setHoveredCell(`${segment.id}-reliability`)}
                     onMouseLeave={() => setHoveredCell(null)}
                   >
                     {segment.reliability.toFixed(1)}

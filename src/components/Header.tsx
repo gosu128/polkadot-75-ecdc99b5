@@ -1,8 +1,22 @@
+
 import { cn } from '@/lib/utils';
+import { useState } from 'react';
+import { useLocation } from 'react-router-dom';
 
 const Header = () => {
+  const location = useLocation();
+  const [isHovered, setIsHovered] = useState<number | null>(null);
+  
+  // Navigation items
+  const navItems = [
+    { name: "Case Studies", link: "/case-studies" },
+    { name: "PMF-Scores", link: "/pmf-scores" },
+    { name: "Methodology", link: "/methodology" },
+    { name: "Whitepaper", link: "/whitepaper" }
+  ];
+
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 pt-6 pb-4 bg-white shadow-md">
+    <header className="fixed top-0 left-0 right-0 z-50 pt-6 pb-4 bg-white/90 backdrop-blur-sm">
       <div className="container-tight flex flex-col items-center">
         
         {/* Centered Title - Larger Size */}
@@ -12,22 +26,30 @@ const Header = () => {
         </a>
 
         {/* Navigation Bar Below Title */}
-        <nav className="mt-4 flex space-x-4">
-          {[
-            { name: "Case Studies", link: "/case-studies" },
-            { name: "PMF-Scores", link: "/pmf-scores" },
-            { name: "Methodology", link: "/methodology" },
-            { name: "Whitepaper", link: "/whitepaper" }
-          ].map((item, index) => (
-            <a
-              key={index}
-              href={item.link}
-              className="relative px-5 py-2 rounded-full text-gray-700 bg-gray-100 font-unbounded transition-all duration-300 ease-in-out 
-              hover:text-white hover:bg-gradient-to-r from-[#E6007A] via-[#7E69AB] to-[#4F46E5] shadow-lg"
-            >
-              {item.name}
-            </a>
-          ))}
+        <nav className="mt-3 flex space-x-3">
+          {navItems.map((item, index) => {
+            const isActive = location.pathname === item.link;
+            
+            return (
+              <a
+                key={index}
+                href={item.link}
+                className={cn(
+                  "relative px-4 py-1.5 rounded-full text-sm font-medium font-unbounded transition-all duration-300 ease-in-out",
+                  isActive 
+                    ? "text-white bg-gradient-to-r from-polkadot-pink to-polkadot-pink-light shadow-sm" 
+                    : "text-gray-700 hover:text-polkadot-pink"
+                )}
+                onMouseEnter={() => setIsHovered(index)}
+                onMouseLeave={() => setIsHovered(null)}
+              >
+                <span className="relative z-10">{item.name}</span>
+                {!isActive && isHovered === index && (
+                  <span className="absolute inset-0 bg-white/80 rounded-full shadow-sm animate-fade-in-slow" />
+                )}
+              </a>
+            );
+          })}
         </nav>
 
       </div>
@@ -36,5 +58,3 @@ const Header = () => {
 };
 
 export default Header;
-
-

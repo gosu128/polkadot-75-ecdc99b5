@@ -308,7 +308,17 @@ const SegmentProfile = ({
             </div>
           </div>
         </div>
-      </div>
-    </div>;
+      {/* Back Button - Moved to the Bottom */}
+<div className="flex justify-center mt-12">
+  <button
+    onClick={onBack}
+    className="px-6 py-3 bg-gradient-to-r from-[#E6007A] to-[#9B87F5] text-white font-unbounded rounded-full text-lg transition-all duration-300 transform hover:scale-105 shadow-md hover:shadow-lg"
+  >
+    ← Back to Selection
+  </button>
+</div>
+
+</div>
+</div>;
 };
 export default SegmentProfile;

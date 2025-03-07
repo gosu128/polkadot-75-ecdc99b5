@@ -5,10 +5,10 @@ const Header = () => {
     <header className="fixed top-0 left-0 right-0 z-50 pt-6 pb-4 bg-white shadow-md">
       <div className="container-tight flex flex-col items-center">
         
-        {/* Centered Title */}
-        <a href="/" className="flex items-center space-x-1">
-          <span className="text-lg font-unbounded text-polkadot-pink">Polkadot</span>
-          <span className="text-lg font-unbounded">Sales Hub</span>
+        {/* Centered Title - Larger Size */}
+        <a href="/" className="flex items-center space-x-2">
+          <span className="text-2xl font-unbounded text-polkadot-pink font-bold">Polkadot</span>
+          <span className="text-2xl font-unbounded font-bold">Sales Hub</span>
         </a>
 
         {/* Navigation Bar Below Title */}
@@ -22,10 +22,10 @@ const Header = () => {
             <a
               key={index}
               href={item.link}
-              className="relative px-5 py-2 rounded-full text-gray-700 bg-gray-100 font-medium transition-all duration-300 hover:bg-polkadot-pink hover:text-white"
+              className="relative px-5 py-2 rounded-full text-gray-700 bg-gray-100 font-unbounded transition-all duration-300 ease-in-out 
+              hover:text-white hover:bg-gradient-to-r from-[#E6007A] via-[#7E69AB] to-[#4F46E5] shadow-lg"
             >
               {item.name}
-              <span className="absolute left-0 bottom-0 w-full h-0.5 bg-polkadot-pink scale-x-0 transition-transform duration-300 ease-out group-hover:scale-x-100"></span>
             </a>
           ))}
         </nav>
@@ -34,6 +34,9 @@ const Header = () => {
     </header>
   );
 };
+
+export default Header;
+
 
 export default Header;
 

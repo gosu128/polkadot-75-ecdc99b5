@@ -5,7 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
-import PMFScores from "./pages/PMFScores"; // ✅ Import PMFScores page
+import PMFScores from "./components/PMFScores"; // Keep it in components
 
 const queryClient = new QueryClient();
 
@@ -17,7 +17,7 @@ const App = () => (
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Index />} />
-          <Route path="/PMFScores" element={<PMFScores />} /> {/* ✅ Add this route */}
+          <Route path="/pmf-scores" element={<PMFScores />} /> {/* Add this */}
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
@@ -27,4 +27,3 @@ const App = () => (
 );
 
 export default App;
-

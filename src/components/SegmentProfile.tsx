@@ -1,9 +1,10 @@
+
 import React, { useEffect, useState } from 'react';
 import { Info, BookText, TrendingUp, Globe, AlertTriangle, Lightbulb, Star, Target, Users } from 'lucide-react';
 import { supabase } from "@/integrations/supabase/client";
 import Footer from '@/components/Footer';
 
-const getWorldMapUrl = (segmentName: string) => {
+const getStorageImageUrl = (segmentName: string, bucket: string) => {
   if (!segmentName) return null;
 
   const formattedName = segmentName
@@ -12,11 +13,11 @@ const getWorldMapUrl = (segmentName: string) => {
     .replace(/\s+/g, "_");
 
   const filePath = `${formattedName}.png`;
-  const fullUrl = `https://qhxgyizmewdtvwebpmie.supabase.co/storage/v1/object/public/polkadot/${filePath}`;
+  const fullUrl = `https://qhxgyizmewdtvwebpmie.supabase.co/storage/v1/object/public/${bucket}/${filePath}`;
 
-  console.log("Original Segment Name:", segmentName);
-  console.log("Formatted Filename:", filePath);
-  console.log("Final Image URL:", fullUrl);
+  console.log(`Original Segment Name for ${bucket}:`, segmentName);
+  console.log(`Formatted Filename for ${bucket}:`, filePath);
+  console.log(`Final Image URL for ${bucket}:`, fullUrl);
 
   return fullUrl;
 };
@@ -122,16 +123,24 @@ const SegmentProfile = ({
 }: SegmentProfileProps) => {
   const [scoreData, setScoreData] = useState<ScoreData | null>(null);
   const [worldMapUrl, setWorldMapUrl] = useState<string | null>(null);
+  const [positioningImageUrl, setPositioningImageUrl] = useState<string | null>(null);
   
+  // Set world map URL
   useEffect(() => {
     if (segment && segment.name) {
       console.log("Segment Found:", segment.name);
-      const url = getWorldMapUrl(segment.name);
-      console.log("Generated Image URL:", url);
+      const url = getStorageImageUrl(segment.name, "polkadot");
+      console.log("Generated World Map URL:", url);
       setWorldMapUrl(url);
+      
+      // Get positioning image URL from the positioning bucket
+      const posUrl = getStorageImageUrl(segment.name, "positioning");
+      console.log("Generated Positioning Image URL:", posUrl);
+      setPositioningImageUrl(posUrl);
     }
   }, [segment]);
 
+  // Fetch scores data
   useEffect(() => {
     const fetchScores = async () => {
       if (segment) {
@@ -216,9 +225,9 @@ const SegmentProfile = ({
             <img
               src={worldMapUrl}
               alt={`World map for ${segment.name}`}
-              className="w-full h-auto object-cover"
+              className="w-full h-auto object-contain"
               onError={(e) => {
-                console.error("Error loading image:", worldMapUrl);
+                console.error("Error loading world map image:", worldMapUrl);
                 e.currentTarget.style.display = "none";
               }}
             />
@@ -293,6 +302,23 @@ const SegmentProfile = ({
         {formatContent(segment.positioning_headline)}
         <SubsectionHeader icon={Target} title="Subline" />
         {formatContent(segment.positioning_subheadline)}
+        
+        {/* Display the Positioning Image */}
+        {positioningImageUrl ? (
+          <div className="flex justify-center my-8">
+            <img
+              src={positioningImageUrl}
+              alt={`Positioning image for ${segment.name}`}
+              className="w-full h-auto object-contain"
+              onError={(e) => {
+                console.error("Error loading positioning image:", positioningImageUrl);
+                e.currentTarget.style.display = "none";
+              }}
+            />
+          </div>
+        ) : (
+          <p className="text-gray-500 italic my-4">No positioning graphic available for this segment.</p>
+        )}
 
         <SectionHeader icon={Star} title="Capability Assessment" />
         <SubsectionHeader icon={Star} title="Interoperability" />

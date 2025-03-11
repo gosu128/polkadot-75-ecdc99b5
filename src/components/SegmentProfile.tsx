@@ -2,6 +2,19 @@ import React, { useEffect, useState } from 'react';
 import { Info, BookText, TrendingUp, Globe, AlertTriangle, Lightbulb, Star, Target, Users } from 'lucide-react';
 import { supabase } from "@/integrations/supabase/client";
 import Footer from '@/components/Footer';
+
+// Function to fetch the World Map URL from Supabase
+const getWorldMapUrl = async (segmentName: string) => {
+  const formattedName = segmentName.toLowerCase().replace(/\s+/g, "-"); // Convert spaces to hyphens
+  const filePath = `worldmap-${formattedName}.png`; // Adjust file format if necessary
+
+  const { data } = supabase.storage
+    .from("polkadot") // Your bucket name
+    .getPublicUrl(filePath);
+
+  return data.publicUrl;
+};
+
 type Segment = {
   id: number;
   name: string;
@@ -103,6 +116,19 @@ const SegmentProfile = ({
   onBack
 }: SegmentProfileProps) => {
   const [scoreData, setScoreData] = useState<ScoreData | null>(null);
+    const [worldMapUrl, setWorldMapUrl] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchWorldMap = async () => {
+      if (segment) {
+        const url = await getWorldMapUrl(segment.name);
+        setWorldMapUrl(url);
+      }
+    };
+
+    fetchWorldMap();
+  }, [segment]);
+
   useEffect(() => {
     const fetchScores = async () => {
       if (segment) {
@@ -178,8 +204,21 @@ const SegmentProfile = ({
         {formatContent(segment.definition)}
         <SubsectionHeader icon={TrendingUp} title="Market Trends" />
         {formatContent(segment.trends)}
-        <SubsectionHeader icon={Globe} title="Geographical Hotspots" />
-        {formatContent(segment.regions)}
+        <SectionHeader icon={Globe} title="Geographical Hotspots" />
+{formatContent(segment.regions)}
+
+{worldMapUrl ? (
+  <div className="flex justify-center my-6">
+    <img
+      src={worldMapUrl}
+      alt={`World map for ${segment.name}`}
+      className="w-full max-w-2xl rounded-lg shadow-md"
+    />
+  </div>
+) : (
+  <p className="text-gray-500 italic">No geographical data available for this segment.</p>
+)}
+
         <WorldMap />
 
         {/* Section 2: Use Cases - with updated data fetching */}

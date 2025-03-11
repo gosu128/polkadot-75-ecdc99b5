@@ -24,10 +24,6 @@ const CaseStudies = () => {
     <div className="flex flex-col min-h-screen">
       <Header />
       <div className="container mx-auto p-4 pt-32 flex-grow">
-        <h1 className="text-4xl font-unbounded font-bold text-polkadot-pink mb-8 text-center">
-          Case Studies
-        </h1>
-        
         {/* Image Carousel */}
         <div className="relative w-full max-w-5xl mx-auto">
           <img 

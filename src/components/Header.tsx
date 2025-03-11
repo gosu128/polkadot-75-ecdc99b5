@@ -40,22 +40,22 @@ const Header = () => {
             const isActive = location.pathname === item.link;
             return (
               <a 
-                key={index} 
-                href={item.link} 
-                className={cn(
-                  "relative px-4 py-1.5 rounded-full text-sm font-medium font-unbounded transition-all duration-300 ease-in-out",
-                  isActive 
-                    ? "bg-gradient-to-r from-polkadot-pink via-polkadot-pink-light to-polkadot-pink bg-clip-text text-transparent font-bold" 
-                    : "text-gray-700 hover:text-polkadot-pink"
-                )} 
-                onMouseEnter={() => setIsHovered(index)} 
-                onMouseLeave={() => setIsHovered(null)}
-              >
-                <span className="relative z-10 font-normal px-0 mx-[10px]">{item.name}</span>
-                {!isActive && isHovered === index && (
-                  <span className="absolute inset-0 bg-white/80 rounded-full shadow-sm animate-fade-in-slow" />
-                )}
-              </a>
+  key={index} 
+  href={item.link} 
+  className={cn(
+    "relative px-4 py-1.5 rounded-full text-sm font-medium font-unbounded transition-all duration-300 ease-in-out",
+    isActive 
+      ? "bg-gradient-to-r from-polkadot-pink via-polkadot-pink-light to-polkadot-pink text-white font-bold" // Changed text-transparent to text-white
+      : "text-gray-700 hover:text-polkadot-pink"
+  )} 
+  onMouseEnter={() => setIsHovered(index)} 
+  onMouseLeave={() => setIsHovered(null)}
+>
+  <span className="relative z-10 font-normal px-0 mx-[10px]">{item.name}</span>
+  {!isActive && isHovered === index && (
+    <span className="absolute inset-0 bg-white/80 rounded-full shadow-sm animate-fade-in-slow" />
+  )}
+</a>
             );
           })}
         </nav>

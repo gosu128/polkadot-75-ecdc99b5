@@ -7,11 +7,19 @@ import Footer from '@/components/Footer';
 const getWorldMapUrl = (segmentName: string) => {
   if (!segmentName) return null;
 
-  // Ensure the segment name is formatted exactly like the file names in Supabase Storage
-  const formattedName = segmentName.replace(/\s/g, "_"); // Replace spaces with underscores
-  const filePath = `${formattedName}.png`;
+  // Convert segment name to match the stored filenames
+  const formattedName = segmentName
+    .replace(/\s/g, "_") // Replace spaces with underscores
+    .replace(/&/g, "_&_") // Ensure ampersands match the filenames
+    .replace(/-/g, "_-_"); // Ensure dashes match the filenames
 
-  return `https://qhxgyizmewdtvwebpmie.supabase.co/storage/v1/object/public/polkadot/${filePath}`;
+  const filePath = `${formattedName}.png`;
+  const fullUrl = `https://qhxgyizmewdtvwebpmie.supabase.co/storage/v1/object/public/polkadot/${filePath}`;
+
+  console.log("Formatted Filename:", filePath);
+  console.log("Final Image URL:", fullUrl);
+
+  return fullUrl;
 };
 
 type Segment = {

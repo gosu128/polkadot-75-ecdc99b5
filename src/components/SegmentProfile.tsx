@@ -3,8 +3,6 @@ import { Info, BookText, TrendingUp, Globe, AlertTriangle, Lightbulb, Star, Targ
 import { supabase } from "@/integrations/supabase/client";
 import Footer from '@/components/Footer';
 
-import Footer from '@/components/Footer';
-
 // Function to fetch the World Map URL from Supabase
 const getWorldMapUrl = (segmentName: string) => {
   if (!segmentName) return null;
@@ -13,9 +11,6 @@ const getWorldMapUrl = (segmentName: string) => {
 
   return `https://qhxgyizmewdtvwebpmie.supabase.co/storage/v1/object/public/polkadot/${filePath}`;
 };
-
-useEffect(() => {
-    const fetchScores = async () => {
 
 type Segment = {
   id: number;

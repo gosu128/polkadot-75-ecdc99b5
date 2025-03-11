@@ -1,30 +1,12 @@
-
 import Header from '@/components/Header';
-import Footer from '@/components/Footer';
-
 const BDTeams = () => {
-  return (
-    <div className="w-full min-h-screen bg-white flex flex-col">
+  return <div className="w-full min-h-screen bg-white">
       <Header />
-      <div className="container mx-auto p-4 pt-32 flex-grow">
-        <h1 className="text-4xl font-unbounded font-bold text-polkadot-pink mb-8 text-center">
-          Business Development Teams
-        </h1>
-        
-        {/* Centered iframe with consistent 16:9 aspect ratio */}
-        <div className="w-full max-w-5xl mx-auto overflow-hidden">
-          <div className="relative w-full pb-[56.25%]"> {/* 16:9 aspect ratio */}
-            <iframe 
-              src="https://docs.google.com/presentation/d/e/2PACX-1vSM-4G2XYB4SQwZ7tIe_wVHBUvGz4nHsMCBcZfsfhHBCdCeN74fKrjCKb-8tpXsH5FVEMZKnFlNXOcO/embed?start=false&loop=false&delayms=60000"
-              className="absolute top-0 left-0 w-full h-full border-0"
-              allowFullScreen={true}
-            ></iframe>
-          </div>
+      <div className="container mx-auto p-4 pt-32 flex justify-center">
+        <div className="bg-white p-2 w-full max-w-[1000px]"> {/* Reduced width from 1280px to 1150px */}
+          <iframe src="https://docs.google.com/presentation/d/1z13q5HFfK39eZVtA6sdHk8jC-EmTQdnBnIjsW0Acyfk/embed?start=false&loop=false&delayms=3000" className="w-full aspect-[16/9] border-0" frameBorder="0" allowFullScreen />
         </div>
       </div>
-      <Footer />
-    </div>
-  );
+    </div>;
 };
-
 export default BDTeams;

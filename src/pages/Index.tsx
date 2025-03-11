@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import Header from '@/components/Header';
 import SalesDropdown from '@/components/SalesDropdown';
@@ -24,13 +23,13 @@ const Index = () => {
       <Header />
 
       {/* Main Content */}
-      <main className="flex flex-col justify-center items-center text-center px-6 flex-grow">
+      <main className="flex flex-col justify-center items-center text-center px-6 min-h-screen">
         
         {/* Only show these elements when no segment is selected */}
         {!selectedSegment && (
           <>
             {/* Main Hero Content - Only visible on main page */}
-            <section className="w-full max-w-4xl flex flex-col items-center justify-center py-32">
+            <section className="w-full max-w-4xl flex flex-col items-center justify-center h-full">
               <h1 className="text-5xl sm:text-6xl md:text-7xl font-unbounded font-bold mb-12 leading-tight">
                 Who do you want to <br />
                 pitch <span className="bg-clip-text text-transparent bg-gradient-to-r from-polkadot-pink via-[#9B87F5] to-[#7E69AB]">Polkadot</span> to?
@@ -52,8 +51,10 @@ const Index = () => {
         )}
       </main>
 
-      {/* Footer */}
-      <Footer />
+      {/* Footer - Now only visible when scrolling */}
+      <footer className="mt-auto">
+        <Footer />
+      </footer>
     </div>
   );
 };

@@ -1,6 +1,4 @@
-
 import Header from '@/components/Header';
-import Footer from '@/components/Footer';
 import { useState } from 'react';
 
 // Define an array of 19 image URLs
@@ -22,9 +20,9 @@ const Methodology = () => {
   };
 
   return (
-    <div className="w-full min-h-screen bg-white flex flex-col">
+    <div className="w-full min-h-screen bg-white">
       <Header />
-      <div className="container mx-auto p-4 pt-32 flex-grow">
+      <div className="container mx-auto p-4 pt-32">
 
         {/* Image Carousel - Increased Size */}
         <div className="relative w-full max-w-5xl mx-auto">
@@ -63,9 +61,9 @@ const Methodology = () => {
           ))}
         </div>
       </div>
-      <Footer />
     </div>
   );
 };
 
 export default Methodology;
+

@@ -7,15 +7,16 @@ import Footer from '@/components/Footer';
 const getWorldMapUrl = (segmentName: string) => {
   if (!segmentName) return null;
 
-  // Convert segment name to match the stored filenames
+  // Convert segment name to match the stored filenames format
   const formattedName = segmentName
-    .replace(/\s/g, "_") // Replace spaces with underscores
-    .replace(/&/g, "_&_") // Ensure ampersands match the filenames
-    .replace(/-/g, "_-_"); // Ensure dashes match the filenames
+    .replace(/\s*&\s*/g, "_&_") // Replace & with _&_ (including surrounding spaces)
+    .replace(/\s*-\s*/g, "_-_") // Replace - with _-_ (including surrounding spaces)
+    .replace(/\s+/g, "_"); // Replace remaining spaces with underscores
 
   const filePath = `${formattedName}.png`;
   const fullUrl = `https://qhxgyizmewdtvwebpmie.supabase.co/storage/v1/object/public/polkadot/${filePath}`;
 
+  console.log("Original Segment Name:", segmentName);
   console.log("Formatted Filename:", filePath);
   console.log("Final Image URL:", fullUrl);
 

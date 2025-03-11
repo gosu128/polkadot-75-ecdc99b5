@@ -8,7 +8,7 @@ const BDTeams = () => {
         <div className="relative w-full max-w-screen-lg overflow-hidden">
          <iframe 
   src="https://docs.google.com/presentation/d/1z13q5HFfK39eZVtA6sdHk8jC-EmTQdnBnIjsW0Acyfk/embed?start=false&loop=false&delayms=3000" 
-  className="w-full h-[calc(100vh-200px)]"
+  className="w-full h-[calc(100vh-220px)]" /* Decreased height slightly */
   frameBorder="0" 
   allowFullScreen
 />

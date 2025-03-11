@@ -78,18 +78,24 @@ const formatContent = (content: string | null, isAbstract: boolean = false) => {
   
   return <div className="font-inter-light text-gray-700 space-y-2 text-left">
     {paragraphs.map((line, index) => {
-      // Special formatting for the last paragraph of Abstract section
       if (isAbstract && index === paragraphs.length - 1) {
         return (
-          <div key={index} className="mt-6 p-6 bg-gradient-to-r from-[#9B87F5]/10 via-[#E6007A]/5 to-[#9B87F5]/10 border border-[#9B87F5]/20 rounded-lg shadow-sm">
-            <p className="text-gray-800 font-medium leading-relaxed">
-              {line.trim()}
-            </p>
+          <div key={index} className="mt-8 rounded-xl overflow-hidden">
+            <div className="bg-gradient-to-r from-[#9B87F5] to-[#E6007A] px-4 py-2">
+              <h4 className="text-white font-semibold flex items-center">
+                <Lightbulb className="mr-2 h-5 w-5" />
+                Our Recommendations for BD Agents
+              </h4>
+            </div>
+            <div className="p-6 bg-gradient-to-r from-[#9B87F5]/10 via-[#E6007A]/5 to-[#9B87F5]/10 border-x border-b border-[#9B87F5]/20 shadow-md">
+              <p className="text-gray-800 font-medium leading-relaxed">
+                {line.trim()}
+              </p>
+            </div>
           </div>
         );
       }
 
-      // Regular paragraph formatting
       if (line.includes(':')) {
         const parts = line.split(':');
         return <p key={index} className="py-[5px]">
@@ -139,7 +145,6 @@ const SegmentProfile = ({
   const [worldMapUrl, setWorldMapUrl] = useState<string | null>(null);
   const [positioningImageUrl, setPositioningImageUrl] = useState<string | null>(null);
   
-  // Set world map URL
   useEffect(() => {
     if (segment && segment.name) {
       console.log("Segment Found:", segment.name);
@@ -147,14 +152,12 @@ const SegmentProfile = ({
       console.log("Generated World Map URL:", url);
       setWorldMapUrl(url);
       
-      // Get positioning image URL from the positioning bucket
       const posUrl = getStorageImageUrl(segment.name, "positioning");
       console.log("Generated Positioning Image URL:", posUrl);
       setPositioningImageUrl(posUrl);
     }
   }, [segment]);
 
-  // Fetch scores data
   useEffect(() => {
     const fetchScores = async () => {
       if (segment) {
@@ -316,7 +319,6 @@ const SegmentProfile = ({
         <SubsectionHeader icon={Target} title="Subline" />
         {formatContent(segment.positioning_subheadline)}
         
-        {/* Display the Positioning Image */}
         {positioningImageUrl ? (
           <div className="flex justify-center my-8">
             <img

@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import { Info, BookText, TrendingUp, Globe, AlertTriangle, Lightbulb, Star, Target, Users } from 'lucide-react';
 import { supabase } from "@/integrations/supabase/client";
@@ -72,19 +71,34 @@ type SegmentProfileProps = {
   onBack: () => void;
 };
 
-const formatContent = (content: string | null) => {
+const formatContent = (content: string | null, isAbstract: boolean = false) => {
   if (!content) return <p className="font-inter-light text-gray-700 italic">No information available</p>;
+
+  const paragraphs = content.split('\n');
+  
   return <div className="font-inter-light text-gray-700 space-y-2 text-left">
-      {content.split('\n').map((line, index) => {
+    {paragraphs.map((line, index) => {
+      // Special formatting for the last paragraph of Abstract section
+      if (isAbstract && index === paragraphs.length - 1) {
+        return (
+          <div key={index} className="mt-6 p-6 bg-gradient-to-r from-[#9B87F5]/10 via-[#E6007A]/5 to-[#9B87F5]/10 border border-[#9B87F5]/20 rounded-lg shadow-sm">
+            <p className="text-gray-800 font-medium leading-relaxed">
+              {line.trim()}
+            </p>
+          </div>
+        );
+      }
+
+      // Regular paragraph formatting
       if (line.includes(':')) {
         const parts = line.split(':');
         return <p key={index} className="py-[5px]">
-              <span className="font-inter-bold font-semibold">{parts[0].trim()}:</span> {parts.slice(1).join(':').trim()}
-            </p>;
+          <span className="font-inter-bold font-semibold">{parts[0].trim()}:</span> {parts.slice(1).join(':').trim()}
+        </p>;
       }
       return <p key={index} className="my-[10px]">{line.trim()}</p>;
     })}
-    </div>;
+  </div>;
 };
 
 const SectionHeader = ({
@@ -209,10 +223,9 @@ const SegmentProfile = ({
       </div>
 
       <div className="space-y-4 max-w-4xl">
-
         <SectionHeader icon={Info} title="Overview" />
         <SubsectionHeader icon={BookText} title="Abstract" />
-        {formatContent(segment.abstract)}
+        {formatContent(segment.abstract, true)}
         <SubsectionHeader icon={BookText} title="Definition" />
         {formatContent(segment.definition)}
         <SubsectionHeader icon={TrendingUp} title="Market Trends" />

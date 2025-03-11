@@ -1,8 +1,8 @@
 import Header from '@/components/Header';
 import { useState } from 'react';
 
-// Define an array of 18 image URLs
-const imageUrls = Array.from({ length: 18 }, (_, i) => 
+// Define an array of 19 image URLs
+const imageUrls = Array.from({ length: 19 }, (_, i) => 
   `https://qhxgyizmewdtvwebpmie.supabase.co/storage/v1/object/public/docs/methodology-${String(i + 1).padStart(2, '0')}.png`
 );
 
@@ -23,7 +23,6 @@ const Methodology = () => {
     <div className="w-full min-h-screen bg-white">
       <Header />
       <div className="container mx-auto p-4 pt-32">
-        <h1 className="text-3xl font-bold text-center mb-6">Methodology</h1>
 
         {/* Image Carousel */}
         <div className="relative w-full max-w-4xl mx-auto">
@@ -65,5 +64,3 @@ const Methodology = () => {
 };
 
 export default Methodology;
-
-

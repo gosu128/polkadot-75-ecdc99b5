@@ -1,19 +1,69 @@
 import Header from '@/components/Header';
+import { useState } from 'react';
+
+// Define an array of 18 image URLs
+const imageUrls = Array.from({ length: 18 }, (_, i) => 
+  `https://qhxgyizmewdtvwebpmie.supabase.co/storage/v1/object/public/docs/methodology-${String(i + 1).padStart(2, '0')}.png`
+);
 
 const Methodology = () => {
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  // Function to go to the next image
+  const nextSlide = () => {
+    setCurrentIndex((prevIndex) => (prevIndex + 1) % imageUrls.length);
+  };
+
+  // Function to go to the previous image
+  const prevSlide = () => {
+    setCurrentIndex((prevIndex) => (prevIndex - 1 + imageUrls.length) % imageUrls.length);
+  };
+
   return (
     <div className="w-full min-h-screen bg-white">
       <Header />
       <div className="container mx-auto p-4 pt-32">
-        <embed 
-  src="https://qhxgyizmewdtvwebpmie.supabase.co/storage/v1/object/public/docs//methodology.pdf" 
-  type="application/pdf"
-  className="w-full h-[calc(100vh-200px)]"
-/>
+        <h1 className="text-3xl font-bold text-center mb-6">Methodology</h1>
+
+        {/* Image Carousel */}
+        <div className="relative w-full max-w-4xl mx-auto">
+          <img 
+            src={imageUrls[currentIndex]} 
+            alt={`Methodology Page ${currentIndex + 1}`} 
+            className="w-full h-auto rounded-lg shadow-lg"
+          />
+
+          {/* Navigation Buttons */}
+          <button 
+            onClick={prevSlide} 
+            className="absolute left-0 top-1/2 transform -translate-y-1/2 bg-black/50 text-white p-3 rounded-full hover:bg-black/70 transition"
+          >
+            ◀
+          </button>
+
+          <button 
+            onClick={nextSlide} 
+            className="absolute right-0 top-1/2 transform -translate-y-1/2 bg-black/50 text-white p-3 rounded-full hover:bg-black/70 transition"
+          >
+            ▶
+          </button>
+        </div>
+
+        {/* Pagination Dots */}
+        <div className="flex justify-center mt-4 space-x-2">
+          {imageUrls.map((_, index) => (
+            <button 
+              key={index} 
+              onClick={() => setCurrentIndex(index)}
+              className={`h-3 w-3 rounded-full ${index === currentIndex ? 'bg-polkadot-pink' : 'bg-gray-300'}`}
+            />
+          ))}
+        </div>
       </div>
     </div>
   );
 };
 
 export default Methodology;
+
 

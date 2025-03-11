@@ -7,7 +7,7 @@ const BDTeams = () => {
       <div className="container mx-auto p-4 pt-32 flex justify-center">
         <div className="relative w-full max-w-screen-lg overflow-hidden">
           <iframe 
-  src="https://docs.google.com/presentation/d/1z13q5HFfK39eZVtA6sdHk8jC-EmTQdnBnIjsW0Acyfk/embed?start=false&loop=false&delayms=3000&zoom=100&rm=minimal"
+  src="https://docs.google.com/presentation/d/1z13q5HFfK39eZVtA6sdHk8jC-EmTQdnBnIjsW0Acyfk/embed?start=false&loop=false&delayms=3000&zoom=120&rm=minimal"
   className="w-full aspect-video"
   frameBorder="0"
   allowFullScreen

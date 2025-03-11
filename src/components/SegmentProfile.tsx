@@ -6,13 +6,12 @@ import Footer from '@/components/Footer';
 // Function to fetch the World Map URL from Supabase
 const getWorldMapUrl = async (segmentName: string) => {
   if (!segmentName) return null;
-
+  
   const formattedName = segmentName.toLowerCase().replace(/\s+/g, "-");
   const filePath = `worldmap-${formattedName}.png`;
 
   const { data } = supabase.storage.from("polkadot").getPublicUrl(filePath);
 
-  // Ensure the URL is formatted correctly
   if (!data || !data.publicUrl) {
     console.error(`Image not found for segment: ${segmentName}`);
     return null;
@@ -22,75 +21,25 @@ const getWorldMapUrl = async (segmentName: string) => {
   return data.publicUrl;
 };
 
-type Segment = {
-  id: number;
-  name: string;
-  industry_id: number;
-  abstract: string | null;
-  definition: string | null;
-  trends: string | null;
-  regions: string | null;
-  use_cases: string | null;
-  usecases_general: string | null;
-  usecases_web3: string | null;
-  personas_1: string | null;
-  personas_2: string | null;
-  personas_3: string | null;
-  positioning_statement: string | null;
-  positioning_headline: string | null;
-  positioning_subheadline: string | null;
-  ca_interoperability: string | null;
-  ca_resiliance: string | null;
-  ca_scalability: string | null;
-  ca_customization: string | null;
-  ca_reliability: string | null;
-  ca_other: string | null;
-  pmf: number | null;
-  scores: {
-    key: string;
-    value: number;
-  }[] | null;
-};
+const SegmentProfile = ({ segment, industry, onBack }) => {
+  const [scoreData, setScoreData] = useState(null);
+  const [worldMapUrl, setWorldMapUrl] = useState(null);
 
-type ScoreData = {
-  interoperability: number | null;
-  roi: number | null;
-  scalability: number | null;
-  customization: number | null;
-  awareness: number | null;
-  tech: number | null;
-  tam: number | null;
-  compliance: number | null;
-  complexity: number | null;
-  reliability: number | null;
-  pmf: number | null;
-};
-
-type SegmentProfileProps = {
-  segment: Segment | null;
-  industry?: any;
-  onBack: () => void;
-};
-
-const SegmentProfile = ({ segment, industry, onBack }: SegmentProfileProps) => {
-  const [scoreData, setScoreData] = useState<ScoreData | null>(null);
-  const [worldMapUrl, setWorldMapUrl] = useState<string | null>(null);
-
+  // Fetch the world map URL
   useEffect(() => {
     if (segment) {
       console.log("Segment Found:", segment.name);
 
-      // Fetch world map URL asynchronously
       const fetchMapUrl = async () => {
         const url = await getWorldMapUrl(segment.name);
-        setWorldMapUrl(url);
-        console.log("Setting Image URL:", url);
+        if (url) setWorldMapUrl(url);
       };
 
       fetchMapUrl();
     }
   }, [segment]);
 
+  // Fetch scores
   useEffect(() => {
     const fetchScores = async () => {
       if (segment) {
@@ -103,7 +52,7 @@ const SegmentProfile = ({ segment, industry, onBack }: SegmentProfileProps) => {
 
           if (error) {
             console.error('Error fetching scores:', error);
-          } else if (data) {
+          } else {
             setScoreData(data);
           }
         } catch (error) {
@@ -131,11 +80,16 @@ const SegmentProfile = ({ segment, industry, onBack }: SegmentProfileProps) => {
       <div className="space-y-4 max-w-4xl">
         <SectionHeader icon={Info} title="Overview" />
         <SubsectionHeader icon={BookText} title="Abstract" />
+        <p>{segment.abstract || "No abstract available."}</p>
+
         <SubsectionHeader icon={BookText} title="Definition" />
+        <p>{segment.definition || "No definition available."}</p>
+
         <SubsectionHeader icon={TrendingUp} title="Market Trends" />
+        <p>{segment.trends || "No market trends available."}</p>
 
         <SectionHeader icon={Globe} title="Geographical Hotspots" />
-        <SubsectionHeader icon={Globe} title="Regions" />
+        <p>{segment.regions || "No regional data available."}</p>
 
         {worldMapUrl ? (
           <div className="flex justify-center my-6">
@@ -145,20 +99,40 @@ const SegmentProfile = ({ segment, industry, onBack }: SegmentProfileProps) => {
               className="w-full max-w-2xl rounded-lg shadow-md"
               onError={(e) => {
                 console.error("Error loading image:", worldMapUrl);
-                e.currentTarget.src = "/fallback-image.png"; // Fallback in case image fails
+                e.currentTarget.style.display = "none";
               }}
             />
           </div>
         ) : (
           <p className="text-gray-500 italic">No geographical data available for this segment.</p>
         )}
+
+        <SectionHeader icon={Lightbulb} title="Use Cases" />
+        <SubsectionHeader icon={Lightbulb} title="General Use Cases" />
+        <p>{segment.usecases_general || "No general use cases available."}</p>
+
+        <SubsectionHeader icon={Lightbulb} title="Web3 Use Cases" />
+        <p>{segment.usecases_web3 || "No Web3 use cases available."}</p>
+
+        <SectionHeader icon={Star} title="Polkadot-Market-Fit Score" />
+        <p className="text-lg font-bold">{scoreData?.pmf || "No score available."}</p>
+      </div>
+
+      {/* Back Button */}
+      <div className="flex justify-center mt-12">
+        <button
+          onClick={onBack}
+          className="px-6 py-3 bg-gradient-to-r from-[#E6007A] to-[#9B87F5] text-white font-unbounded rounded-full text-lg transition-all duration-300 transform hover:scale-105 shadow-md hover:shadow-lg"
+        >
+          ← Back to Selection
+        </button>
       </div>
     </div>
   );
 };
 
 // Section header component
-const SectionHeader = ({ icon: Icon, title }: { icon: React.ElementType; title: string }) => (
+const SectionHeader = ({ icon: Icon, title }) => (
   <div className="mt-6 mb-2">
     <h2 className="text-polkadot-pink font-unbounded flex items-center text-xl font-semibold">
       <Icon className="mr-2 text-polkadot-pink w-6 h-6" />
@@ -169,7 +143,7 @@ const SectionHeader = ({ icon: Icon, title }: { icon: React.ElementType; title: 
 );
 
 // Subsection header component
-const SubsectionHeader = ({ icon: Icon, title }: { icon: React.ElementType; title: string }) => (
+const SubsectionHeader = ({ icon: Icon, title }) => (
   <h3 className="text-black font-semibold flex items-center mb-1 mt-3 text-lg my-[25px] mx-0">
     <Icon className="mr-2 text-gray-700 w-5 h-5" />
     {title}

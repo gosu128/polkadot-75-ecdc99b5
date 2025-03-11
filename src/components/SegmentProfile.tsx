@@ -216,7 +216,7 @@ const SegmentProfile = ({
             <img
               src={worldMapUrl}
               alt={`World map for ${segment.name}`}
-              className="w-full max-w-3xl"
+              className="w-full h-auto object-cover"
               onError={(e) => {
                 console.error("Error loading image:", worldMapUrl);
                 e.currentTarget.style.display = "none";

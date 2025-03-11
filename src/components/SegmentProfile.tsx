@@ -6,15 +6,15 @@ import Footer from '@/components/Footer';
 // Function to fetch the World Map URL from Supabase
 const getWorldMapUrl = (segmentName: string) => {
   if (!segmentName) return null;
-  const formattedName = segmentName.toLowerCase().replace(/\s+/g, "-"); // Convert spaces to hyphens
-  const filePath = `worldmap-${formattedName}.png`; // Ensure file format matches Supabase storage
+  const formattedName = segmentName.toLowerCase().replace(/\s+/g, "-");
+  const filePath = `worldmap-${formattedName}.png`;
 
   const { data } = supabase.storage.from("polkadot").getPublicUrl(filePath);
-
-  console.log("Generated Image URL:", data.publicUrl); // Debugging: Check if URL is correct
-
-  return data.publicUrl;
+  
+  console.log("Generated Image URL:", data.publicUrl); // Debugging log
+  return data.publicUrl || null;
 };
+
 
 
 type Segment = {
@@ -120,13 +120,14 @@ const SegmentProfile = ({
   const [scoreData, setScoreData] = useState<ScoreData | null>(null);
     const [worldMapUrl, setWorldMapUrl] = useState<string | null>(null);
 
-  useEffect(() => {
+useEffect(() => {
   if (segment) {
+    console.log("Segment Found:", segment.name);
     const url = getWorldMapUrl(segment.name);
     setWorldMapUrl(url);
+    console.log("Setting Image URL:", url);
   }
 }, [segment]);
-
 
   useEffect(() => {
     const fetchScores = async () => {
@@ -214,13 +215,15 @@ const SegmentProfile = ({
       className="w-full max-w-2xl rounded-lg shadow-md"
       onError={(e) => {
         console.error("Error loading image:", worldMapUrl);
-        e.currentTarget.style.display = "none"; // Hide if broken
+        e.currentTarget.src = ""; // Hide image if it fails
+        e.currentTarget.style.display = "none";
       }}
     />
   </div>
 ) : (
   <p className="text-gray-500 italic">No geographical data available for this segment.</p>
 )}
+
 
 
         <WorldMap />

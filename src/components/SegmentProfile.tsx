@@ -1,18 +1,15 @@
-
 import React, { useEffect, useState } from 'react';
 import { Info, BookText, TrendingUp, Globe, AlertTriangle, Lightbulb, Star, Target, Users } from 'lucide-react';
 import { supabase } from "@/integrations/supabase/client";
 import Footer from '@/components/Footer';
 
-// Function to generate the correct world map URL for each segment
 const getWorldMapUrl = (segmentName: string) => {
   if (!segmentName) return null;
 
-  // Convert segment name to match the stored filenames format
   const formattedName = segmentName
-    .replace(/\s*&\s*/g, "_&_") // Replace & with _&_ (including surrounding spaces)
-    .replace(/\s*-\s*/g, "_-_") // Replace - with _-_ (including surrounding spaces)
-    .replace(/\s+/g, "_"); // Replace remaining spaces with underscores
+    .replace(/\s*&\s*/g, "_&_")
+    .replace(/\s*-\s*/g, "_-_")
+    .replace(/\s+/g, "_");
 
   const filePath = `${formattedName}.png`;
   const fullUrl = `https://qhxgyizmewdtvwebpmie.supabase.co/storage/v1/object/public/polkadot/${filePath}`;
@@ -53,6 +50,7 @@ type Segment = {
     value: number;
   }[] | null;
 };
+
 type ScoreData = {
   interoperability: number | null;
   roi: number | null;
@@ -66,13 +64,13 @@ type ScoreData = {
   reliability: number | null;
   pmf: number | null;
 };
+
 type SegmentProfileProps = {
   segment: Segment | null;
   industry?: any;
   onBack: () => void;
 };
 
-// Function to format text while ensuring ":" is bold
 const formatContent = (content: string | null) => {
   if (!content) return <p className="font-inter-light text-gray-700 italic">No information available</p>;
   return <div className="font-inter-light text-gray-700 space-y-2 text-left">
@@ -88,7 +86,6 @@ const formatContent = (content: string | null) => {
     </div>;
 };
 
-// Section header component
 const SectionHeader = ({
   icon: Icon,
   title
@@ -103,7 +100,6 @@ const SectionHeader = ({
     <hr className="border-polkadot-pink my-2" />
   </div>;
 
-// Subsection header component
 const SubsectionHeader = ({
   icon: Icon,
   title
@@ -115,10 +111,10 @@ const SubsectionHeader = ({
     {title}
   </h3>;
 
-// World map component with highlighted countries
 const WorldMap = () => <div className="mt-4 mb-6">
     
   </div>;
+
 const SegmentProfile = ({
   segment,
   industry,
@@ -127,7 +123,6 @@ const SegmentProfile = ({
   const [scoreData, setScoreData] = useState<ScoreData | null>(null);
   const [worldMapUrl, setWorldMapUrl] = useState<string | null>(null);
   
-  // First useEffect for setting worldMapUrl
   useEffect(() => {
     if (segment && segment.name) {
       console.log("Segment Found:", segment.name);
@@ -137,7 +132,6 @@ const SegmentProfile = ({
     }
   }, [segment]);
 
-  // Second useEffect for fetching score data
   useEffect(() => {
     const fetchScores = async () => {
       if (segment) {
@@ -168,7 +162,6 @@ const SegmentProfile = ({
       </div>;
   }
 
-  // Format scores for display
   const formattedScores = scoreData ? [{
     name: 'Interoperability',
     value: scoreData.interoperability || 0
@@ -200,17 +193,14 @@ const SegmentProfile = ({
     name: 'Reliability',
     value: scoreData.reliability || 0
   }] : [];
-  
+
   return <div className="flex flex-col min-h-screen text-left px-4 sm:px-6 lg:px-8 py-16 lg:py-20 max-w-5xl mx-auto">
-      {/* Header with more space at the top */}
       <div className="mb-8">
         <h2 className="text-4xl font-unbounded font-bold text-gray-900 my-[60px]">{segment.name}</h2>
       </div>
 
-      {/* Main Sections with less space and narrower design */}
       <div className="space-y-4 max-w-4xl">
 
-        {/* Section 1: Overview */}
         <SectionHeader icon={Info} title="Overview" />
         <SubsectionHeader icon={BookText} title="Abstract" />
         {formatContent(segment.abstract)}
@@ -226,10 +216,10 @@ const SegmentProfile = ({
             <img
               src={worldMapUrl}
               alt={`World map for ${segment.name}`}
-              className="w-full max-w-2xl rounded-lg shadow-md"
+              className="w-full max-w-3xl"
               onError={(e) => {
                 console.error("Error loading image:", worldMapUrl);
-                e.currentTarget.style.display = "none"; // Hide the image if it fails to load
+                e.currentTarget.style.display = "none";
               }}
             />
           </div>
@@ -237,71 +227,65 @@ const SegmentProfile = ({
           <p className="text-gray-500 italic">No geographical data available for this segment.</p>
         )}
 
-        {/* Section 2: Use Cases - with updated data fetching */}
         <SectionHeader icon={Lightbulb} title="Use Cases" />
         <SubsectionHeader icon={Lightbulb} title="General Use Cases" />
         {formatContent(segment.usecases_general)}
         <SubsectionHeader icon={Lightbulb} title="Web3 Use Cases" />
         {formatContent(segment.usecases_web3)}
         
-      {/* Section 3: Personas */}
-      <SectionHeader icon={Users} title="Personas" />
+        <SectionHeader icon={Users} title="Personas" />
 
-      {/* Persona 1 */}
-      {segment.personas_1 && <div className="mb-6">
-    <SubsectionHeader icon={Users} title={segment.personas_1.split('\n')[0] || "Persona Group 1"} />
-    <div className="text-gray-700 space-y-4 text-left font-inter-light">
-      {segment.personas_1.split('\n').slice(1).map((line, index) => {
-            if (line.includes('What They Need:')) {
-              return <div key={index} className="p-4 bg-[#9B87F5]/10 border border-[#9B87F5] rounded-md shadow-sm">
-              <p className="font-inter-bold text-[#9B87F5] mb-2 font-bold">What They Need:</p>
-              <ol className="list-decimal pl-5 text-gray-700 space-y-1">
-                {segment.personas_1.split('\n').slice(index + 2).map((point, idx) => <li key={idx}>{point.replace(/^\d+\.\s*/, '').trim()}</li>)}
-              </ol>
-            </div>;
-            }
-            return index < segment.personas_1.split('\n').indexOf('What They Need:') ? <p key={index} className="my-2">{line.trim()}</p> : null;
-          })}
-    </div>
-  </div>}
+        {segment.personas_1 && <div className="mb-6">
+          <SubsectionHeader icon={Users} title={segment.personas_1.split('\n')[0] || "Persona Group 1"} />
+          <div className="text-gray-700 space-y-4 text-left font-inter-light">
+            {segment.personas_1.split('\n').slice(1).map((line, index) => {
+              if (line.includes('What They Need:')) {
+                return <div key={index} className="p-4 bg-[#9B87F5]/10 border border-[#9B87F5] rounded-md shadow-sm">
+                  <p className="font-inter-bold text-[#9B87F5] mb-2 font-bold">What They Need:</p>
+                  <ol className="list-decimal pl-5 text-gray-700 space-y-1">
+                    {segment.personas_1.split('\n').slice(index + 2).map((point, idx) => <li key={idx}>{point.replace(/^\d+\.\s*/, '').trim()}</li>)}
+                  </ol>
+                </div>;
+              }
+              return index < segment.personas_1.split('\n').indexOf('What They Need:') ? <p key={index} className="my-2">{line.trim()}</p> : null;
+            })}
+          </div>
+        </div>}
 
-      {/* Persona 2 */}
-      {segment.personas_2 && <div className="mb-6">
-    <SubsectionHeader icon={Users} title={segment.personas_2.split('\n')[0] || "Persona Group 2"} />
-    <div className="text-gray-700 space-y-4 text-left font-inter-light">
-      {segment.personas_2.split('\n').slice(1).map((line, index) => {
-            if (line.includes('What They Need:')) {
-              return <div key={index} className="p-4 bg-[#9B87F5]/10 border border-[#9B87F5] rounded-md shadow-sm">
-              <p className="font-inter-bold text-[#9B87F5] mb-2 font-bold">What They Need:</p>
-              <ol className="list-decimal pl-5 text-gray-700 space-y-1">
-                {segment.personas_2.split('\n').slice(index + 2).map((point, idx) => <li key={idx}>{point.replace(/^\d+\.\s*/, '').trim()}</li>)}
-              </ol>
-            </div>;
-            }
-            return index < segment.personas_2.split('\n').indexOf('What They Need:') ? <p key={index} className="my-2">{line.trim()}</p> : null;
-          })}
-    </div>
-  </div>}
+        {segment.personas_2 && <div className="mb-6">
+          <SubsectionHeader icon={Users} title={segment.personas_2.split('\n')[0] || "Persona Group 2"} />
+          <div className="text-gray-700 space-y-4 text-left font-inter-light">
+            {segment.personas_2.split('\n').slice(1).map((line, index) => {
+              if (line.includes('What They Need:')) {
+                return <div key={index} className="p-4 bg-[#9B87F5]/10 border border-[#9B87F5] rounded-md shadow-sm">
+                  <p className="font-inter-bold text-[#9B87F5] mb-2 font-bold">What They Need:</p>
+                  <ol className="list-decimal pl-5 text-gray-700 space-y-1">
+                    {segment.personas_2.split('\n').slice(index + 2).map((point, idx) => <li key={idx}>{point.replace(/^\d+\.\s*/, '').trim()}</li>)}
+                  </ol>
+                </div>;
+              }
+              return index < segment.personas_2.split('\n').indexOf('What They Need:') ? <p key={index} className="my-2">{line.trim()}</p> : null;
+            })}
+          </div>
+        </div>}
 
-      {/* Persona 3 */}
-      {segment.personas_3 && <div className="mb-6">
-    <SubsectionHeader icon={Users} title={segment.personas_3.split('\n')[0] || "Persona Group 3"} />
-    <div className="text-gray-700 space-y-4 text-left font-inter-light">
-      {segment.personas_3.split('\n').slice(1).map((line, index) => {
-            if (line.includes('What They Need:')) {
-              return <div key={index} className="p-4 bg-[#9B87F5]/10 border border-[#9B87F5] rounded-md shadow-sm">
-              <p className="font-inter-bold text-[#9B87F5] mb-2 font-bold">What They Need:</p>
-              <ol className="list-decimal pl-5 text-gray-700 space-y-1">
-                {segment.personas_3.split('\n').slice(index + 2).map((point, idx) => <li key={idx}>{point.replace(/^\d+\.\s*/, '').trim()}</li>)}
-              </ol>
-            </div>;
-            }
-            return index < segment.personas_3.split('\n').indexOf('What They Need:') ? <p key={index} className="my-2">{line.trim()}</p> : null;
-          })}
-    </div>
-  </div>}
+        {segment.personas_3 && <div className="mb-6">
+          <SubsectionHeader icon={Users} title={segment.personas_3.split('\n')[0] || "Persona Group 3"} />
+          <div className="text-gray-700 space-y-4 text-left font-inter-light">
+            {segment.personas_3.split('\n').slice(1).map((line, index) => {
+              if (line.includes('What They Need:')) {
+                return <div key={index} className="p-4 bg-[#9B87F5]/10 border border-[#9B87F5] rounded-md shadow-sm">
+                  <p className="font-inter-bold text-[#9B87F5] mb-2 font-bold">What They Need:</p>
+                  <ol className="list-decimal pl-5 text-gray-700 space-y-1">
+                    {segment.personas_3.split('\n').slice(index + 2).map((point, idx) => <li key={idx}>{point.replace(/^\d+\.\s*/, '').trim()}</li>)}
+                  </ol>
+                </div>;
+              }
+              return index < segment.personas_3.split('\n').indexOf('What They Need:') ? <p key={index} className="my-2">{line.trim()}</p> : null;
+            })}
+          </div>
+        </div>}
 
-        {/* Section 4: Messaging Strategy */}
         <SectionHeader icon={Target} title="Messaging Strategy" />
         <SubsectionHeader icon={Target} title="Positioning Statement" />
         {formatContent(segment.positioning_statement)}
@@ -310,7 +294,6 @@ const SegmentProfile = ({
         <SubsectionHeader icon={Target} title="Subline" />
         {formatContent(segment.positioning_subheadline)}
 
-        {/* Section 5: Capability Assessment */}
         <SectionHeader icon={Star} title="Capability Assessment" />
         <SubsectionHeader icon={Star} title="Interoperability" />
         {formatContent(segment.ca_interoperability)}
@@ -325,7 +308,6 @@ const SegmentProfile = ({
         <SubsectionHeader icon={Star} title="Other" />
         {formatContent(segment.ca_other)}
 
-        {/* Section 6: Polkadot-Market-Fit Score */}
         <SectionHeader icon={Star} title="Polkadot-Market-Fit Score" />
         <div className="flex flex-col md:flex-row items-start gap-6">
           <div className="flex flex-col items-center justify-center p-6 bg-gradient-to-br from-polkadot-pink/10 to-white rounded-xl shadow-sm">
@@ -358,7 +340,6 @@ const SegmentProfile = ({
           </div>
         </div>
         
-        {/* Back Button - Moved to the Bottom */}
         <div className="flex justify-center mt-12">
           <button
             onClick={onBack}

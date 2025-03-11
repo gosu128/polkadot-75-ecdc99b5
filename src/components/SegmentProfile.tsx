@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import { Info, BookText, TrendingUp, Globe, AlertTriangle, Lightbulb, Star, Target, Users } from 'lucide-react';
 import { supabase } from "@/integrations/supabase/client";
@@ -125,23 +126,28 @@ const SegmentProfile = ({
 }: SegmentProfileProps) => {
   const [scoreData, setScoreData] = useState<ScoreData | null>(null);
   const [worldMapUrl, setWorldMapUrl] = useState<string | null>(null);
+  
+  // First useEffect for setting worldMapUrl
   useEffect(() => {
-  if (segment && segment.name) {
-    console.log("Segment Found:", segment.name);
+    if (segment && segment.name) {
+      console.log("Segment Found:", segment.name);
+      const url = getWorldMapUrl(segment.name);
+      console.log("Generated Image URL:", url);
+      setWorldMapUrl(url);
+    }
+  }, [segment]);
 
-    const url = getWorldMapUrl(segment.name);
-    console.log("Generated Image URL:", url); // Log the URL
-
-    setWorldMapUrl(url);
-  }
-}, [segment]);
-
+  // Second useEffect for fetching score data
+  useEffect(() => {
+    const fetchScores = async () => {
       if (segment) {
         try {
-          const {
-            data,
-            error
-          } = await supabase.from('segments').select('interoperability, roi, scalability, customization, awareness, tech, tam, compliance, complexity, reliability, pmf').eq('id', segment.id).maybeSingle();
+          const { data, error } = await supabase
+            .from('segments')
+            .select('interoperability, roi, scalability, customization, awareness, tech, tam, compliance, complexity, reliability, pmf')
+            .eq('id', segment.id)
+            .maybeSingle();
+            
           if (error) {
             console.error('Error fetching scores:', error);
           } else if (data) {
@@ -152,8 +158,10 @@ const SegmentProfile = ({
         }
       }
     };
+    
     fetchScores();
   }, [segment]);
+
   if (!segment) {
     return <div className="flex flex-col items-center justify-center min-h-screen text-center">
         <h2 className="text-2xl font-bold text-red-600">Error: Segment data not found</h2>
@@ -192,6 +200,7 @@ const SegmentProfile = ({
     name: 'Reliability',
     value: scoreData.reliability || 0
   }] : [];
+  
   return <div className="flex flex-col min-h-screen text-left px-4 sm:px-6 lg:px-8 py-16 lg:py-20 max-w-5xl mx-auto">
       {/* Header with more space at the top */}
       <div className="mb-8">
@@ -209,24 +218,24 @@ const SegmentProfile = ({
         {formatContent(segment.definition)}
         <SubsectionHeader icon={TrendingUp} title="Market Trends" />
         {formatContent(segment.trends)}
-       <SubsectionHeader icon={Globe} title="Geographical Hotspots" />
-{formatContent(segment.regions)}
+        <SubsectionHeader icon={Globe} title="Geographical Hotspots" />
+        {formatContent(segment.regions)}
 
-{worldMapUrl ? (
-  <div className="flex justify-center my-6">
-    <img
-      src={worldMapUrl}
-      alt={`World map for ${segment.name}`}
-      className="w-full max-w-2xl rounded-lg shadow-md"
-      onError={(e) => {
-        console.error("Error loading image:", worldMapUrl);
-        e.currentTarget.style.display = "none"; // Hide the image if it fails to load
-      }}
-    />
-  </div>
-) : (
-  <p className="text-gray-500 italic">No geographical data available for this segment.</p>
-)}
+        {worldMapUrl ? (
+          <div className="flex justify-center my-6">
+            <img
+              src={worldMapUrl}
+              alt={`World map for ${segment.name}`}
+              className="w-full max-w-2xl rounded-lg shadow-md"
+              onError={(e) => {
+                console.error("Error loading image:", worldMapUrl);
+                e.currentTarget.style.display = "none"; // Hide the image if it fails to load
+              }}
+            />
+          </div>
+        ) : (
+          <p className="text-gray-500 italic">No geographical data available for this segment.</p>
+        )}
 
         {/* Section 2: Use Cases - with updated data fetching */}
         <SectionHeader icon={Lightbulb} title="Use Cases" />
@@ -348,17 +357,18 @@ const SegmentProfile = ({
             </div>
           </div>
         </div>
-      {/* Back Button - Moved to the Bottom */}
-<div className="flex justify-center mt-12">
-  <button
-    onClick={onBack}
-    className="px-6 py-3 bg-gradient-to-r from-[#E6007A] to-[#9B87F5] text-white font-unbounded rounded-full text-lg transition-all duration-300 transform hover:scale-105 shadow-md hover:shadow-lg"
-  >
-    ← Back to Selection
-  </button>
-</div>
-
-</div>
-</div>;
+        
+        {/* Back Button - Moved to the Bottom */}
+        <div className="flex justify-center mt-12">
+          <button
+            onClick={onBack}
+            className="px-6 py-3 bg-gradient-to-r from-[#E6007A] to-[#9B87F5] text-white font-unbounded rounded-full text-lg transition-all duration-300 transform hover:scale-105 shadow-md hover:shadow-lg"
+          >
+            ← Back to Selection
+          </button>
+        </div>
+      </div>
+    </div>;
 };
+
 export default SegmentProfile;

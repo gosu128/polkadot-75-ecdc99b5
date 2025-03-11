@@ -117,17 +117,16 @@ const SegmentProfile = ({
   const [scoreData, setScoreData] = useState<ScoreData | null>(null);
   const [worldMapUrl, setWorldMapUrl] = useState<string | null>(null);
   useEffect(() => {
-    const fetchScores = async () => {
-      useEffect(() => {
   if (segment && segment.name) {
     console.log("Segment Found:", segment.name);
 
     const url = getWorldMapUrl(segment.name);
-    console.log("Generated Image URL:", url);
+    console.log("Generated Image URL:", url); // Log the URL
 
     setWorldMapUrl(url);
   }
 }, [segment]);
+
       if (segment) {
         try {
           const {

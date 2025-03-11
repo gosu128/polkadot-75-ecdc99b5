@@ -8,6 +8,7 @@ import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import PMFScores from "./components/PMFScores";
 import Methodology from "./pages/Methodology";
+import BDTeams from "./pages/BDTeams";
 
 const queryClient = new QueryClient();
 
@@ -21,6 +22,7 @@ const App = () => (
           <Route path="/" element={<Index />} />
           <Route path="/pmf-scores" element={<PMFScores />} />
           <Route path="/methodology" element={<Methodology />} />
+          <Route path="/bd-teams" element={<BDTeams />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

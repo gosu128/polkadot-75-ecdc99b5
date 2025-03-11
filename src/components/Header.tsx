@@ -18,6 +18,9 @@ const Header = () => {
     name: "Case Studies",
     link: "/case-studies"
   }, {
+    name: "BD Teams",
+    link: "/bd-teams"
+  }, {
     name: "Methodology",
     link: "/methodology"
   }];
@@ -42,7 +45,7 @@ const Header = () => {
                 className={cn(
                   "relative px-4 py-1.5 rounded-full text-sm font-medium font-unbounded transition-all duration-300 ease-in-out",
                   isActive 
-                    ? "text-white bg-gradient-to-r from-polkadot-pink to-polkadot-pink-light shadow-sm" 
+                    ? "bg-gradient-to-r from-polkadot-pink to-polkadot-pink-light bg-clip-text text-transparent" 
                     : "text-gray-700 hover:text-polkadot-pink"
                 )} 
                 onMouseEnter={() => setIsHovered(index)} 

@@ -45,7 +45,7 @@ const Header = () => {
                 className={cn(
                   "relative px-4 py-1.5 rounded-full text-sm font-medium font-unbounded transition-all duration-300 ease-in-out",
                   isActive 
-                    ? "bg-gradient-to-r from-polkadot-pink to-polkadot-pink-light bg-clip-text text-transparent" 
+                    ? "bg-gradient-to-r from-polkadot-pink via-polkadot-pink-light to-polkadot-pink bg-clip-text text-transparent font-bold" 
                     : "text-gray-700 hover:text-polkadot-pink"
                 )} 
                 onMouseEnter={() => setIsHovered(index)} 

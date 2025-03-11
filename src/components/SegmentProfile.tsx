@@ -2,6 +2,21 @@ import React, { useEffect, useState } from 'react';
 import { Info, BookText, TrendingUp, Globe, AlertTriangle, Lightbulb, Star, Target, Users } from 'lucide-react';
 import { supabase } from "@/integrations/supabase/client";
 import Footer from '@/components/Footer';
+
+import Footer from '@/components/Footer';
+
+// Function to fetch the World Map URL from Supabase
+const getWorldMapUrl = (segmentName: string) => {
+  if (!segmentName) return null;
+  const formattedName = segmentName.toLowerCase().replace(/\s+/g, "-");
+  const filePath = `worldmap-${formattedName}.png`;
+
+  return `https://qhxgyizmewdtvwebpmie.supabase.co/storage/v1/object/public/polkadot/${filePath}`;
+};
+
+useEffect(() => {
+    const fetchScores = async () => {
+
 type Segment = {
   id: number;
   name: string;
@@ -103,6 +118,7 @@ const SegmentProfile = ({
   onBack
 }: SegmentProfileProps) => {
   const [scoreData, setScoreData] = useState<ScoreData | null>(null);
+  const [worldMapUrl, setWorldMapUrl] = useState<string | null>(null);
   useEffect(() => {
     const fetchScores = async () => {
       if (segment) {

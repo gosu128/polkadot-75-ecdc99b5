@@ -2,6 +2,18 @@ import React, { useEffect, useState } from 'react';
 import { Info, BookText, TrendingUp, Globe, AlertTriangle, Lightbulb, Star, Target, Users } from 'lucide-react';
 import { supabase } from "@/integrations/supabase/client";
 import Footer from '@/components/Footer';
+
+// Function to generate the correct world map URL for each segment
+const getWorldMapUrl = (segmentName: string) => {
+  if (!segmentName) return null;
+
+  // Ensure the segment name is formatted exactly like the file names in Supabase Storage
+  const formattedName = segmentName.replace(/\s/g, "_"); // Replace spaces with underscores
+  const filePath = `${formattedName}.png`;
+
+  return `https://qhxgyizmewdtvwebpmie.supabase.co/storage/v1/object/public/polkadot/${filePath}`;
+};
+
 type Segment = {
   id: number;
   name: string;
@@ -103,8 +115,19 @@ const SegmentProfile = ({
   onBack
 }: SegmentProfileProps) => {
   const [scoreData, setScoreData] = useState<ScoreData | null>(null);
+  const [worldMapUrl, setWorldMapUrl] = useState<string | null>(null);
   useEffect(() => {
     const fetchScores = async () => {
+      useEffect(() => {
+  if (segment && segment.name) {
+    console.log("Segment Found:", segment.name);
+
+    const url = getWorldMapUrl(segment.name);
+    console.log("Generated Image URL:", url);
+
+    setWorldMapUrl(url);
+  }
+}, [segment]);
       if (segment) {
         try {
           const {
@@ -178,9 +201,24 @@ const SegmentProfile = ({
         {formatContent(segment.definition)}
         <SubsectionHeader icon={TrendingUp} title="Market Trends" />
         {formatContent(segment.trends)}
-        <SubsectionHeader icon={Globe} title="Geographical Hotspots" />
-        {formatContent(segment.regions)}
-        <WorldMap />
+       <SubsectionHeader icon={Globe} title="Geographical Hotspots" />
+{formatContent(segment.regions)}
+
+{worldMapUrl ? (
+  <div className="flex justify-center my-6">
+    <img
+      src={worldMapUrl}
+      alt={`World map for ${segment.name}`}
+      className="w-full max-w-2xl rounded-lg shadow-md"
+      onError={(e) => {
+        console.error("Error loading image:", worldMapUrl);
+        e.currentTarget.style.display = "none"; // Hide the image if it fails to load
+      }}
+    />
+  </div>
+) : (
+  <p className="text-gray-500 italic">No geographical data available for this segment.</p>
+)}
 
         {/* Section 2: Use Cases - with updated data fetching */}
         <SectionHeader icon={Lightbulb} title="Use Cases" />

@@ -3,7 +3,6 @@ import { Info, BookText, TrendingUp, Globe, AlertTriangle, Lightbulb, Star, Targ
 import { supabase } from "@/integrations/supabase/client";
 import Footer from '@/components/Footer';
 
-// Function to fetch the World Map URL from Supabase
 const getWorldMapUrl = async (segmentName: string) => {
   if (!segmentName) return null;
   
@@ -25,11 +24,10 @@ const SegmentProfile = ({ segment, industry, onBack }) => {
   const [scoreData, setScoreData] = useState(null);
   const [worldMapUrl, setWorldMapUrl] = useState(null);
 
-  // Fetch the world map URL
   useEffect(() => {
     if (segment) {
       console.log("Segment Found:", segment.name);
-
+      
       const fetchMapUrl = async () => {
         const url = await getWorldMapUrl(segment.name);
         if (url) setWorldMapUrl(url);
@@ -39,7 +37,6 @@ const SegmentProfile = ({ segment, industry, onBack }) => {
     }
   }, [segment]);
 
-  // Fetch scores
   useEffect(() => {
     const fetchScores = async () => {
       if (segment) {
@@ -151,3 +148,4 @@ const SubsectionHeader = ({ icon: Icon, title }) => (
 );
 
 export default SegmentProfile;
+

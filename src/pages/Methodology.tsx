@@ -35,7 +35,7 @@ const Methodology = () => {
           {/* Navigation Buttons - Smaller & Less Intrusive */}
           <button 
             onClick={prevSlide} 
-            className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-black/30 text-white p-2 rounded-md hover:bg-black/50 transition border border-white/30"
+            className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-black/30 text-white p-1 rounded-sm hover:bg-black/20 transition border border-white/30"
           >
             ◀
           </button>

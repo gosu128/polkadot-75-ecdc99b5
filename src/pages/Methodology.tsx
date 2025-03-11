@@ -25,24 +25,24 @@ const Methodology = () => {
       <div className="container mx-auto p-4 pt-32">
 
         {/* Image Carousel - Increased Size */}
-        <div className="relative w-full max-w-5xl mx-auto"> {/* Increased from max-w-4xl to max-w-5xl */}
+        <div className="relative w-full max-w-5xl mx-auto">
           <img 
             src={imageUrls[currentIndex]} 
             alt={`Methodology Page ${currentIndex + 1}`} 
-            className="w-full h-auto rounded-lg shadow-xl" // Changed shadow-lg to shadow-xl for better emphasis
+            className="w-full h-auto rounded-lg shadow-xl"
           />
 
-          {/* Navigation Buttons */}
+          {/* Navigation Buttons - Smaller & Less Intrusive */}
           <button 
             onClick={prevSlide} 
-            className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-black/50 text-white p-4 rounded-full hover:bg-black/70 transition"
+            className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-black/30 text-white p-2 rounded-md hover:bg-black/50 transition border border-white/30"
           >
             ◀
           </button>
 
           <button 
             onClick={nextSlide} 
-            className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-black/50 text-white p-4 rounded-full hover:bg-black/70 transition"
+            className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-black/30 text-white p-2 rounded-md hover:bg-black/50 transition border border-white/30"
           >
             ▶
           </button>
@@ -55,7 +55,7 @@ const Methodology = () => {
               key={index} 
               onClick={() => setCurrentIndex(index)}
               className={`h-3 w-3 rounded-full transition-all duration-200 ${
-                index === currentIndex ? 'bg-polkadot-pink scale-125' : 'bg-gray-300'
+                index === currentIndex ? 'bg-polkadot-pink scale-110' : 'bg-gray-300'
               }`}
             />
           ))}
@@ -66,3 +66,4 @@ const Methodology = () => {
 };
 
 export default Methodology;
+

@@ -4,16 +4,18 @@ import { supabase } from "@/integrations/supabase/client";
 import Footer from '@/components/Footer';
 
 // Function to fetch the World Map URL from Supabase
-const getWorldMapUrl = async (segmentName: string) => {
+const getWorldMapUrl = (segmentName: string) => {
+  if (!segmentName) return null;
   const formattedName = segmentName.toLowerCase().replace(/\s+/g, "-"); // Convert spaces to hyphens
-  const filePath = `worldmap-${formattedName}.png`; // Adjust file format if necessary
+  const filePath = `worldmap-${formattedName}.png`; // Ensure file format matches Supabase storage
 
-  const { data } = supabase.storage
-    .from("polkadot") // Your bucket name
-    .getPublicUrl(filePath);
+  const { data } = supabase.storage.from("polkadot").getPublicUrl(filePath);
+
+  console.log("Generated Image URL:", data.publicUrl); // Debugging: Check if URL is correct
 
   return data.publicUrl;
 };
+
 
 type Segment = {
   id: number;
@@ -119,15 +121,12 @@ const SegmentProfile = ({
     const [worldMapUrl, setWorldMapUrl] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchWorldMap = async () => {
-      if (segment) {
-        const url = await getWorldMapUrl(segment.name);
-        setWorldMapUrl(url);
-      }
-    };
+  if (segment) {
+    const url = getWorldMapUrl(segment.name);
+    setWorldMapUrl(url);
+  }
+}, [segment]);
 
-    fetchWorldMap();
-  }, [segment]);
 
   useEffect(() => {
     const fetchScores = async () => {
@@ -213,11 +212,16 @@ const SegmentProfile = ({
       src={worldMapUrl}
       alt={`World map for ${segment.name}`}
       className="w-full max-w-2xl rounded-lg shadow-md"
+      onError={(e) => {
+        console.error("Error loading image:", worldMapUrl);
+        e.currentTarget.style.display = "none"; // Hide if broken
+      }}
     />
   </div>
 ) : (
   <p className="text-gray-500 italic">No geographical data available for this segment.</p>
 )}
+
 
         <WorldMap />
 

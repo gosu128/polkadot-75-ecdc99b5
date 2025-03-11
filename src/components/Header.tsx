@@ -36,13 +36,14 @@ const Header = () => {
                 className={cn(
                   "relative px-4 py-1.5 text-sm font-medium font-unbounded transition-all duration-300 ease-in-out",
                   isActive
-                    ? "bg-clip-text text-transparent font-bold bg-gradient-to-r from-[#E6007A] via-[#9B87F5] to-[#2F80ED]" // Gradient text effect
+                    ? "font-bold bg-gradient-to-r from-[#7E22CE] via-[#E6007A] to-[#F43F5E] bg-clip-text text-transparent"
                     : "text-gray-700 hover:text-polkadot-pink"
                 )}
                 onMouseEnter={() => setIsHovered(index)} 
                 onMouseLeave={() => setIsHovered(null)}
+                style={isActive ? { WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' } : {}}
               >
-                <span className="relative z-10 font-normal px-0 mx-[10px]">{item.name}</span>
+                {item.name}
               </a>
             );
           })}

@@ -4,17 +4,20 @@ import Footer from '@/components/Footer';
 
 const BDTeams = () => {
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="w-full min-h-screen bg-white flex flex-col">
       <Header />
       <div className="container mx-auto p-4 pt-32 flex-grow">
-        {/* Centered iframe with consistent aspect ratio and no borders */}
+        <h1 className="text-4xl font-unbounded font-bold text-polkadot-pink mb-8 text-center">
+          Business Development Teams
+        </h1>
+        
+        {/* Centered iframe with consistent 16:9 aspect ratio */}
         <div className="w-full max-w-5xl mx-auto overflow-hidden">
           <div className="relative w-full pb-[56.25%]"> {/* 16:9 aspect ratio */}
             <iframe 
               src="https://docs.google.com/presentation/d/e/2PACX-1vSM-4G2XYB4SQwZ7tIe_wVHBUvGz4nHsMCBcZfsfhHBCdCeN74fKrjCKb-8tpXsH5FVEMZKnFlNXOcO/embed?start=false&loop=false&delayms=60000"
-              className="absolute top-0 left-0 w-full h-full"
+              className="absolute top-0 left-0 w-full h-full border-0"
               allowFullScreen={true}
-              frameBorder="0"
             ></iframe>
           </div>
         </div>

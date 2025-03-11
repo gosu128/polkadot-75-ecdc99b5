@@ -22,9 +22,10 @@ const Methodology = () => {
   };
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="w-full min-h-screen bg-white flex flex-col">
       <Header />
       <div className="container mx-auto p-4 pt-32 flex-grow">
+
         {/* Image Carousel - Increased Size */}
         <div className="relative w-full max-w-5xl mx-auto">
           <img 

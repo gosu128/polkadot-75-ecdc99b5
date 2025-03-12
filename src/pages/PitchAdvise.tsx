@@ -75,7 +75,10 @@ const PitchAdvise = () => {
   <p className="text-gray-700 leading-relaxed">{content["capability_assessment"] || "Content not available."}</p>
 
   <SectionHeader icon={Star} title="Polkadot's Value Proposition" />
-  <p className="text-gray-700 leading-relaxed">{content["value_proposition"] || "Content not available."}</p>
+<div 
+  className="text-gray-700 leading-relaxed space-y-4"
+  dangerouslySetInnerHTML={{ __html: content["value_proposition"]?.replace(/\n/g, "<br>") || "Content not available." }}
+/>
 </div>
 
       </div>

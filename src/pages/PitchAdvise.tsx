@@ -4,7 +4,7 @@ import { AlertTriangle, Info, Lightbulb, Star, Target, Users } from "lucide-reac
 import Header from "@/components/Header";
 
 const SectionHeader = ({ icon: Icon, title }: { icon: React.ElementType; title: string }) => (
-  <div className="mt-12 mb-2">  {/* Increased top margin for more white space before headers */}
+  <div className="mt-12 mb-2">
     <h2 className="text-polkadot-pink font-unbounded flex items-center text-xl font-semibold">
       <Icon className="mr-2 text-polkadot-pink w-6 h-6" />
       {title}
@@ -43,48 +43,47 @@ const PitchAdvise = () => {
     <div className="w-full min-h-screen bg-white">
       <Header />
       <div className="flex flex-col min-h-screen text-left px-4 sm:px-6 lg:px-8 py-16 lg:py-20 max-w-5xl mx-auto">
+        <div className="space-y-10 max-w-4xl">
+          <SectionHeader icon={Info} title="Introduction" />
+          <div className="text-gray-700 leading-relaxed space-y-4" 
+            dangerouslySetInnerHTML={{ __html: content["introduction"] || "Content not available." }} 
+          />
 
-       <div className="max-w-4xl">
-  <SectionHeader icon={Info} title="Introduction" />
-  <p className="text-gray-700 leading-relaxed">{content["introduction"] || "Content not available."}</p>
+          <SectionHeader icon={AlertTriangle} title="Things to Keep in Mind during B2B Pitches" />
+          <div className="text-gray-700 leading-relaxed space-y-4" 
+            dangerouslySetInnerHTML={{ __html: content["b2b_pitches"] || "Content not available." }} 
+          />
 
-  <SectionHeader icon={AlertTriangle} title="Things to Keep in Mind during B2B Pitches" />
-  <p className="text-gray-700 leading-relaxed">{content["b2b_pitches"] || "Content not available."}</p>
+          <SectionHeader icon={Lightbulb} title="Important B2B Use Cases" />
+          <div className="text-gray-700 leading-relaxed space-y-4" 
+            dangerouslySetInnerHTML={{ __html: content["use_cases"] || "Content not available." }} 
+          />
 
-  <SectionHeader icon={Lightbulb} title="Important B2B Use Cases" />
-  <p className="text-gray-700 leading-relaxed">{content["use_cases"] || "Content not available."}</p>
+          <SectionHeader icon={Users} title="Important B2B Personas" />
+          <div className="text-gray-700 leading-relaxed space-y-6" 
+            dangerouslySetInnerHTML={{ __html: content["personas"] || "Content not available." }} 
+          />
 
-  <SectionHeader icon={Users} title="Important B2B Personas" />
-  <div className="text-gray-700 leading-relaxed space-y-4">
-    {content["personas"]
-      ? content["personas"].split("###").map((persona, index) =>
-          persona.trim() && (
-            <div key={index} className="p-4 bg-gray-100 border border-gray-300 rounded-md shadow-sm">
-              <h4 className="text-lg font-semibold text-gray-900">{persona.split("\n")[0]}</h4>
-              <p className="mt-2">{persona.split("\n").slice(1).join("\n").trim()}</p>
-            </div>
-          )
-        )
-      : "Content not available."}
-  </div>
+          <SectionHeader icon={Target} title="Polkadot's Messaging Strategy" />
+          <div className="text-gray-700 leading-relaxed space-y-4" 
+            dangerouslySetInnerHTML={{ __html: content["messaging_strategy"] || "Content not available." }} 
+          />
 
-  <SectionHeader icon={Target} title="Polkadot's Messaging Strategy" />
-  <p className="text-gray-700 leading-relaxed">{content["messaging_strategy"] || "Content not available."}</p>
+          <SectionHeader icon={Star} title="Polkadot's Capability Assessment" />
+          <div className="text-gray-700 leading-relaxed space-y-4" 
+            dangerouslySetInnerHTML={{ __html: content["capability_assessment"] || "Content not available." }} 
+          />
 
-  <SectionHeader icon={Star} title="Polkadot's Capability Assessment" />
-  <p className="text-gray-700 leading-relaxed">{content["capability_assessment"] || "Content not available."}</p>
-
-  <SectionHeader icon={Star} title="Polkadot's Value Proposition" />
-<div 
-  className="text-gray-700 leading-relaxed space-y-4"
-  dangerouslySetInnerHTML={{ __html: content["value_proposition"]?.replace(/\n/g, "<br>") || "Content not available." }}
-/>
-</div>
-
+          <SectionHeader icon={Star} title="Polkadot's Value Proposition" />
+          <div className="text-gray-700 leading-relaxed space-y-4" 
+            dangerouslySetInnerHTML={{ __html: content["value_proposition"] || "Content not available." }} 
+          />
+        </div>
       </div>
     </div>
   );
 };
 
 export default PitchAdvise;
+
 

@@ -4,7 +4,7 @@ import { AlertTriangle, Info, Lightbulb, Star, Target, Users } from "lucide-reac
 import Header from "@/components/Header";
 
 const SectionHeader = ({ icon: Icon, title }: { icon: React.ElementType; title: string }) => (
-  <div className="mt-6 mb-2">
+  <div className="mt-12 mb-2">  {/* Increased top margin for more white space before headers */}
     <h2 className="text-polkadot-pink font-unbounded flex items-center text-xl font-semibold">
       <Icon className="mr-2 text-polkadot-pink w-6 h-6" />
       {title}
@@ -47,18 +47,18 @@ const PitchAdvise = () => {
           <h2 className="text-4xl font-unbounded font-bold text-gray-900 my-[60px]">Pitch Advice for BD Agents</h2>
         </div>
 
-        <div className="space-y-10 max-w-4xl">  {/* Increased spacing between sections */}
+       <div className="max-w-4xl">
   <SectionHeader icon={Info} title="Introduction" />
-  <p className="text-gray-700 leading-relaxed mb-10">{content["introduction"] || "Content not available."}</p>
+  <p className="text-gray-700 leading-relaxed">{content["introduction"] || "Content not available."}</p>
 
   <SectionHeader icon={AlertTriangle} title="Things to Keep in Mind during B2B Pitches" />
-  <p className="text-gray-700 leading-relaxed mb-10">{content["b2b_pitches"] || "Content not available."}</p>
+  <p className="text-gray-700 leading-relaxed">{content["b2b_pitches"] || "Content not available."}</p>
 
   <SectionHeader icon={Lightbulb} title="Important B2B Use Cases" />
-  <p className="text-gray-700 leading-relaxed mb-10">{content["use_cases"] || "Content not available."}</p>
+  <p className="text-gray-700 leading-relaxed">{content["use_cases"] || "Content not available."}</p>
 
   <SectionHeader icon={Users} title="Important B2B Personas" />
-  <div className="text-gray-700 leading-relaxed space-y-6 mb-10">
+  <div className="text-gray-700 leading-relaxed space-y-4">
     {content["personas"]
       ? content["personas"].split("###").map((persona, index) =>
           persona.trim() && (
@@ -72,10 +72,10 @@ const PitchAdvise = () => {
   </div>
 
   <SectionHeader icon={Target} title="Polkadot's Messaging Strategy" />
-  <p className="text-gray-700 leading-relaxed mb-10">{content["messaging_strategy"] || "Content not available."}</p>
+  <p className="text-gray-700 leading-relaxed">{content["messaging_strategy"] || "Content not available."}</p>
 
   <SectionHeader icon={Star} title="Polkadot's Capability Assessment" />
-  <p className="text-gray-700 leading-relaxed mb-10">{content["capability_assessment"] || "Content not available."}</p>
+  <p className="text-gray-700 leading-relaxed">{content["capability_assessment"] || "Content not available."}</p>
 
   <SectionHeader icon={Star} title="Polkadot's Value Proposition" />
   <p className="text-gray-700 leading-relaxed">{content["value_proposition"] || "Content not available."}</p>

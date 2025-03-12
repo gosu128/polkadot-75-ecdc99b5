@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { Info, BookText, TrendingUp, Globe, AlertTriangle, Lightbulb, Star, Target, Users } from 'lucide-react';
 import { supabase } from "@/integrations/supabase/client";
 import Footer from '@/components/Footer';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { useRef } from 'react';
 
 const getStorageImageUrl = (segmentName: string, bucket: string) => {
   if (!segmentName) return null;
@@ -256,7 +258,7 @@ const SegmentProfile = ({
         <SubsectionHeader icon={Lightbulb} title="General Use Cases" />
         {formatContent(segment.usecases_general)}
         <SubsectionHeader icon={Lightbulb} title="Web3 Use Cases" />
-        {formatContent(segment.usecases_web3)}
+<Web3UseCases content={segment.usecases_web3} />
         
         <SectionHeader icon={Users} title="Personas" />
 
@@ -378,6 +380,54 @@ const SegmentProfile = ({
         </div>
       </div>
     </div>;
+};
+
+const Web3UseCases = ({ content }: { content: string | null }) => {
+  if (!content) return <p className="font-inter-light text-gray-700 italic">No information available</p>;
+
+  const useCases = content.split('\n').filter(line => line.trim() !== '');
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+
+  const scroll = (direction: 'left' | 'right') => {
+    if (scrollContainerRef.current) {
+      const scrollAmount = 300; // Adjust for smooth scrolling
+      scrollContainerRef.current.scrollBy({
+        left: direction === 'left' ? -scrollAmount : scrollAmount,
+        behavior: 'smooth',
+      });
+    }
+  };
+
+  return (
+    <div className="relative">
+      {useCases.length > 1 && (
+        <>
+          <button
+            onClick={() => scroll('left')}
+            className="absolute left-0 top-1/2 -translate-y-1/2 bg-gray-800 text-white p-2 rounded-full shadow-md hover:bg-gray-700"
+          >
+            <ChevronLeft className="w-5 h-5" />
+          </button>
+
+          <button
+            onClick={() => scroll('right')}
+            className="absolute right-0 top-1/2 -translate-y-1/2 bg-gray-800 text-white p-2 rounded-full shadow-md hover:bg-gray-700"
+          >
+            <ChevronRight className="w-5 h-5" />
+          </button>
+        </>
+      )}
+
+      <div ref={scrollContainerRef} className="flex space-x-4 overflow-x-scroll no-scrollbar py-4 px-2">
+        {useCases.map((useCase, index) => (
+          <div key={index} className="min-w-[300px] p-4 bg-gray-100 border border-gray-300 rounded-lg shadow-sm">
+            <h4 className="text-lg font-semibold text-gray-900">{useCase.split(':')[0]}</h4>
+            <p className="text-gray-700 mt-2">{useCase.split(':').slice(1).join(':').trim()}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
 };
 
 export default SegmentProfile;

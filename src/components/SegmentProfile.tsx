@@ -11,12 +11,12 @@ const getStorageImageUrl = (segmentName: string, bucket: string) => {
     .replace(/\s*-\s*/g, "_-_")
     .replace(/\s+/g, "_");
 
-  const filePath = `${formattedName}.png`;
-  const fullUrl = `https://qhxgyizmewdtvwebpmie.supabase.co/storage/v1/object/public/${bucket}/${filePath}`;
+  const filePath = ${formattedName}.png;
+  const fullUrl = https://qhxgyizmewdtvwebpmie.supabase.co/storage/v1/object/public/${bucket}/${filePath};
 
-  console.log(`Original Segment Name for ${bucket}:`, segmentName);
-  console.log(`Formatted Filename for ${bucket}:`, filePath);
-  console.log(`Final Image URL for ${bucket}:`, fullUrl);
+  console.log(Original Segment Name for ${bucket}:, segmentName);
+  console.log(Formatted Filename for ${bucket}:, filePath);
+  console.log(Final Image URL for ${bucket}:, fullUrl);
 
   return fullUrl;
 };
@@ -240,7 +240,7 @@ const SegmentProfile = ({
           <div className="flex justify-center my-6">
             <img
               src={worldMapUrl}
-              alt={`World map for ${segment.name}`}
+              alt={World map for ${segment.name}}
               className="w-full h-auto object-contain"
               onError={(e) => {
                 console.error("Error loading world map image:", worldMapUrl);
@@ -260,59 +260,56 @@ const SegmentProfile = ({
         
         <SectionHeader icon={Users} title="Personas" />
 
-       {segment.personas_1 && (
-  <div className="mt-8 rounded-xl overflow-hidden">
-    <div className="bg-gradient-to-r from-[#9B87F5] to-[#E6007A] px-4 py-2">
-      <h4 className="text-white font-semibold flex items-center">
-        <Users className="mr-2 h-5 w-5" />
-        {segment.personas_1.split('\n')[0] || "Persona Group 1"}
-      </h4>
-    </div>
-    <div className="p-6 bg-gradient-to-r from-[#9B87F5]/10 via-[#E6007A]/5 to-[#9B87F5]/10 border-x border-b border-[#9B87F5]/20 shadow-md">
-      {segment.personas_1.split('\n').slice(1).map((line, index) => (
-        <p key={index} className="text-gray-800 font-medium leading-relaxed">
-          {line.trim()}
-        </p>
-      ))}
-    </div>
-  </div>
-)}
+        {segment.personas_1 && <div className="mb-6">
+          <SubsectionHeader icon={Users} title={segment.personas_1.split('\n')[0] || "Persona Group 1"} />
+          <div className="text-gray-700 space-y-4 text-left font-inter-light">
+            {segment.personas_1.split('\n').slice(1).map((line, index) => {
+              if (line.includes('What They Need:')) {
+                return <div key={index} className="p-4 bg-[#9B87F5]/10 border border-[#9B87F5] rounded-md shadow-sm">
+                  <p className="font-inter-bold text-[#9B87F5] mb-2 font-bold">What They Need:</p>
+                  <ol className="list-decimal pl-5 text-gray-700 space-y-1">
+                    {segment.personas_1.split('\n').slice(index + 2).map((point, idx) => <li key={idx}>{point.replace(/^\d+\.\s*/, '').trim()}</li>)}
+                  </ol>
+                </div>;
+              }
+              return index < segment.personas_1.split('\n').indexOf('What They Need:') ? <p key={index} className="my-2">{line.trim()}</p> : null;
+            })}
+          </div>
+        </div>}
 
-{segment.personas_2 && (
-  <div className="mt-8 rounded-xl overflow-hidden">
-    <div className="bg-gradient-to-r from-[#9B87F5] to-[#E6007A] px-4 py-2">
-      <h4 className="text-white font-semibold flex items-center">
-        <Users className="mr-2 h-5 w-5" />
-        {segment.personas_2.split('\n')[0] || "Persona Group 2"}
-      </h4>
-    </div>
-    <div className="p-6 bg-gradient-to-r from-[#9B87F5]/10 via-[#E6007A]/5 to-[#9B87F5]/10 border-x border-b border-[#9B87F5]/20 shadow-md">
-      {segment.personas_2.split('\n').slice(1).map((line, index) => (
-        <p key={index} className="text-gray-800 font-medium leading-relaxed">
-          {line.trim()}
-        </p>
-      ))}
-    </div>
-  </div>
-)}
+        {segment.personas_2 && <div className="mb-6">
+          <SubsectionHeader icon={Users} title={segment.personas_2.split('\n')[0] || "Persona Group 2"} />
+          <div className="text-gray-700 space-y-4 text-left font-inter-light">
+            {segment.personas_2.split('\n').slice(1).map((line, index) => {
+              if (line.includes('What They Need:')) {
+                return <div key={index} className="p-4 bg-[#9B87F5]/10 border border-[#9B87F5] rounded-md shadow-sm">
+                  <p className="font-inter-bold text-[#9B87F5] mb-2 font-bold">What They Need:</p>
+                  <ol className="list-decimal pl-5 text-gray-700 space-y-1">
+                    {segment.personas_2.split('\n').slice(index + 2).map((point, idx) => <li key={idx}>{point.replace(/^\d+\.\s*/, '').trim()}</li>)}
+                  </ol>
+                </div>;
+              }
+              return index < segment.personas_2.split('\n').indexOf('What They Need:') ? <p key={index} className="my-2">{line.trim()}</p> : null;
+            })}
+          </div>
+        </div>}
 
-{segment.personas_3 && (
-  <div className="mt-8 rounded-xl overflow-hidden">
-    <div className="bg-gradient-to-r from-[#9B87F5] to-[#E6007A] px-4 py-2">
-      <h4 className="text-white font-semibold flex items-center">
-        <Users className="mr-2 h-5 w-5" />
-        {segment.personas_3.split('\n')[0] || "Persona Group 3"}
-      </h4>
-    </div>
-    <div className="p-6 bg-gradient-to-r from-[#9B87F5]/10 via-[#E6007A]/5 to-[#9B87F5]/10 border-x border-b border-[#9B87F5]/20 shadow-md">
-      {segment.personas_3.split('\n').slice(1).map((line, index) => (
-        <p key={index} className="text-gray-800 font-medium leading-relaxed">
-          {line.trim()}
-        </p>
-      ))}
-    </div>
-  </div>
-)}
+        {segment.personas_3 && <div className="mb-6">
+          <SubsectionHeader icon={Users} title={segment.personas_3.split('\n')[0] || "Persona Group 3"} />
+          <div className="text-gray-700 space-y-4 text-left font-inter-light">
+            {segment.personas_3.split('\n').slice(1).map((line, index) => {
+              if (line.includes('What They Need:')) {
+                return <div key={index} className="p-4 bg-[#9B87F5]/10 border border-[#9B87F5] rounded-md shadow-sm">
+                  <p className="font-inter-bold text-[#9B87F5] mb-2 font-bold">What They Need:</p>
+                  <ol className="list-decimal pl-5 text-gray-700 space-y-1">
+                    {segment.personas_3.split('\n').slice(index + 2).map((point, idx) => <li key={idx}>{point.replace(/^\d+\.\s*/, '').trim()}</li>)}
+                  </ol>
+                </div>;
+              }
+              return index < segment.personas_3.split('\n').indexOf('What They Need:') ? <p key={index} className="my-2">{line.trim()}</p> : null;
+            })}
+          </div>
+        </div>}
 
         <SectionHeader icon={Target} title="Messaging Strategy" />
         <SubsectionHeader icon={Target} title="Positioning Statement" />
@@ -326,7 +323,7 @@ const SegmentProfile = ({
           <div className="flex justify-center my-8">
             <img
               src={positioningImageUrl}
-              alt={`Positioning image for ${segment.name}`}
+              alt={Positioning image for ${segment.name}}
               className="w-full h-auto object-contain"
               onError={(e) => {
                 console.error("Error loading positioning image:", positioningImageUrl);

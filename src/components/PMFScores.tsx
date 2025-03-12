@@ -42,8 +42,8 @@ const PMFScores = () => {
   const [segments, setSegments] = useState<Segment[]>([]);
   const [loading, setLoading] = useState(true);
   const [hoveredCell, setHoveredCell] = useState<string | null>(null);
-  const [sortField, setSortField] = useState<SortField>("name");
-  const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc");
+ const [sortField, setSortField] = useState<SortField>("pmf");
+const [sortDirection, setSortDirection] = useState<"asc" | "desc">("desc");
 
   useEffect(() => {
     const fetchSegments = async () => {
@@ -133,10 +133,6 @@ const PMFScores = () => {
     <div className="w-full bg-white min-h-screen flex flex-col">
       <Header />
       <div className="max-w-6xl mx-auto p-4 pt-32 flex-grow">
-        <h1 className="text-4xl font-unbounded font-bold text-polkadot-pink mb-8 flex items-center my-[40px]">
-          <Star className="w-8 h-8 mr-2 text-polkadot-pink" />
-          Polkadot-Market-Fit™ Scoring Results
-        </h1>
 
         <div className="overflow-auto rounded-xl shadow-xl">
           <TooltipProvider>

@@ -47,39 +47,40 @@ const PitchAdvise = () => {
           <h2 className="text-4xl font-unbounded font-bold text-gray-900 my-[60px]">Pitch Advice for BD Agents</h2>
         </div>
 
-        <div className="space-y-4 max-w-4xl">
-          <SectionHeader icon={Info} title="Introduction" />
-          <p className="text-gray-700 leading-relaxed">{content["introduction"] || "Content not available."}</p>
+        <div className="space-y-10 max-w-4xl">  {/* Increased spacing between sections */}
+  <SectionHeader icon={Info} title="Introduction" />
+  <p className="text-gray-700 leading-relaxed mb-10">{content["introduction"] || "Content not available."}</p>
 
-          <SectionHeader icon={AlertTriangle} title="Things to Keep in Mind during B2B Pitches" />
-          <p className="text-gray-700 leading-relaxed">{content["b2b_pitches"] || "Content not available."}</p>
+  <SectionHeader icon={AlertTriangle} title="Things to Keep in Mind during B2B Pitches" />
+  <p className="text-gray-700 leading-relaxed mb-10">{content["b2b_pitches"] || "Content not available."}</p>
 
-          <SectionHeader icon={Lightbulb} title="Important B2B Use Cases" />
-          <p className="text-gray-700 leading-relaxed">{content["use_cases"] || "Content not available."}</p>
+  <SectionHeader icon={Lightbulb} title="Important B2B Use Cases" />
+  <p className="text-gray-700 leading-relaxed mb-10">{content["use_cases"] || "Content not available."}</p>
 
-          <SectionHeader icon={Users} title="Important B2B Personas" />
-          <div className="text-gray-700 leading-relaxed space-y-4">
-            {content["personas"]
-              ? content["personas"].split("###").map((persona, index) => 
-                  persona.trim() && (
-                    <div key={index} className="p-4 bg-gray-100 border border-gray-300 rounded-md shadow-sm">
-                      <h4 className="text-lg font-semibold text-gray-900">{persona.split("\n")[0]}</h4>
-                      <p className="mt-2">{persona.split("\n").slice(1).join("\n").trim()}</p>
-                    </div>
-                  )
-                )
-              : "Content not available."}
-          </div>
+  <SectionHeader icon={Users} title="Important B2B Personas" />
+  <div className="text-gray-700 leading-relaxed space-y-6 mb-10">
+    {content["personas"]
+      ? content["personas"].split("###").map((persona, index) =>
+          persona.trim() && (
+            <div key={index} className="p-4 bg-gray-100 border border-gray-300 rounded-md shadow-sm">
+              <h4 className="text-lg font-semibold text-gray-900">{persona.split("\n")[0]}</h4>
+              <p className="mt-2">{persona.split("\n").slice(1).join("\n").trim()}</p>
+            </div>
+          )
+        )
+      : "Content not available."}
+  </div>
 
-          <SectionHeader icon={Target} title="Polkadot's Messaging Strategy" />
-          <p className="text-gray-700 leading-relaxed">{content["messaging_strategy"] || "Content not available."}</p>
+  <SectionHeader icon={Target} title="Polkadot's Messaging Strategy" />
+  <p className="text-gray-700 leading-relaxed mb-10">{content["messaging_strategy"] || "Content not available."}</p>
 
-          <SectionHeader icon={Star} title="Polkadot's Capability Assessment" />
-          <p className="text-gray-700 leading-relaxed">{content["capability_assessment"] || "Content not available."}</p>
+  <SectionHeader icon={Star} title="Polkadot's Capability Assessment" />
+  <p className="text-gray-700 leading-relaxed mb-10">{content["capability_assessment"] || "Content not available."}</p>
 
-          <SectionHeader icon={Star} title="Polkadot's Value Proposition" />
-          <p className="text-gray-700 leading-relaxed">{content["value_proposition"] || "Content not available."}</p>
-        </div>
+  <SectionHeader icon={Star} title="Polkadot's Value Proposition" />
+  <p className="text-gray-700 leading-relaxed">{content["value_proposition"] || "Content not available."}</p>
+</div>
+
       </div>
     </div>
   );

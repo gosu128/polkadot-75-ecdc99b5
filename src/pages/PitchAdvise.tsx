@@ -58,18 +58,35 @@ const PitchAdvise = () => {
   <p className="text-gray-700 leading-relaxed">{content["use_cases"] || "Content not available."}</p>
 
   <SectionHeader icon={Users} title="Important B2B Personas" />
-  <div className="text-gray-700 leading-relaxed space-y-4">
-    {content["personas"]
-      ? content["personas"].split("###").map((persona, index) =>
-          persona.trim() && (
-            <div key={index} className="p-4 bg-gray-100 border border-gray-300 rounded-md shadow-sm">
-              <h4 className="text-lg font-semibold text-gray-900">{persona.split("\n")[0]}</h4>
-              <p className="mt-2">{persona.split("\n").slice(1).join("\n").trim()}</p>
-            </div>
-          )
-        )
-      : "Content not available."}
-  </div>
+<div className="text-gray-700 leading-relaxed space-y-6">
+  {content["personas"]
+    ? content["personas"].split("###").map((persona, index) => {
+        if (!persona.trim()) return null;
+        const lines = persona.trim().split("\n");
+        const title = lines[0].replace(/\*\*/g, "").trim(); // Remove ** but keep it bold using <strong>
+        const keyConcernsIndex = lines.findIndex((line) => line.startsWith("Key Concerns:"));
+        const messagingStrategyIndex = lines.findIndex((line) => line.startsWith("Messaging Strategy:"));
+        
+        // Extract sections
+        const description = lines.slice(1, keyConcernsIndex).join(" ").trim();
+        const keyConcerns = keyConcernsIndex !== -1 ? lines[keyConcernsIndex].replace("Key Concerns:", "").trim() : "";
+        const messagingStrategy = messagingStrategyIndex !== -1 ? lines[messagingStrategyIndex].replace("Messaging Strategy:", "").trim() : "";
+
+        return (
+          <div key={index} className="p-4 bg-gray-100 border border-gray-300 rounded-md shadow-sm">
+            <h4 className="text-lg font-semibold text-gray-900">{title}</h4>
+            <p className="mt-2">{description}</p>
+            {keyConcerns && (
+              <p className="mt-3"><strong>Key Concerns:</strong> {keyConcerns}</p>
+            )}
+            {messagingStrategy && (
+              <p className="mt-3"><strong>Messaging Strategy:</strong> {messagingStrategy}</p>
+            )}
+          </div>
+        );
+      })
+    : "Content not available."}
+</div>
 
   <SectionHeader icon={Target} title="Polkadot's Messaging Strategy" />
   <p className="text-gray-700 leading-relaxed">{content["messaging_strategy"] || "Content not available."}</p>

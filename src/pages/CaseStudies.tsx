@@ -1,7 +1,7 @@
 
 import Header from '@/components/Header';
 
-const Methodology = () => {
+const CaseStudies = () => {
   return (
     <div className="w-full min-h-screen bg-white">
       <Header />
@@ -22,4 +22,4 @@ const Methodology = () => {
   );
 };
 
-export default Methodology;
+export default CaseStudies;

@@ -260,56 +260,43 @@ const SegmentProfile = ({
         
         <SectionHeader icon={Users} title="Personas" />
 
-        {segment.personas_1 && <div className="mb-6">
-          <SubsectionHeader icon={Users} title={segment.personas_1.split('\n')[0] || "Persona Group 1"} />
-          <div className="text-gray-700 space-y-4 text-left font-inter-light">
-            {segment.personas_1.split('\n').slice(1).map((line, index) => {
-              if (line.includes('What They Need:')) {
-                return <div key={index} className="p-4 bg-[#9B87F5]/10 border border-[#9B87F5] rounded-md shadow-sm">
-                  <p className="font-inter-bold text-[#9B87F5] mb-2 font-bold">What They Need:</p>
-                  <ol className="list-decimal pl-5 text-gray-700 space-y-1">
-                    {segment.personas_1.split('\n').slice(index + 2).map((point, idx) => <li key={idx}>{point.replace(/^\d+\.\s*/, '').trim()}</li>)}
-                  </ol>
-                </div>;
-              }
-              return index < segment.personas_1.split('\n').indexOf('What They Need:') ? <p key={index} className="my-2">{line.trim()}</p> : null;
-            })}
-          </div>
-        </div>}
+        {[segment.personas_1, segment.personas_2, segment.personas_3].map((persona, personaIndex) => {
+  if (!persona) return null;
 
-        {segment.personas_2 && <div className="mb-6">
-          <SubsectionHeader icon={Users} title={segment.personas_2.split('\n')[0] || "Persona Group 2"} />
-          <div className="text-gray-700 space-y-4 text-left font-inter-light">
-            {segment.personas_2.split('\n').slice(1).map((line, index) => {
-              if (line.includes('What They Need:')) {
-                return <div key={index} className="p-4 bg-[#9B87F5]/10 border border-[#9B87F5] rounded-md shadow-sm">
-                  <p className="font-inter-bold text-[#9B87F5] mb-2 font-bold">What They Need:</p>
-                  <ol className="list-decimal pl-5 text-gray-700 space-y-1">
-                    {segment.personas_2.split('\n').slice(index + 2).map((point, idx) => <li key={idx}>{point.replace(/^\d+\.\s*/, '').trim()}</li>)}
-                  </ol>
-                </div>;
-              }
-              return index < segment.personas_2.split('\n').indexOf('What They Need:') ? <p key={index} className="my-2">{line.trim()}</p> : null;
-            })}
-          </div>
-        </div>}
+  const lines = persona.split('\n');
+  const personaTitle = lines[0] || `Persona Group ${personaIndex + 1}`;
+  const whatTheyNeedIndex = lines.findIndex(line => line.includes('What They Need:'));
+  const beforeWhatTheyNeed = lines.slice(1, whatTheyNeedIndex).map((line, index) => (
+    <p key={index} className="my-2">{line.trim()}</p>
+  ));
+  const needsList = lines.slice(whatTheyNeedIndex + 1).map((point, idx) => (
+    <li key={idx}>{point.replace(/^\d+\.\s*/, '').trim()}</li>
+  ));
 
-        {segment.personas_3 && <div className="mb-6">
-          <SubsectionHeader icon={Users} title={segment.personas_3.split('\n')[0] || "Persona Group 3"} />
-          <div className="text-gray-700 space-y-4 text-left font-inter-light">
-            {segment.personas_3.split('\n').slice(1).map((line, index) => {
-              if (line.includes('What They Need:')) {
-                return <div key={index} className="p-4 bg-[#9B87F5]/10 border border-[#9B87F5] rounded-md shadow-sm">
-                  <p className="font-inter-bold text-[#9B87F5] mb-2 font-bold">What They Need:</p>
-                  <ol className="list-decimal pl-5 text-gray-700 space-y-1">
-                    {segment.personas_3.split('\n').slice(index + 2).map((point, idx) => <li key={idx}>{point.replace(/^\d+\.\s*/, '').trim()}</li>)}
-                  </ol>
-                </div>;
-              }
-              return index < segment.personas_3.split('\n').indexOf('What They Need:') ? <p key={index} className="my-2">{line.trim()}</p> : null;
-            })}
+  return (
+    <div key={personaIndex} className="mb-6">
+      <SubsectionHeader icon={Users} title={personaTitle} />
+      <div className="text-gray-700 space-y-4 text-left font-inter-light">
+        {beforeWhatTheyNeed}
+        {whatTheyNeedIndex !== -1 && (
+          <div className="mt-8 rounded-xl overflow-hidden">
+            <div className="bg-gradient-to-r from-[#9B87F5] to-[#E6007A] px-4 py-2">
+              <h4 className="text-white font-semibold flex items-center">
+                <Lightbulb className="mr-2 h-5 w-5" />
+                What They Need
+              </h4>
+            </div>
+            <div className="p-6 bg-gradient-to-r from-[#9B87F5]/10 via-[#E6007A]/5 to-[#9B87F5]/10 border-x border-b border-[#9B87F5]/20 shadow-md">
+              <ol className="list-decimal pl-5 text-gray-800 space-y-1">
+                {needsList}
+              </ol>
+            </div>
           </div>
-        </div>}
+        )}
+      </div>
+    </div>
+  );
+})}
 
         <SectionHeader icon={Target} title="Messaging Strategy" />
         <SubsectionHeader icon={Target} title="Positioning Statement" />

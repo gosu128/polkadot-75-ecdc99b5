@@ -43,9 +43,6 @@ const PitchAdvise = () => {
     <div className="w-full min-h-screen bg-white">
       <Header />
       <div className="flex flex-col min-h-screen text-left px-4 sm:px-6 lg:px-8 py-16 lg:py-20 max-w-5xl mx-auto">
-        <div className="mb-8">
-          <h2 className="text-4xl font-unbounded font-bold text-gray-900 my-[60px]">Pitch Advice for BD Agents</h2>
-        </div>
 
        <div className="max-w-4xl">
   <SectionHeader icon={Info} title="Introduction" />

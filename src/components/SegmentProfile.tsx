@@ -260,24 +260,57 @@ const SegmentProfile = ({
         
         <SectionHeader icon={Users} title="Personas" />
 
-        {[segment.personas_1, segment.personas_2, segment.personas_3].map((persona, personaIndex) => {
+       {[segment.personas_1, segment.personas_2, segment.personas_3].map((persona, personaIndex) => {
   if (!persona) return null;
 
   const lines = persona.split('\n');
   const personaTitle = lines[0] || `Persona Group ${personaIndex + 1}`;
   const whatTheyNeedIndex = lines.findIndex(line => line.includes('What They Need:'));
-  const beforeWhatTheyNeed = lines.slice(1, whatTheyNeedIndex).map((line, index) => (
-    <p key={index} className="my-2">{line.trim()}</p>
-  ));
+  const beforeWhatTheyNeed = lines.slice(1, whatTheyNeedIndex);
   const needsList = lines.slice(whatTheyNeedIndex + 1).map((point, idx) => (
-    <li key={idx}>{point.replace(/^\d+\.\s*/, '').trim()}</li>
+    <li key={idx} className="py-1">{point.replace(/^\d+\.\s*/, '').trim()}</li>
   ));
 
   return (
-    <div key={personaIndex} className="mb-6">
-      <SubsectionHeader icon={Users} title={personaTitle} />
-      <div className="text-gray-700 space-y-4 text-left font-inter-light">
-        {beforeWhatTheyNeed}
+    <div key={personaIndex} className="mb-10 p-6 bg-white shadow-lg rounded-lg border border-gray-200">
+      {/* Persona Group Title */}
+      <h3 className="text-2xl font-bold text-[#E6007A] mb-4 flex items-center">
+        <Users className="mr-3 text-[#9B87F5] w-7 h-7" />
+        {personaTitle}
+      </h3>
+
+      <div className="text-gray-800 space-y-6">
+        {/* Intro Section */}
+        {beforeWhatTheyNeed.length > 0 && (
+          <div>
+            <h4 className="text-lg font-semibold text-[#9B87F5]">Overview</h4>
+            <p className="text-gray-600 leading-relaxed">{beforeWhatTheyNeed[0].trim()}</p>
+          </div>
+        )}
+
+        {/* Example Companies */}
+        {beforeWhatTheyNeed.length > 1 && (
+          <div className="p-4 bg-[#9B87F5]/10 rounded-md border border-[#9B87F5]/40">
+            <h4 className="text-lg font-semibold text-[#E6007A] flex items-center">
+              <TrendingUp className="mr-2 w-5 h-5" />
+              Example Companies
+            </h4>
+            <p className="text-gray-700 leading-relaxed">{beforeWhatTheyNeed[1].trim()}</p>
+          </div>
+        )}
+
+        {/* Key Decision Makers */}
+        {beforeWhatTheyNeed.length > 2 && (
+          <div className="p-4 bg-[#E6007A]/10 rounded-md border border-[#E6007A]/40">
+            <h4 className="text-lg font-semibold text-[#9B87F5] flex items-center">
+              <Target className="mr-2 w-5 h-5" />
+              Key Decision Makers
+            </h4>
+            <p className="text-gray-700 leading-relaxed">{beforeWhatTheyNeed[2].trim()}</p>
+          </div>
+        )}
+
+        {/* What They Need Section */}
         {whatTheyNeedIndex !== -1 && (
           <div className="mt-8 rounded-xl overflow-hidden">
             <div className="bg-gradient-to-r from-[#9B87F5] to-[#E6007A] px-4 py-2">

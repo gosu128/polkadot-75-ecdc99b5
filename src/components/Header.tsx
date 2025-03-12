@@ -1,3 +1,4 @@
+
 import { cn } from '@/lib/utils';
 import { useState } from 'react';
 import { useLocation } from 'react-router-dom';
@@ -11,6 +12,7 @@ const Header = () => {
     { name: "Segment Profiles", link: "/" },
     { name: "Segment Ratings", link: "/pmf-scores" },
     { name: "Case Studies", link: "/case-studies" },
+    { name: "Pitch Advise", link: "/pitch-advise" },
     { name: "BD Teams", link: "/bd-teams" },
     { name: "Methodology", link: "/methodology" }
   ];
@@ -54,4 +56,3 @@ const Header = () => {
 };
 
 export default Header;
-

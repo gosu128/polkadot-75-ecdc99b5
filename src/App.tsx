@@ -10,6 +10,7 @@ import PMFScores from "./components/PMFScores";
 import Methodology from "./pages/Methodology";
 import BDTeams from "./pages/BDTeams";
 import CaseStudies from "./pages/CaseStudies";
+import PitchAdvise from "./pages/PitchAdvise";
 
 const queryClient = new QueryClient();
 
@@ -25,6 +26,7 @@ const App = () => (
           <Route path="/methodology" element={<Methodology />} />
           <Route path="/bd-teams" element={<BDTeams />} />
           <Route path="/case-studies" element={<CaseStudies />} />
+          <Route path="/pitch-advise" element={<PitchAdvise />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

@@ -6,11 +6,11 @@ const BDTeams = () => {
       <Header />
       <div className="container mx-auto p-4 pt-32 flex justify-center">
         <div className="relative w-full max-w-[1100px]">
-          {/* Aspect Ratio Wrapper */}
-          <div className="relative w-full overflow-hidden" style={{ paddingTop: "56.25%" }}>
+          {/* Correct Aspect Ratio Wrapper (Google Slides default is 4:3 or 16:9) */}
+          <div className="relative w-full" style={{ paddingTop: "75%" }}>  
             <iframe
               src="https://docs.google.com/presentation/d/1z13q5HFfK39eZVtA6sdHk8jC-EmTQdnBnIjsW0Acyfk/embed?start=false&loop=false&delayms=3000"
-              className="absolute top-0 left-0 w-full h-full border-0 scale-[1.05] origin-center"
+              className="absolute top-0 left-0 w-full h-full border-0"
               frameBorder="0"
               allowFullScreen
             />
@@ -22,3 +22,4 @@ const BDTeams = () => {
 };
 
 export default BDTeams;
+

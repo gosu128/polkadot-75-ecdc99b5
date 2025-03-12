@@ -5,8 +5,8 @@ const BDTeams = () => {
     <div className="w-full min-h-screen bg-white">
       <Header />
       <div className="container mx-auto p-4 pt-32 flex justify-center">
-        <div className="relative w-full max-w-[900px]"> {/* Made the slide deck smaller */}
-          {/* 4:3 Aspect Ratio Wrapper */}
+        <div className="relative w-full max-w-[900px] border border-black shadow-md rounded-md">  
+          {/* 4:3 Aspect Ratio Wrapper (adjust as needed) */}
           <div className="relative w-full" style={{ paddingTop: "60.3%" }}>  
             <iframe
               src="https://docs.google.com/presentation/d/1z13q5HFfK39eZVtA6sdHk8jC-EmTQdnBnIjsW0Acyfk/embed?start=false&loop=false&delayms=3000"

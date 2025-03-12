@@ -11,12 +11,12 @@ const getStorageImageUrl = (segmentName: string, bucket: string) => {
     .replace(/\s*-\s*/g, "_-_")
     .replace(/\s+/g, "_");
 
-  const filePath = ${formattedName}.png;
-  const fullUrl = https://qhxgyizmewdtvwebpmie.supabase.co/storage/v1/object/public/${bucket}/${filePath};
+  const filePath = `${formattedName}.png`;
+  const fullUrl = `https://qhxgyizmewdtvwebpmie.supabase.co/storage/v1/object/public/${bucket}/${filePath}`;
 
-  console.log(Original Segment Name for ${bucket}:, segmentName);
-  console.log(Formatted Filename for ${bucket}:, filePath);
-  console.log(Final Image URL for ${bucket}:, fullUrl);
+  console.log(`Original Segment Name for ${bucket}:`, segmentName);
+  console.log(`Formatted Filename for ${bucket}:`, filePath);
+  console.log(`Final Image URL for ${bucket}:`, fullUrl);
 
   return fullUrl;
 };
@@ -260,12 +260,14 @@ const SegmentProfile = ({
         
         <SectionHeader icon={Users} title="Personas" />
 
-        {segment.personas_1 && (
+     {segment.personas_1 && (
   <div className="mb-6">
     <SubsectionHeader icon={Users} title={segment.personas_1.split('\n')[0] || "Persona Group 1"} />
     <div className="text-gray-700 space-y-4 text-left font-inter-light">
       {segment.personas_1.split('\n').map((line, index) => {
         if (line.includes('What They Need:')) {
+          const bulletPoints = segment.personas_1.split('\n').slice(index + 1).filter(point => /^\d+\.\s*/.test(point));
+
           return (
             <div key={index} className="mt-8 rounded-xl overflow-hidden">
               <div className="bg-gradient-to-r from-[#9B87F5] to-[#E6007A] px-4 py-2">
@@ -276,7 +278,7 @@ const SegmentProfile = ({
               </div>
               <div className="p-6 bg-gradient-to-r from-[#9B87F5]/10 via-[#E6007A]/5 to-[#9B87F5]/10 border-x border-b border-[#9B87F5]/20 shadow-md">
                 <ol className="list-decimal pl-5 text-gray-800 space-y-1">
-                  {segment.personas_1.split('\n').slice(index + 1, index + 4).map((point, idx) => (
+                  {bulletPoints.map((point, idx) => (
                     <li key={idx}>{point.replace(/^\d+\.\s*/, '').trim()}</li>
                   ))}
                 </ol>
@@ -298,6 +300,8 @@ const SegmentProfile = ({
     <div className="text-gray-700 space-y-4 text-left font-inter-light">
       {segment.personas_2.split('\n').map((line, index) => {
         if (line.includes('What They Need:')) {
+          const bulletPoints = segment.personas_2.split('\n').slice(index + 1).filter(point => /^\d+\.\s*/.test(point));
+
           return (
             <div key={index} className="mt-8 rounded-xl overflow-hidden">
               <div className="bg-gradient-to-r from-[#9B87F5] to-[#E6007A] px-4 py-2">
@@ -308,7 +312,7 @@ const SegmentProfile = ({
               </div>
               <div className="p-6 bg-gradient-to-r from-[#9B87F5]/10 via-[#E6007A]/5 to-[#9B87F5]/10 border-x border-b border-[#9B87F5]/20 shadow-md">
                 <ol className="list-decimal pl-5 text-gray-800 space-y-1">
-                  {segment.personas_2.split('\n').slice(index + 1, index + 4).map((point, idx) => (
+                  {bulletPoints.map((point, idx) => (
                     <li key={idx}>{point.replace(/^\d+\.\s*/, '').trim()}</li>
                   ))}
                 </ol>
@@ -330,6 +334,8 @@ const SegmentProfile = ({
     <div className="text-gray-700 space-y-4 text-left font-inter-light">
       {segment.personas_3.split('\n').map((line, index) => {
         if (line.includes('What They Need:')) {
+          const bulletPoints = segment.personas_3.split('\n').slice(index + 1).filter(point => /^\d+\.\s*/.test(point));
+
           return (
             <div key={index} className="mt-8 rounded-xl overflow-hidden">
               <div className="bg-gradient-to-r from-[#9B87F5] to-[#E6007A] px-4 py-2">
@@ -340,7 +346,7 @@ const SegmentProfile = ({
               </div>
               <div className="p-6 bg-gradient-to-r from-[#9B87F5]/10 via-[#E6007A]/5 to-[#9B87F5]/10 border-x border-b border-[#9B87F5]/20 shadow-md">
                 <ol className="list-decimal pl-5 text-gray-800 space-y-1">
-                  {segment.personas_3.split('\n').slice(index + 1, index + 4).map((point, idx) => (
+                  {bulletPoints.map((point, idx) => (
                     <li key={idx}>{point.replace(/^\d+\.\s*/, '').trim()}</li>
                   ))}
                 </ol>

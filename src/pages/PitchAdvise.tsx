@@ -4,7 +4,7 @@ import { AlertTriangle, Info, Lightbulb, Star, Target, Users } from "lucide-reac
 import Header from "@/components/Header";
 
 const SectionHeader = ({ icon: Icon, title }: { icon: React.ElementType; title: string }) => (
-  <div className="mt-6 mb-2">
+  <div className="mt-12 mb-2">  {/* Increased margin-top from mt-6 to mt-12 */}
     <h2 className="text-polkadot-pink font-unbounded flex items-center text-xl font-semibold">
       <Icon className="mr-2 text-polkadot-pink w-6 h-6" />
       {title}

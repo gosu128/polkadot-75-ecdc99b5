@@ -1,4 +1,44 @@
+import React, { useEffect, useState } from "react";
+import { supabase } from "@/integrations/supabase/client";
+import { AlertTriangle, Info, Lightbulb, Star, Target, Users } from "lucide-react";
+import Header from "@/components/Header";
+
+const SectionHeader = ({ icon: Icon, title }: { icon: React.ElementType; title: string }) => (
+  <div className="mt-6 mb-2">
+    <h2 className="text-polkadot-pink font-unbounded flex items-center text-xl font-semibold">
+      <Icon className="mr-2 text-polkadot-pink w-6 h-6" />
+      {title}
+    </h2>
+    <hr className="border-polkadot-pink my-2" />
+  </div>
+);
+
 const PitchAdvise = () => {
+  const [content, setContent] = useState<{ [key: string]: string }>({});
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchContent = async () => {
+      const { data, error } = await supabase.from("pitch_advise").select("section, content");
+      if (error) {
+        console.error("Error fetching content:", error);
+      } else {
+        const contentMap: { [key: string]: string } = {};
+        data.forEach((row) => {
+          contentMap[row.section] = row.content;
+        });
+        setContent(contentMap);
+      }
+      setLoading(false);
+    };
+
+    fetchContent();
+  }, []);
+
+  if (loading) {
+    return <div className="text-center text-gray-500 mt-10">Loading...</div>;
+  }
+
   return (
     <div className="w-full min-h-screen bg-white">
       <Header />
@@ -9,72 +49,41 @@ const PitchAdvise = () => {
 
         <div className="space-y-4 max-w-4xl">
           <SectionHeader icon={Info} title="Introduction" />
-          <p className="text-gray-700 leading-relaxed">
-            Business Development (BD) Agents play a crucial role in expanding Polkadot’s ecosystem. 
-            This guide provides strategic insights, key messaging points, and best practices for B2B pitches.
-          </p>
+          <p className="text-gray-700 leading-relaxed">{content["introduction"] || "Content not available."}</p>
 
           <SectionHeader icon={AlertTriangle} title="Things to Keep in Mind during B2B Pitches" />
-          <ul className="list-disc list-inside text-gray-700 leading-relaxed space-y-2">
-            <li>Understand the prospect’s pain points before pitching solutions.</li>
-            <li>Emphasize Polkadot’s interoperability and real-world applications.</li>
-            <li>Avoid overly technical jargon unless addressing a technical audience.</li>
-            <li>Showcase Polkadot’s success stories and partnerships for credibility.</li>
-          </ul>
+          <p className="text-gray-700 leading-relaxed">{content["b2b_pitches"] || "Content not available."}</p>
 
           <SectionHeader icon={Lightbulb} title="Important B2B Use Cases" />
-          <div className="space-y-4">
-            <p className="text-gray-700 leading-relaxed">
-              Businesses looking to integrate blockchain solutions are often concerned with scalability, compliance, 
-              and security. Polkadot’s parachain structure enables enterprises to build customized, secure, 
-              and interoperable solutions.
-            </p>
-            <p className="text-gray-700 leading-relaxed">
-              <strong>Example Use Cases:</strong>
-              <ul className="list-disc list-inside mt-2 space-y-1">
-                <li>Supply Chain Transparency through blockchain interoperability.</li>
-                <li>DeFi Infrastructure for institutional-grade finance applications.</li>
-                <li>Secure Identity Management using Polkadot’s parachains.</li>
-              </ul>
-            </p>
-          </div>
+          <p className="text-gray-700 leading-relaxed">{content["use_cases"] || "Content not available."}</p>
 
           <SectionHeader icon={Users} title="Important B2B Personas" />
-          <p className="text-gray-700 leading-relaxed">
-            When pitching, tailor messaging to key decision-makers. Common B2B personas include:
-          </p>
-          <ul className="list-disc list-inside text-gray-700 leading-relaxed space-y-2">
-            <li><strong>CTOs & Tech Leads:</strong> Concerned with scalability and security.</li>
-            <li><strong>CEOs & Business Strategists:</strong> Focus on market potential and ROI.</li>
-            <li><strong>Compliance Officers:</strong> Need clarity on regulations and legal implications.</li>
-          </ul>
+          <div className="text-gray-700 leading-relaxed space-y-4">
+            {content["personas"]
+              ? content["personas"].split("###").map((persona, index) => 
+                  persona.trim() && (
+                    <div key={index} className="p-4 bg-gray-100 border border-gray-300 rounded-md shadow-sm">
+                      <h4 className="text-lg font-semibold text-gray-900">{persona.split("\n")[0]}</h4>
+                      <p className="mt-2">{persona.split("\n").slice(1).join("\n").trim()}</p>
+                    </div>
+                  )
+                )
+              : "Content not available."}
+          </div>
 
           <SectionHeader icon={Target} title="Polkadot's Messaging Strategy" />
-          <p className="text-gray-700 leading-relaxed">
-            The core message revolves around Polkadot’s ability to provide **interoperability, scalability, 
-            and security** while maintaining **low costs** and **high efficiency**. Emphasizing these aspects 
-            makes the technology appealing to enterprises and institutions.
-          </p>
+          <p className="text-gray-700 leading-relaxed">{content["messaging_strategy"] || "Content not available."}</p>
 
           <SectionHeader icon={Star} title="Polkadot's Capability Assessment" />
-          <p className="text-gray-700 leading-relaxed">
-            Polkadot’s modular framework allows businesses to customize their blockchain solutions 
-            while benefiting from shared security and seamless interoperability. Key advantages include:
-          </p>
-          <ul className="list-disc list-inside text-gray-700 leading-relaxed space-y-2">
-            <li>Efficient scalability through parachains.</li>
-            <li>Robust security and decentralized governance.</li>
-            <li>Flexibility to meet business-specific needs.</li>
-          </ul>
+          <p className="text-gray-700 leading-relaxed">{content["capability_assessment"] || "Content not available."}</p>
 
           <SectionHeader icon={Star} title="Polkadot's Value Proposition" />
-          <p className="text-gray-700 leading-relaxed">
-            The Polkadot ecosystem offers a **unique advantage** by providing **true cross-chain interoperability** 
-            without sacrificing decentralization or security. This makes it a **highly attractive option** for 
-            enterprises looking for blockchain solutions that are **scalable, secure, and future-proof**.
-          </p>
+          <p className="text-gray-700 leading-relaxed">{content["value_proposition"] || "Content not available."}</p>
         </div>
       </div>
     </div>
   );
 };
+
+export default PitchAdvise;
+

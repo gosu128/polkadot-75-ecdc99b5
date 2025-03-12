@@ -6,11 +6,11 @@ const BDTeams = () => {
       <Header />
       <div className="container mx-auto p-4 pt-32 flex justify-center">
         <div className="relative w-full max-w-[1100px]">
-          {/* Aspect Ratio Wrapper to Maintain 16:9 */}
-          <div className="relative w-full" style={{ paddingTop: "56.25%" }}>
+          {/* Aspect Ratio Wrapper */}
+          <div className="relative w-full overflow-hidden" style={{ paddingTop: "56.25%" }}>
             <iframe
               src="https://docs.google.com/presentation/d/1z13q5HFfK39eZVtA6sdHk8jC-EmTQdnBnIjsW0Acyfk/embed?start=false&loop=false&delayms=3000"
-              className="absolute top-0 left-0 w-full h-full border-0"
+              className="absolute top-0 left-0 w-[115%] h-full -ml-[7.5%] border-0"
               frameBorder="0"
               allowFullScreen
             />

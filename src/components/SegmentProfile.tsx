@@ -260,64 +260,33 @@ const SegmentProfile = ({
         
         <SectionHeader icon={Users} title="Personas" />
 
-     {[segment.personas_1, segment.personas_2, segment.personas_3].map((persona, personaIndex) => {
+        {[segment.personas_1, segment.personas_2, segment.personas_3].map((persona, personaIndex) => {
   if (!persona) return null;
 
   const lines = persona.split('\n');
   const personaTitle = lines[0] || `Persona Group ${personaIndex + 1}`;
   const whatTheyNeedIndex = lines.findIndex(line => line.includes('What They Need:'));
-  
-  const intro = lines[1]?.trim() || null;
-  const exampleCompanies = lines[2]?.trim() || null;
-  const keyDecisionMakers = lines[3]?.trim() || null;
-  
+  const beforeWhatTheyNeed = lines.slice(1, whatTheyNeedIndex).map((line, index) => (
+    <p key={index} className="my-2">{line.trim()}</p>
+  ));
   const needsList = lines.slice(whatTheyNeedIndex + 1).map((point, idx) => (
     <li key={idx}>{point.replace(/^\d+\.\s*/, '').trim()}</li>
   ));
 
   return (
-    <div key={personaIndex} className="mb-10 p-6 bg-white shadow-lg rounded-lg border border-gray-200">
-      {/* Persona Group Title */}
-      <h3 className="text-2xl font-bold text-gray-900 mb-4 flex items-center">
-        <Users className="mr-3 text-gray-700 w-7 h-7" />
-        {personaTitle}
-      </h3>
-
-      <div className="text-gray-800 space-y-6">
-        {/* Intro Section */}
-        {intro && (
-          <div>
-            <h4 className="text-lg font-semibold text-gray-800">Overview</h4>
-            <p className="text-gray-700 leading-relaxed">{intro}</p>
-          </div>
-        )}
-
-        {/* Example Companies */}
-        {exampleCompanies && (
-          <div className="p-4 bg-gray-100 rounded-md border border-gray-300">
-            <h4 className="text-lg font-semibold text-gray-800">Example Companies</h4>
-            <p className="text-gray-700 leading-relaxed">{exampleCompanies}</p>
-          </div>
-        )}
-
-        {/* Key Decision Makers (Only if data exists) */}
-        {keyDecisionMakers && (
-          <div className="p-4 bg-gray-100 rounded-md border border-gray-300">
-            <h4 className="text-lg font-semibold text-gray-800">Key Decision Makers</h4>
-            <p className="text-gray-700 leading-relaxed">{keyDecisionMakers}</p>
-          </div>
-        )}
-
-        {/* What They Need Section */}
+    <div key={personaIndex} className="mb-6">
+      <SubsectionHeader icon={Users} title={personaTitle} />
+      <div className="text-gray-700 space-y-4 text-left font-inter-light">
+        {beforeWhatTheyNeed}
         {whatTheyNeedIndex !== -1 && (
           <div className="mt-8 rounded-xl overflow-hidden">
-            <div className="bg-gray-800 px-4 py-2">
+            <div className="bg-gradient-to-r from-[#9B87F5] to-[#E6007A] px-4 py-2">
               <h4 className="text-white font-semibold flex items-center">
                 <Lightbulb className="mr-2 h-5 w-5" />
                 What They Need
               </h4>
             </div>
-            <div className="p-6 bg-gray-100 border-x border-b border-gray-300 shadow-md">
+            <div className="p-6 bg-gradient-to-r from-[#9B87F5]/10 via-[#E6007A]/5 to-[#9B87F5]/10 border-x border-b border-[#9B87F5]/20 shadow-md">
               <ol className="list-decimal pl-5 text-gray-800 space-y-1">
                 {needsList}
               </ol>

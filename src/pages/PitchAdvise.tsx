@@ -43,9 +43,9 @@ const formatContent = (text: string) => {
 
       // Highlight section headers like "Who They Are:"
       const formattedText = paragraph.replace(
-        /(Who They Are:|Example Companies:|Key Decision Makers:|What They Need:)/g,
-        "<strong class='text-polkadot-pink'>$1</strong>"
-      );
+  /(Who They Are:|Example Companies:|Example Institutions:|Key Decision Makers:|What They Need:|Scalability:|Security:|Interoperability:|Cost Efficiency:|Adoption:|Developer Experience:|Governance:|Enterprise Readiness:)/g,
+  "<strong class='text-polkadot-pink'>$1</strong>"
+);
 
       return <p key={index} dangerouslySetInnerHTML={{ __html: formattedText }} />;
     });

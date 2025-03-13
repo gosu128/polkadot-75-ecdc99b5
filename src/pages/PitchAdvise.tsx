@@ -30,14 +30,16 @@ const formatContent = (text: string | undefined) => {
       return;
     }
 
-    // Convert bullet points ("- item") into proper lists and remove extra "-"
+    // Convert bullet points ("- item") into proper lists & REMOVE extra "-"
     if (paragraph.trim().startsWith("-")) {
       const bulletPoints = paragraph.split("\n").map((point, idx) => {
-        const formattedPoint = point.replace(
-          /^-\s*([^:\n]+):/, // Match text before `:` in bullet points and remove "-"
-          "- <strong class='text-gray-900'>$1:</strong>" // Changed from pink to dark gray
+        const cleanedPoint = point.replace(/^-/, "").trim(); // Remove the extra "-"
+        const formattedPoint = cleanedPoint.replace(
+          /^([^:\n]+):/, // Match text before `:` in bullet points
+          "<strong class='text-gray-900'>$1:</strong>" // Keep text dark gray
         );
-        return <li key={`bullet-${index}-${idx}`} className="text-gray-700" dangerouslySetInnerHTML={{ __html: formattedPoint.trim() }} />;
+
+        return <li key={`bullet-${index}-${idx}`} className="text-gray-700" dangerouslySetInnerHTML={{ __html: formattedPoint }} />;
       });
 
       formattedContent.push(<ul key={`list-${index}`} className="list-disc pl-5 space-y-2">{bulletPoints}</ul>);
@@ -47,7 +49,7 @@ const formatContent = (text: string | undefined) => {
     // Apply bold **dark gray** formatting to text before a colon in paragraphs
     const formattedText = paragraph.replace(
       /^([^:\n]+):/gm,
-      "<strong class='text-gray-900'>$1:</strong>" // Changed from pink to dark gray
+      "<strong class='text-gray-900'>$1:</strong>" // Keep dark gray for a clean look
     );
 
     formattedContent.push(<p key={`text-${index}`} dangerouslySetInnerHTML={{ __html: formattedText }} />);
@@ -55,6 +57,7 @@ const formatContent = (text: string | undefined) => {
 
   return formattedContent.length > 0 ? formattedContent : <p className="italic text-gray-500">Content coming soon...</p>;
 };
+
 
 const PitchAdvise = () => {
   const [content, setContent] = useState<{ [key: string]: string | undefined }>({});
@@ -119,7 +122,7 @@ const PitchAdvise = () => {
   <img
     src="https://qhxgyizmewdtvwebpmie.supabase.co/storage/v1/object/public/polkadot//Pitch_Advise_-_World_Map.png"
     alt="Geographical Hotspots Map"
-    className="max-w-full h-auto rounded-lg shadow-md"
+    className="max-w-full h-auto"
   />
 </div>
 

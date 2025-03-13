@@ -13,6 +13,35 @@ const SectionHeader = ({ icon: Icon, title }: { icon: React.ElementType; title: 
   </div>
 );
 
+const formatContent = (text: string) => {
+  if (!text) return "Content not available.";
+
+  return text
+    .split("\n\n") // Splits text into paragraphs
+    .map((paragraph, index) => {
+      // Convert lines starting with "-" into bullet points
+      if (paragraph.trim().startsWith("-")) {
+        return (
+          <ul key={index} className="list-disc pl-5 space-y-2">
+            {paragraph
+              .split("\n") // Split into individual bullet points
+              .map((point, idx) => (
+                <li key={idx} className="text-gray-700">{point.replace(/^-/, "").trim()}</li>
+              ))}
+          </ul>
+        );
+      }
+
+      // Bold important phrases dynamically
+      const formattedText = paragraph.replace(
+        /(Key Use Cases|Targeting the Right Stakeholders|Crafting the Right Message|Highlighting the Right Strengths|Focusing on the Right Value Proposition|Regulatory Compliance|Scalability|Enterprise Adoption|Technical Integration)/g,
+        "<strong>$1</strong>"
+      );
+
+      return <p key={index} dangerouslySetInnerHTML={{ __html: formattedText }} />;
+    });
+};
+
 const PitchAdvise = () => {
   const [content, setContent] = useState<{ [key: string]: string }>({});
   const [loading, setLoading] = useState(true);
@@ -45,62 +74,25 @@ const PitchAdvise = () => {
       <div className="flex flex-col min-h-screen text-left px-4 sm:px-6 lg:px-8 py-16 lg:py-20 max-w-5xl mx-auto">
         <div className="space-y-10 max-w-4xl">
           <SectionHeader icon={Info} title="Introduction" />
-<div className="text-gray-700 leading-relaxed space-y-4">
-  {content["introduction"]
-    ? content["introduction"]
-        .split("\n\n") // Splits text into paragraphs
-        .map((paragraph, index) => {
-          // Convert lines starting with "-" into bullet points
-          if (paragraph.trim().startsWith("-")) {
-            return (
-              <ul key={index} className="list-disc pl-5 space-y-2">
-                {paragraph
-                  .split("\n") // Split into individual bullet points
-                  .map((point, idx) => (
-                    <li key={idx} className="text-gray-700">{point.replace(/^-/, "").trim()}</li>
-                  ))}
-              </ul>
-            );
-          }
-
-          // Bold important phrases dynamically
-          const formattedText = paragraph
-            .replace(/(Key Use Cases|Targeting the Right Stakeholders|Crafting the Right Message|Highlighting the Right Strengths|Focusing on the Right Value Proposition)/g, "<strong>$1</strong>");
-
-          return <p key={index} dangerouslySetInnerHTML={{ __html: formattedText }} />;
-        })
-    : "Content not available."}
-</div>
+          <div className="text-gray-700 leading-relaxed space-y-4">{formatContent(content["introduction"])}</div>
 
           <SectionHeader icon={AlertTriangle} title="Things to Keep in Mind during B2B Pitches" />
-          <div className="text-gray-700 leading-relaxed space-y-4" 
-            dangerouslySetInnerHTML={{ __html: content["b2b_pitches"] || "Content not available." }} 
-          />
+          <div className="text-gray-700 leading-relaxed space-y-4">{formatContent(content["b2b_pitches"])}</div>
 
           <SectionHeader icon={Lightbulb} title="Important B2B Use Cases" />
-          <div className="text-gray-700 leading-relaxed space-y-4" 
-            dangerouslySetInnerHTML={{ __html: content["use_cases"] || "Content not available." }} 
-          />
+          <div className="text-gray-700 leading-relaxed space-y-4">{formatContent(content["use_cases"])}</div>
 
           <SectionHeader icon={Users} title="Important B2B Personas" />
-          <div className="text-gray-700 leading-relaxed space-y-6" 
-            dangerouslySetInnerHTML={{ __html: content["personas"] || "Content not available." }} 
-          />
+          <div className="text-gray-700 leading-relaxed space-y-6">{formatContent(content["personas"])}</div>
 
           <SectionHeader icon={Target} title="Polkadot's Messaging Strategy" />
-          <div className="text-gray-700 leading-relaxed space-y-4" 
-            dangerouslySetInnerHTML={{ __html: content["messaging_strategy"] || "Content not available." }} 
-          />
+          <div className="text-gray-700 leading-relaxed space-y-4">{formatContent(content["messaging_strategy"])}</div>
 
           <SectionHeader icon={Star} title="Polkadot's Capability Assessment" />
-          <div className="text-gray-700 leading-relaxed space-y-4" 
-            dangerouslySetInnerHTML={{ __html: content["capability_assessment"] || "Content not available." }} 
-          />
+          <div className="text-gray-700 leading-relaxed space-y-4">{formatContent(content["capability_assessment"])}</div>
 
           <SectionHeader icon={Star} title="Polkadot's Value Proposition" />
-          <div className="text-gray-700 leading-relaxed space-y-4" 
-            dangerouslySetInnerHTML={{ __html: content["value_proposition"] || "Content not available." }} 
-          />
+          <div className="text-gray-700 leading-relaxed space-y-4">{formatContent(content["value_proposition"])}</div>
         </div>
       </div>
     </div>
@@ -108,5 +100,4 @@ const PitchAdvise = () => {
 };
 
 export default PitchAdvise;
-
 

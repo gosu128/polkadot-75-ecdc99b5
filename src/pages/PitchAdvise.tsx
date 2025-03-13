@@ -19,6 +19,15 @@ const formatContent = (text: string) => {
   return text
     .split("\n\n") // Splits text into paragraphs
     .map((paragraph, index) => {
+      // Separate persona groups (identified by "###")
+      if (paragraph.trim().startsWith("###")) {
+        return (
+          <div key={index} className="p-5 bg-gray-100 border border-gray-300 rounded-md shadow-sm space-y-2">
+            <h4 className="text-lg font-semibold text-gray-900">{paragraph.replace(/^###/, "").trim()}</h4>
+          </div>
+        );
+      }
+
       // Convert lines starting with "-" into bullet points
       if (paragraph.trim().startsWith("-")) {
         return (
@@ -32,15 +41,16 @@ const formatContent = (text: string) => {
         );
       }
 
-      // Bold important phrases dynamically
+      // Highlight section headers like "Who They Are:"
       const formattedText = paragraph.replace(
-        /(Key Use Cases|Targeting the Right Stakeholders|Crafting the Right Message|Highlighting the Right Strengths|Focusing on the Right Value Proposition|Regulatory Compliance|Scalability|Enterprise Adoption|Technical Integration)/g,
-        "<strong>$1</strong>"
+        /(Who They Are:|Example Companies:|Key Decision Makers:|What They Need:)/g,
+        "<strong class='text-polkadot-pink'>$1</strong>"
       );
 
       return <p key={index} dangerouslySetInnerHTML={{ __html: formattedText }} />;
     });
 };
+
 
 const PitchAdvise = () => {
   const [content, setContent] = useState<{ [key: string]: string }>({});

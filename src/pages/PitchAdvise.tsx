@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { AlertTriangle, Info, Lightbulb, Star, Target, Users } from "lucide-react";
+import { AlertTriangle, Info, Lightbulb, Star, Target, Users, Globe } from "lucide-react";
 import Header from "@/components/Header";
 
 const SectionHeader = ({ icon: Icon, title }: { icon: React.ElementType; title: string }) => (
@@ -22,7 +22,6 @@ const formatContent = (text: string | undefined) => {
   let insidePersona = false;
 
   paragraphs.forEach((paragraph, index) => {
-    // Handle persona groups (###) and wrap the entire persona content
     if (paragraph.trim().startsWith("###")) {
       if (insidePersona && personaWrapper.length > 0) {
         formattedContent.push(
@@ -32,7 +31,6 @@ const formatContent = (text: string | undefined) => {
         );
         personaWrapper = [];
       }
-
       personaWrapper.push(
         <h4 key={`persona-title-${index}`} className="text-lg font-semibold text-gray-900">
           {paragraph.replace(/^###/, "").trim()}
@@ -42,12 +40,10 @@ const formatContent = (text: string | undefined) => {
       return;
     }
 
-    // Convert bullet points ("- item") into proper lists
     if (paragraph.trim().startsWith("-")) {
       const bulletPoints = paragraph.split("\n").map((point, idx) => (
         <li key={`bullet-${index}-${idx}`} className="text-gray-700">{point.replace(/^-/, "").trim()}</li>
       ));
-
       if (insidePersona) {
         personaWrapper.push(<ul key={`list-${index}`} className="list-disc pl-5 space-y-2">{bulletPoints}</ul>);
       } else {
@@ -56,9 +52,8 @@ const formatContent = (text: string | undefined) => {
       return;
     }
 
-    // Apply bold pink formatting to text before a colon
     const formattedText = paragraph.replace(
-      /^([^:\n]+):/gm, 
+      /^([^:\n]+):/gm,
       "<strong class='text-polkadot-pink'>$1:</strong>"
     );
 
@@ -69,7 +64,6 @@ const formatContent = (text: string | undefined) => {
     }
   });
 
-  // Push the last persona profile into formattedContent
   if (insidePersona && personaWrapper.length > 0) {
     formattedContent.push(
       <div key={`last-persona`} className="p-5 bg-gray-100 border border-gray-300 rounded-md shadow-sm space-y-2">
@@ -81,7 +75,6 @@ const formatContent = (text: string | undefined) => {
   return formattedContent.length > 0 ? formattedContent : <p className="italic text-gray-500">Content coming soon...</p>;
 };
 
-
 const PitchAdvise = () => {
   const [content, setContent] = useState<{ [key: string]: string | undefined }>({});
   const [loading, setLoading] = useState(true);
@@ -89,12 +82,15 @@ const PitchAdvise = () => {
   useEffect(() => {
     const fetchContent = async () => {
       const { data, error } = await supabase.from("pitch_advise").select("section, content");
+
       if (error) {
         console.error("Error fetching content:", error);
-      } else {
-        const contentMap: { [key: string]: string } = {};
+      } else if (data) {
+        const contentMap: { [key: string]: string | undefined } = {};
         data.forEach((row) => {
-          contentMap[row.section] = row.content;
+          if (row.section && row.content) {
+            contentMap[row.section] = row.content;
+          }
         });
         setContent(contentMap);
       }
@@ -136,7 +132,6 @@ const PitchAdvise = () => {
 
           <SectionHeader icon={Globe} title="Geographical Hotspots" />
           <div className="text-gray-700 leading-relaxed space-y-4">{formatContent(content["geographies"])}</div>
-
         </div>
       </div>
     </div>

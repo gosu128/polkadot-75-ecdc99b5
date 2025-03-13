@@ -112,7 +112,17 @@ const PitchAdvise = () => {
           <div className="text-gray-700 leading-relaxed space-y-4">{formatContent(content["value_proposition"])}</div>
 
           <SectionHeader icon={Globe} title="Geographical Hotspots" />
-          <div className="text-gray-700 leading-relaxed space-y-4">{formatContent(content["geographies"])}</div>
+<div className="text-gray-700 leading-relaxed space-y-4">{formatContent(content["geographies"])}</div>
+
+{/* World Map Image */}
+<div className="flex justify-center mt-6">
+  <img
+    src="https://qhxgyizmewdtvwebpmie.supabase.co/storage/v1/object/public/polkadot//Pitch_Advise_-_World_Map.png"
+    alt="Geographical Hotspots Map"
+    className="max-w-full h-auto rounded-lg shadow-md"
+  />
+</div>
+
         </div>
       </div>
     </div>

@@ -92,7 +92,7 @@ const PitchAdvise = () => {
     <div className="w-full min-h-screen bg-white">
       <Header />
       <div className="flex flex-col min-h-screen text-left px-4 sm:px-6 lg:px-8 py-16 lg:py-20 max-w-5xl mx-auto">
-        <div className="space-y-10 max-w-4xl">
+               <div className="space-y-10 max-w-4xl">
           <SectionHeader icon={Info} title="Introduction" />
           <div className="text-gray-700 leading-relaxed space-y-4">{formatContent(content["introduction"])}</div>
 
@@ -102,29 +102,29 @@ const PitchAdvise = () => {
           <SectionHeader icon={Lightbulb} title="Important B2B Use Cases" />
           <div className="text-gray-700 leading-relaxed space-y-4">{formatContent(content["use_cases"])}</div>
 
+          <SectionHeader icon={Globe} title="Geographical Hotspots" />
+          <div className="text-gray-700 leading-relaxed space-y-4">{formatContent(content["geographies"])}</div>
+
+          {/* World Map Image */}
+          <div className="flex justify-center mt-6">
+            <img
+              src="https://qhxgyizmewdtvwebpmie.supabase.co/storage/v1/object/public/polkadot//Pitch_Advise_-_World_Map.png"
+              alt="Geographical Hotspots Map"
+              className="max-w-full h-auto"
+            />
+          </div>
+
           <SectionHeader icon={Users} title="Important B2B Personas" />
           <div className="text-gray-700 leading-relaxed space-y-6">{formatContent(content["personas"])}</div>
 
           <SectionHeader icon={Target} title="Polkadot's Messaging Strategy" />
           <div className="text-gray-700 leading-relaxed space-y-4">{formatContent(content["messaging_strategy"])}</div>
 
-          <SectionHeader icon={Star} title="Polkadot's Capability Assessment" />
-          <div className="text-gray-700 leading-relaxed space-y-4">{formatContent(content["capability_assessment"])}</div>
-
           <SectionHeader icon={Star} title="Polkadot's Value Proposition" />
           <div className="text-gray-700 leading-relaxed space-y-4">{formatContent(content["value_proposition"])}</div>
 
-          <SectionHeader icon={Globe} title="Geographical Hotspots" />
-<div className="text-gray-700 leading-relaxed space-y-4">{formatContent(content["geographies"])}</div>
-
-{/* World Map Image */}
-<div className="flex justify-center mt-6">
-  <img
-    src="https://qhxgyizmewdtvwebpmie.supabase.co/storage/v1/object/public/polkadot//Pitch_Advise_-_World_Map.png"
-    alt="Geographical Hotspots Map"
-    className="max-w-full h-auto"
-  />
-</div>
+          <SectionHeader icon={Star} title="Polkadot's Capability Assessment" />
+          <div className="text-gray-700 leading-relaxed space-y-4">{formatContent(content["capability_assessment"])}</div>
 
         </div>
       </div>

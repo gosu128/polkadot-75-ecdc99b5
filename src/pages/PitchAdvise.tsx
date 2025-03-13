@@ -16,67 +16,40 @@ const SectionHeader = ({ icon: Icon, title }: { icon: React.ElementType; title: 
 const formatContent = (text: string) => {
   if (!text) return "Content not available.";
 
-  const paragraphs = text.split("\n\n");
-  let personaWrapper: JSX.Element[] = [];
-  const formattedContent: JSX.Element[] = [];
-  let insidePersona = false;
-
-  paragraphs.forEach((paragraph, index) => {
-    // Detect Persona Name (###) and Start a New Box
-    if (paragraph.trim().startsWith("###")) {
-      if (insidePersona && personaWrapper.length > 0) {
-        formattedContent.push(
+  return text
+    .split("\n\n") // Splits text into paragraphs
+    .map((paragraph, index) => {
+      // Separate persona groups (identified by "###")
+      if (paragraph.trim().startsWith("###")) {
+        return (
           <div key={index} className="p-5 bg-gray-100 border border-gray-300 rounded-md shadow-sm space-y-2">
-            {personaWrapper}
+            <h4 className="text-lg font-semibold text-gray-900">{paragraph.replace(/^###/, "").trim()}</h4>
           </div>
         );
-        personaWrapper = [];
       }
 
-      personaWrapper.push(
-        <h4 key={`persona-${index}`} className="text-lg font-semibold text-gray-900">
-          {paragraph.replace(/^###/, "").trim()}
-        </h4>
+      // Convert lines starting with "-" into bullet points
+      if (paragraph.trim().startsWith("-")) {
+        return (
+          <ul key={index} className="list-disc pl-5 space-y-2">
+            {paragraph
+              .split("\n") // Split into individual bullet points
+              .map((point, idx) => (
+                <li key={idx} className="text-gray-700">{point.replace(/^-/, "").trim()}</li>
+              ))}
+          </ul>
+        );
+      }
+
+      // Highlight section headers like "Who They Are:"
+      const formattedText = paragraph.replace(
+        /(Who They Are:|Example Companies:|Key Decision Makers:|What They Need:)/g,
+        "<strong class='text-polkadot-pink'>$1</strong>"
       );
-      insidePersona = true;
-      return;
-    }
 
-    // Convert "-" lines into bullet points (inside persona box)
-    if (paragraph.trim().startsWith("-")) {
-      personaWrapper.push(
-        <ul key={`list-${index}`} className="list-disc pl-5 space-y-2">
-          {paragraph
-            .split("\n")
-            .map((point, idx) => (
-              <li key={`bullet-${index}-${idx}`} className="text-gray-700">{point.replace(/^-/, "").trim()}</li>
-            ))}
-        </ul>
-      );
-      return;
-    }
-
-    // Highlight Section Headers Like "Who They Are:"
-    const formattedText = paragraph.replace(
-      /(Who They Are:|Example Companies:|Example Institutions:|Key Decision Makers:|What They Need:)/g,
-      "<strong class='text-polkadot-pink'>$1</strong>"
-    );
-
-    personaWrapper.push(<p key={index} dangerouslySetInnerHTML={{ __html: formattedText }} />);
-  });
-
-  // Push Last Persona Profile into Formatted Content
-  if (insidePersona && personaWrapper.length > 0) {
-    formattedContent.push(
-      <div key={`last-persona`} className="p-5 bg-gray-100 border border-gray-300 rounded-md shadow-sm space-y-2">
-        {personaWrapper}
-      </div>
-    );
-  }
-
-  return formattedContent;
+      return <p key={index} dangerouslySetInnerHTML={{ __html: formattedText }} />;
+    });
 };
-
 
 
 const PitchAdvise = () => {

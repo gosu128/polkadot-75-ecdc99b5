@@ -32,14 +32,19 @@ const formatContent = (text: string | undefined) => {
 
     // Convert bullet points ("- item") into proper lists
     if (paragraph.trim().startsWith("-")) {
-      const bulletPoints = paragraph.split("\n").map((point, idx) => (
-        <li key={`bullet-${index}-${idx}`} className="text-gray-700">{point.replace(/^-/, "").trim()}</li>
-      ));
+      const bulletPoints = paragraph.split("\n").map((point, idx) => {
+        const formattedPoint = point.replace(
+          /^- ([^:\n]+):/, // Match text before `:` in bullet points
+          "- <strong class='text-polkadot-pink'>$1:</strong>"
+        );
+        return <li key={`bullet-${index}-${idx}`} className="text-gray-700" dangerouslySetInnerHTML={{ __html: formattedPoint.trim() }} />;
+      });
+
       formattedContent.push(<ul key={`list-${index}`} className="list-disc pl-5 space-y-2">{bulletPoints}</ul>);
       return;
     }
 
-    // Apply bold pink formatting to text before a colon
+    // Apply bold pink formatting to text before a colon in paragraphs
     const formattedText = paragraph.replace(
       /^([^:\n]+):/gm,
       "<strong class='text-polkadot-pink'>$1:</strong>"
@@ -50,6 +55,7 @@ const formatContent = (text: string | undefined) => {
 
   return formattedContent.length > 0 ? formattedContent : <p className="italic text-gray-500">Content coming soon...</p>;
 };
+
 
 
 const PitchAdvise = () => {

@@ -13,7 +13,7 @@ const SectionHeader = ({ icon: Icon, title }: { icon: React.ElementType; title: 
   </div>
 );
 
-const formatContent = (text: string) => {
+const formatContent = (text: string | undefined) => {
   if (!text) return <p className="italic text-gray-500">Content not available.</p>;
 
   const paragraphs = text.split("\n\n");
@@ -78,11 +78,12 @@ const formatContent = (text: string) => {
     );
   }
 
-  return formattedContent;
+  return formattedContent.length > 0 ? formattedContent : <p className="italic text-gray-500">Content coming soon...</p>;
 };
 
+
 const PitchAdvise = () => {
-  const [content, setContent] = useState<{ [key: string]: string }>({});
+  const [content, setContent] = useState<{ [key: string]: string | undefined }>({});
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {

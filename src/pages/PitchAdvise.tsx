@@ -34,9 +34,7 @@ const formatContent = (text: string | undefined) => {
     if (paragraph.trim().startsWith("-")) {
       const bulletPoints = paragraph.split("\n").map((point, idx) => {
         const cleanedPoint = point.replace(/^-/, "").trim(); // Remove the extra "-"
-        const formattedPoint = cleanedPoint
-          .replace(/^([^:\n]+):/, "<strong class='text-gray-900'>$1:</strong>") // Bold text before colon
-          .replace(/\*([^*]+)\*/g, "<strong>$1</strong>"); // Bold text inside *asterisks*
+        const formattedPoint = cleanedPoint.replace(/\*([^*]+)\*/g, "<strong>$1</strong>"); // Bold text inside *asterisks*
 
         return <li key={`bullet-${index}-${idx}`} className="text-gray-700" dangerouslySetInnerHTML={{ __html: formattedPoint }} />;
       });
@@ -45,16 +43,15 @@ const formatContent = (text: string | undefined) => {
       return;
     }
 
-    // Apply bold formatting to words/phrases between *asterisks*
-    const formattedText = paragraph
-      .replace(/^([^:\n]+):/gm, "<strong class='text-gray-900'>$1:</strong>") // Bold text before colon
-      .replace(/\*([^*]+)\*/g, "<strong>$1</strong>"); // Bold text inside *asterisks*
+    // Apply bold formatting ONLY to words/phrases between *asterisks*
+    const formattedText = paragraph.replace(/\*([^*]+)\*/g, "<strong>$1</strong>");
 
     formattedContent.push(<p key={`text-${index}`} dangerouslySetInnerHTML={{ __html: formattedText }} />);
   });
 
   return formattedContent.length > 0 ? formattedContent : <p className="italic text-gray-500">Content coming soon...</p>;
 };
+
 
 const PitchAdvise = () => {
   const [content, setContent] = useState<{ [key: string]: string | undefined }>({});

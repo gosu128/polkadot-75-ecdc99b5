@@ -18,62 +18,39 @@ const formatContent = (text: string | undefined) => {
 
   const paragraphs = text.split("\n\n");
   const formattedContent: JSX.Element[] = [];
-  let personaWrapper: JSX.Element[] = [];
-  let insidePersona = false;
 
   paragraphs.forEach((paragraph, index) => {
+    // Highlight Persona Names (###) Without Boxes
     if (paragraph.trim().startsWith("###")) {
-      if (insidePersona && personaWrapper.length > 0) {
-        formattedContent.push(
-          <div key={`persona-${index}`} className="p-5 bg-gray-100 border border-gray-300 rounded-md shadow-sm space-y-2">
-            {personaWrapper}
-          </div>
-        );
-        personaWrapper = [];
-      }
-      personaWrapper.push(
-        <h4 key={`persona-title-${index}`} className="text-lg font-semibold text-gray-900">
+      formattedContent.push(
+        <h4 key={`persona-title-${index}`} className="text-xl font-bold text-gray-900 mt-6">
           {paragraph.replace(/^###/, "").trim()}
         </h4>
       );
-      insidePersona = true;
       return;
     }
 
+    // Convert bullet points ("- item") into proper lists
     if (paragraph.trim().startsWith("-")) {
       const bulletPoints = paragraph.split("\n").map((point, idx) => (
         <li key={`bullet-${index}-${idx}`} className="text-gray-700">{point.replace(/^-/, "").trim()}</li>
       ));
-      if (insidePersona) {
-        personaWrapper.push(<ul key={`list-${index}`} className="list-disc pl-5 space-y-2">{bulletPoints}</ul>);
-      } else {
-        formattedContent.push(<ul key={`list-${index}`} className="list-disc pl-5 space-y-2">{bulletPoints}</ul>);
-      }
+      formattedContent.push(<ul key={`list-${index}`} className="list-disc pl-5 space-y-2">{bulletPoints}</ul>);
       return;
     }
 
+    // Apply bold pink formatting to text before a colon
     const formattedText = paragraph.replace(
       /^([^:\n]+):/gm,
       "<strong class='text-polkadot-pink'>$1:</strong>"
     );
 
-    if (insidePersona) {
-      personaWrapper.push(<p key={`persona-text-${index}`} dangerouslySetInnerHTML={{ __html: formattedText }} />);
-    } else {
-      formattedContent.push(<p key={`text-${index}`} dangerouslySetInnerHTML={{ __html: formattedText }} />);
-    }
+    formattedContent.push(<p key={`text-${index}`} dangerouslySetInnerHTML={{ __html: formattedText }} />);
   });
-
-  if (insidePersona && personaWrapper.length > 0) {
-    formattedContent.push(
-      <div key={`last-persona`} className="p-5 bg-gray-100 border border-gray-300 rounded-md shadow-sm space-y-2">
-        {personaWrapper}
-      </div>
-    );
-  }
 
   return formattedContent.length > 0 ? formattedContent : <p className="italic text-gray-500">Content coming soon...</p>;
 };
+
 
 const PitchAdvise = () => {
   const [content, setContent] = useState<{ [key: string]: string | undefined }>({});

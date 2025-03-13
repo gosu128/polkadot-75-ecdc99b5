@@ -112,7 +112,19 @@ const PitchAdvise = () => {
           <div className="text-gray-700 leading-relaxed space-y-6">{formatContent(content["personas"])}</div>
 
           <SectionHeader icon={Target} title="Polkadot's Messaging Strategy" />
-          <div className="text-gray-700 leading-relaxed space-y-4">{formatContent(content["messaging_strategy"])}</div>
+<div className="text-gray-700 leading-relaxed space-y-4">
+  {formatContent(content["messaging_strategy"])}
+
+  {/* Positioning Image */}
+  <div className="flex justify-center mt-6">
+    <img
+      src="https://qhxgyizmewdtvwebpmie.supabase.co/storage/v1/object/public/positioning//Pitch_Advise_-_Positioning.png"
+      alt="Polkadot's Messaging Strategy Positioning"
+      className="max-w-full h-auto"
+    />
+  </div>
+</div>
+
 
           <SectionHeader icon={Star} title="Polkadot's Value Proposition" />
           <div className="text-gray-700 leading-relaxed space-y-4">{formatContent(content["value_proposition"])}</div>

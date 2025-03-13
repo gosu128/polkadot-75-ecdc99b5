@@ -35,7 +35,7 @@ const formatContent = (text: string | undefined) => {
       const bulletPoints = paragraph.split("\n").map((point, idx) => {
         const formattedPoint = point.replace(
           /^-\s*([^:\n]+):/, // Match text before `:` in bullet points and remove "-"
-          "<strong class='text-polkadot-pink'>$1:</strong>"
+          "- <strong class='text-gray-900'>$1:</strong>" // Changed from pink to dark gray
         );
         return <li key={`bullet-${index}-${idx}`} className="text-gray-700" dangerouslySetInnerHTML={{ __html: formattedPoint.trim() }} />;
       });
@@ -44,10 +44,10 @@ const formatContent = (text: string | undefined) => {
       return;
     }
 
-    // Apply bold pink formatting to text before a colon in paragraphs
+    // Apply bold **dark gray** formatting to text before a colon in paragraphs
     const formattedText = paragraph.replace(
       /^([^:\n]+):/gm,
-      "<strong class='text-polkadot-pink'>$1:</strong>"
+      "<strong class='text-gray-900'>$1:</strong>" // Changed from pink to dark gray
     );
 
     formattedContent.push(<p key={`text-${index}`} dangerouslySetInnerHTML={{ __html: formattedText }} />);

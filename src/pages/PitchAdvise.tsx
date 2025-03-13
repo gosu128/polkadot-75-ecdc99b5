@@ -132,6 +132,10 @@ const PitchAdvise = () => {
 
           <SectionHeader icon={Star} title="Polkadot's Value Proposition" />
           <div className="text-gray-700 leading-relaxed space-y-4">{formatContent(content["value_proposition"])}</div>
+
+          <SectionHeader icon={Globe} title="Geographical Hotspots" />
+          <div className="text-gray-700 leading-relaxed space-y-4">{formatContent(content["geographies"])}</div>
+
         </div>
       </div>
     </div>

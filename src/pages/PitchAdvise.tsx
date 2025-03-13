@@ -30,12 +30,12 @@ const formatContent = (text: string | undefined) => {
       return;
     }
 
-    // Convert bullet points ("- item") into proper lists
+    // Convert bullet points ("- item") into proper lists and remove extra "-"
     if (paragraph.trim().startsWith("-")) {
       const bulletPoints = paragraph.split("\n").map((point, idx) => {
         const formattedPoint = point.replace(
-          /^- ([^:\n]+):/, // Match text before `:` in bullet points
-          "- <strong class='text-polkadot-pink'>$1:</strong>"
+          /^-\s*([^:\n]+):/, // Match text before `:` in bullet points and remove "-"
+          "<strong class='text-polkadot-pink'>$1:</strong>"
         );
         return <li key={`bullet-${index}-${idx}`} className="text-gray-700" dangerouslySetInnerHTML={{ __html: formattedPoint.trim() }} />;
       });
@@ -55,8 +55,6 @@ const formatContent = (text: string | undefined) => {
 
   return formattedContent.length > 0 ? formattedContent : <p className="italic text-gray-500">Content coming soon...</p>;
 };
-
-
 
 const PitchAdvise = () => {
   const [content, setContent] = useState<{ [key: string]: string | undefined }>({});

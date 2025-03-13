@@ -8,7 +8,7 @@ const CaseStudies = () => {
           <div className="relative w-full" style={{
           paddingTop: "60.3%"
         }}>  
-            <iframe src="https://docs.google.com/presentation/d/1z13q5HFfK39eZVtA6sdHk8jC-EmTQdnBnIjsW0Acyfk/embed?start=false&loop=false&delayms=3000" className="absolute top-0 left-0 w-full h-full border-0" frameBorder="0" allowFullScreen />
+            <iframe src="https://docs.google.com/presentation/d/1JhftKc5G9VVjvD59tOk06SzMxB5FQclGu4P1i-tQ_gg/embed?start=false&loop=false&delayms=3000" className="absolute top-0 left-0 w-full h-full border-0" frameBorder="0" allowFullScreen />
           </div>
         </div>
       </div>

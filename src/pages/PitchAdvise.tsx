@@ -14,19 +14,19 @@ const SectionHeader = ({ icon: Icon, title }: { icon: React.ElementType; title: 
 );
 
 const formatContent = (text: string) => {
-  if (!text) return "Content not available.";
+  if (!text) return <p className="italic text-gray-500">Content not available.</p>;
 
   const paragraphs = text.split("\n\n");
-  let personaWrapper: JSX.Element[] = [];
   const formattedContent: JSX.Element[] = [];
+  let personaWrapper: JSX.Element[] = [];
   let insidePersona = false;
 
   paragraphs.forEach((paragraph, index) => {
-    // Start a new persona group (###)
+    // Handle persona groups (###) and wrap the entire persona content
     if (paragraph.trim().startsWith("###")) {
       if (insidePersona && personaWrapper.length > 0) {
         formattedContent.push(
-          <div key={index} className="p-5 bg-gray-100 border border-gray-300 rounded-md shadow-sm space-y-2">
+          <div key={`persona-${index}`} className="p-5 bg-gray-100 border border-gray-300 rounded-md shadow-sm space-y-2">
             {personaWrapper}
           </div>
         );
@@ -34,7 +34,7 @@ const formatContent = (text: string) => {
       }
 
       personaWrapper.push(
-        <h4 key={`persona-${index}`} className="text-lg font-semibold text-gray-900">
+        <h4 key={`persona-title-${index}`} className="text-lg font-semibold text-gray-900">
           {paragraph.replace(/^###/, "").trim()}
         </h4>
       );
@@ -42,25 +42,31 @@ const formatContent = (text: string) => {
       return;
     }
 
-    // Convert lines starting with "-" into bullet points
+    // Convert bullet points ("- item") into proper lists
     if (paragraph.trim().startsWith("-")) {
-      personaWrapper.push(
-        <ul key={`list-${index}`} className="list-disc pl-5 space-y-2">
-          {paragraph.split("\n").map((point, idx) => (
-            <li key={`bullet-${index}-${idx}`} className="text-gray-700">{point.replace(/^-/, "").trim()}</li>
-          ))}
-        </ul>
-      );
+      const bulletPoints = paragraph.split("\n").map((point, idx) => (
+        <li key={`bullet-${index}-${idx}`} className="text-gray-700">{point.replace(/^-/, "").trim()}</li>
+      ));
+
+      if (insidePersona) {
+        personaWrapper.push(<ul key={`list-${index}`} className="list-disc pl-5 space-y-2">{bulletPoints}</ul>);
+      } else {
+        formattedContent.push(<ul key={`list-${index}`} className="list-disc pl-5 space-y-2">{bulletPoints}</ul>);
+      }
       return;
     }
 
-    // Highlight all text before a colon (":") in pink and bold
+    // Apply bold pink formatting to text before a colon
     const formattedText = paragraph.replace(
-      /^([^:\n]+):/gm,
+      /^([^:\n]+):/gm, 
       "<strong class='text-polkadot-pink'>$1:</strong>"
     );
 
-    personaWrapper.push(<p key={index} dangerouslySetInnerHTML={{ __html: formattedText }} />);
+    if (insidePersona) {
+      personaWrapper.push(<p key={`persona-text-${index}`} dangerouslySetInnerHTML={{ __html: formattedText }} />);
+    } else {
+      formattedContent.push(<p key={`text-${index}`} dangerouslySetInnerHTML={{ __html: formattedText }} />);
+    }
   });
 
   // Push the last persona profile into formattedContent

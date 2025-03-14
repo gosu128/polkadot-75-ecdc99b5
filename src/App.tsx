@@ -21,12 +21,12 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Index />} />
+          <Route path="/" element={<PitchAdvise />} />
+          <Route path="/segments" element={<Index />} />
           <Route path="/pmf-scores" element={<PMFScores />} />
           <Route path="/methodology" element={<Methodology />} />
           <Route path="/bd-teams" element={<BDTeams />} />
           <Route path="/case-studies" element={<CaseStudies />} />
-          <Route path="/pitch-advise" element={<PitchAdvise />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

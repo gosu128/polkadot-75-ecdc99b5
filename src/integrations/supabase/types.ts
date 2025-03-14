@@ -24,6 +24,24 @@ export type Database = {
         }
         Relationships: []
       }
+      pitch_advise: {
+        Row: {
+          content: string
+          id: number
+          section: string
+        }
+        Insert: {
+          content: string
+          id?: number
+          section: string
+        }
+        Update: {
+          content?: string
+          id?: number
+          section?: string
+        }
+        Relationships: []
+      }
       segments: {
         Row: {
           abstract: string | null

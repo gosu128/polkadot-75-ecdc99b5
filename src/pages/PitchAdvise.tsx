@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { AlertTriangle, Info, Lightbulb, Star, Target, Users, Globe } from "lucide-react";
@@ -86,7 +87,16 @@ const PitchAdvise = () => {
     <div className="w-full min-h-screen bg-white">
       <Header />
       <div className="flex flex-col min-h-screen text-left px-4 sm:px-6 lg:px-8 py-16 lg:py-20 max-w-5xl mx-auto">
-               <div className="space-y-10 max-w-4xl">
+        {/* Welcome Message with Gradient */}
+        <h1 className="text-5xl sm:text-6xl md:text-7xl font-unbounded font-bold mb-12 leading-tight text-center">
+          Welcome to the{" "}
+          <span className="bg-clip-text text-transparent bg-gradient-to-r from-polkadot-pink via-[#9B87F5] to-[#7E69AB]">
+            Polkadot
+          </span>{" "}
+          Sales Hub
+        </h1>
+        
+        <div className="space-y-10 max-w-4xl">
           <SectionHeader icon={Info} title="Introduction" />
           <div className="text-gray-700 leading-relaxed space-y-4">{formatContent(content["introduction"])}</div>
 
@@ -112,26 +122,24 @@ const PitchAdvise = () => {
           <div className="text-gray-700 leading-relaxed space-y-6">{formatContent(content["personas"])}</div>
 
           <SectionHeader icon={Target} title="Polkadot's Messaging Strategy" />
-<div className="text-gray-700 leading-relaxed space-y-4">
-  {formatContent(content["messaging_strategy"])}
+          <div className="text-gray-700 leading-relaxed space-y-4">
+            {formatContent(content["messaging_strategy"])}
 
-  {/* Positioning Image */}
-  <div className="flex justify-center mt-6">
-    <img
-      src="https://qhxgyizmewdtvwebpmie.supabase.co/storage/v1/object/public/positioning//Pitch_Advise_-_Positioning.png"
-      alt="Polkadot's Messaging Strategy Positioning"
-      className="max-w-full h-auto"
-    />
-  </div>
-</div>
-
+            {/* Positioning Image */}
+            <div className="flex justify-center mt-6">
+              <img
+                src="https://qhxgyizmewdtvwebpmie.supabase.co/storage/v1/object/public/positioning//Pitch_Advise_-_Positioning.png"
+                alt="Polkadot's Messaging Strategy Positioning"
+                className="max-w-full h-auto"
+              />
+            </div>
+          </div>
 
           <SectionHeader icon={Star} title="Polkadot's Value Proposition" />
           <div className="text-gray-700 leading-relaxed space-y-4">{formatContent(content["value_proposition"])}</div>
 
           <SectionHeader icon={Star} title="Polkadot's Capability Assessment" />
           <div className="text-gray-700 leading-relaxed space-y-4">{formatContent(content["capability_assessment"])}</div>
-
         </div>
       </div>
     </div>

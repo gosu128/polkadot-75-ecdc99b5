@@ -1,4 +1,4 @@
-
+rial
 import { cn } from '@/lib/utils';
 import { useState } from 'react';
 import { useLocation } from 'react-router-dom';
@@ -12,7 +12,7 @@ const Header = () => {
     { name: "Home", link: "/" },
     { name: "Segment Profiles", link: "/segments" },
     { name: "Segment Ratings", link: "/pmf-scores" },
-    { name: "Case Studies", link: "/case-studies" },
+    { name: "Material", link: "/case-studies" },
     { name: "BD Teams", link: "/bd-teams" },
     { name: "Methodology", link: "/methodology" }
   ];

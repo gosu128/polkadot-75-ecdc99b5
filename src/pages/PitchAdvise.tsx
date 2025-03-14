@@ -90,11 +90,11 @@ const PitchAdvise = () => {
       {/* Hero section with centered title and lots of vertical space */}
       <div className="flex items-center justify-center min-h-screen px-4">
         <h1 className="text-5xl sm:text-6xl md:text-7xl font-unbounded font-bold leading-tight text-center">
-          Welcome to the{" "}
+          Welcome to the
+          <br />
           <span className="bg-clip-text text-transparent bg-gradient-to-r from-polkadot-pink via-[#9B87F5] to-[#7E69AB]">
-            Polkadot
-          </span>{" "}
-          Sales Hub
+            Polkadot Sales Hub
+          </span>
         </h1>
       </div>
       

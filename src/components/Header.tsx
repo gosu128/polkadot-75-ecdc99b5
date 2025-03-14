@@ -7,7 +7,7 @@ const Header = () => {
   const location = useLocation();
   const [isHovered, setIsHovered] = useState<number | null>(null);
 
-  // Navigation items
+  // Navigation items - moved Home to first position
   const navItems = [
     { name: "Home", link: "/" },
     { name: "Segment Profiles", link: "/segments" },

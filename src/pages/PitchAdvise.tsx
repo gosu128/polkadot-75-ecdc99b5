@@ -86,16 +86,20 @@ const PitchAdvise = () => {
   return (
     <div className="w-full min-h-screen bg-white">
       <Header />
-      <div className="flex flex-col min-h-screen text-left px-4 sm:px-6 lg:px-8 py-16 lg:py-20 max-w-5xl mx-auto">
-        {/* Welcome Message with Gradient */}
-        <h1 className="text-5xl sm:text-6xl md:text-7xl font-unbounded font-bold mb-12 leading-tight text-center">
+      
+      {/* Hero section with centered title and lots of vertical space */}
+      <div className="flex items-center justify-center min-h-screen px-4">
+        <h1 className="text-5xl sm:text-6xl md:text-7xl font-unbounded font-bold leading-tight text-center">
           Welcome to the{" "}
           <span className="bg-clip-text text-transparent bg-gradient-to-r from-polkadot-pink via-[#9B87F5] to-[#7E69AB]">
             Polkadot
           </span>{" "}
           Sales Hub
         </h1>
-        
+      </div>
+      
+      {/* Content sections - only visible on scroll */}
+      <div className="flex flex-col text-left px-4 sm:px-6 lg:px-8 py-16 lg:py-20 max-w-5xl mx-auto">
         <div className="space-y-10 max-w-4xl">
           <SectionHeader icon={Info} title="Introduction" />
           <div className="text-gray-700 leading-relaxed space-y-4">{formatContent(content["introduction"])}</div>

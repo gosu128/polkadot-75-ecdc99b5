@@ -12,7 +12,7 @@ const Header = () => {
     { name: "Home", link: "/" },
     { name: "Segment Profiles", link: "/segments" },
     { name: "Segment Ratings", link: "/pmf-scores" },
-    { name: "Case Studies", link: "/case-studies" },
+    { name: "Resources", link: "/case-studies" },
     { name: "BD Teams", link: "/bd-teams" },
     { name: "Methodology", link: "/methodology" }
   ];

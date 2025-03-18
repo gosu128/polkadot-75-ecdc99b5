@@ -168,7 +168,11 @@ const Segments = () => {
 
           {selectedSegment && selectedIndustry && (
             <div className="mt-8">
-              <SegmentProfile segment={selectedSegment} industry={selectedIndustry} />
+              <SegmentProfile 
+                segment={selectedSegment} 
+                industry={selectedIndustry} 
+                onBack={() => setSelectedSegment(null)} 
+              />
             </div>
           )}
         </div>

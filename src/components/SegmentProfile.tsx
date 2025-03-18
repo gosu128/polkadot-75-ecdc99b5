@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { ArrowLeft } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
@@ -80,8 +79,8 @@ const SegmentProfile = ({ segment, industry, onBack }: { segment: any; industry:
           .from("segments")
           .select(`
             id, name, abstract, definition, trends, regions, challenges, 
-            usecases_general, usecases_web3, personas_1, personas_2, personas_3, 
-            capability, value_prop, positioning_statement, messaging, proof_points
+            usecases_general, personas_1, capability, value_prop, 
+            positioning_statement, messaging, proof_points
           `)
           .eq("name", segment.name)
           .single();
@@ -118,7 +117,7 @@ const SegmentProfile = ({ segment, industry, onBack }: { segment: any; industry:
           <ArrowLeft size={20} />
         </button>
         <h1 className="ml-4 text-3xl font-bold font-unbounded">
-          {segmentData?.name} {industry && `- ${industry.name}`}
+          {segmentData?.name}
         </h1>
       </div>
 
@@ -135,18 +134,12 @@ const SegmentProfile = ({ segment, industry, onBack }: { segment: any; industry:
           <Subsection title="2.2. Market Trends" content={segmentData?.trends} />
           <Subsection title="2.3. Geographical Hotspots" content={segmentData?.regions} />
           <Subsection title="2.4. Challenges" content={segmentData?.challenges} />
-          <Subsection
-            title="2.5. Use Cases"
-            content={`${segmentData?.usecases_general || ''}\n\n${segmentData?.usecases_web3 || ''}`}
-          />
+          <Subsection title="2.5. Use Cases" content={segmentData?.usecases_general} />
         </Section>
 
         {/* Section 3: The Pitch */}
         <Section title="3. The Pitch">
-          <Subsection
-            title="3.1. Target Audiences"
-            content={`${segmentData?.personas_1 || ''}\n\n${segmentData?.personas_2 || ''}\n\n${segmentData?.personas_3 || ''}`}
-          />
+          <Subsection title="3.1. Target Audiences" content={segmentData?.personas_1} />
           <Subsection title="3.2. Capability Assessment" content={segmentData?.capability} />
           <Subsection title="3.3. Value Proposition" content={segmentData?.value_prop} />
           <Subsection title="3.4. Positioning" content={segmentData?.positioning_statement} />

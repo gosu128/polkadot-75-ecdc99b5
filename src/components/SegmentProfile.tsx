@@ -71,10 +71,10 @@ const SegmentProfile = ({ segment, industry, onBack }: { segment: any; industry:
       const { data, error } = await supabase
         .from("segments")
         .select(`
-          id, name, trends, regions, challenges, usecases_general, usecases_web3,
-          personas_1, personas_2, personas_3, ca_interoperability, ca_resiliance, 
-          ca_scalability, ca_customization, value_prop, positioning_statement, 
-          messaging, proof_points
+          id, name, abstract, definition, trends, regions, challenges, 
+          usecases_general, usecases_web3, personas_1, personas_2, personas_3, 
+          ca_interoperability, ca_resiliance, ca_scalability, ca_customization, 
+          value_prop, positioning_statement, messaging, proof_points
         `);
 
       if (error) {

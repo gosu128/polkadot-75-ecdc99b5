@@ -24,11 +24,15 @@ const formatText = (text: string) => {
     formattedText = `<ul class='list-disc pl-6 space-y-2'>${formattedText}</ul>`;
   }
 
-  // Convert empty lines into paragraph breaks
-  formattedText = formattedText.replace(/\n\s*\n/g, "<br/><br/>");
+  // Convert double line breaks into paragraph tags for proper spacing
+  formattedText = formattedText
+    .split(/\n\s*\n/)
+    .map((paragraph) => `<p class='text-left'>${paragraph.trim()}</p>`)
+    .join("");
 
   return formattedText;
 };
+
 
 // Section component
 const Section = ({ title, children }: { title: string; children: React.ReactNode }) => {

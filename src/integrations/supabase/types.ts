@@ -50,6 +50,7 @@ export type Database = {
           ca_interoperability: string | null
           ca_resiliance: string | null
           ca_scalability: string | null
+          capability: string | null
           challenges: string | null
           complexity: number | null
           compliance: number | null
@@ -84,6 +85,7 @@ export type Database = {
           ca_interoperability?: string | null
           ca_resiliance?: string | null
           ca_scalability?: string | null
+          capability?: string | null
           challenges?: string | null
           complexity?: number | null
           compliance?: number | null
@@ -118,6 +120,7 @@ export type Database = {
           ca_interoperability?: string | null
           ca_resiliance?: string | null
           ca_scalability?: string | null
+          capability?: string | null
           challenges?: string | null
           complexity?: number | null
           compliance?: number | null

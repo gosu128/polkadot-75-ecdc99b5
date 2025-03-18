@@ -66,38 +66,35 @@ const SegmentProfile = ({ segment, industry, onBack }: { segment: any; industry:
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchSegments = async () => {
-      console.log(`Fetching data for segment: ${segment.name}`);
+   const fetchSegments = async () => {
+  console.log(`Fetching data for segment: ${name}`); // Logging the name for debugging
 
-      try {
-        const { data, error } = await supabase
-          .from("segments")
-          .select(`
-            id, name, abstract, definition, trends, regions, challenges, 
-            usecases_general, usecases_web3, personas_1, personas_2, personas_3, 
-            ca_interoperability, ca_resiliance, ca_scalability, ca_customization, 
-            value_prop, positioning_statement, messaging, proof_points
-          `)
-          .eq("name", segment.name) // Fetch only the matching segment
-          .limit(1) // Only return one record
-          .single(); // Return as a single object
+  try {
+    const { data, error } = await supabase
+      .from("segments")
+      .select(`
+        id, name, abstract, definition, trends, regions, challenges, 
+        usecases_general, usecases_web3, personas_1, personas_2, personas_3, 
+        ca_interoperability, ca_resiliance, ca_scalability, ca_customization, 
+        value_prop, positioning_statement, messaging, proof_points
+      `)
+      .eq("name", name) // ✅ Correctly using "name"
+      .limit(1)
+      .single();
 
-        if (error) {
-          console.error("Error fetching segment:", error);
-          setError("Failed to load segment data.");
-        } else {
-          console.log("Fetched segment data:", data); // Debugging log
-          setSegmentData(data);
-        }
-      } catch (err) {
-        console.error("Unexpected error:", err);
-        setError("Unexpected error occurred.");
-      }
-      setLoading(false);
-    };
-
-    fetchSegments();
-  }, [segment.name]);
+    if (error) {
+      console.error("Error fetching segment:", error);
+      setError("Failed to load segment data.");
+    } else {
+      console.log("Fetched segment data:", data);
+      setSegmentData(data);
+    }
+  } catch (err) {
+    console.error("Unexpected error:", err);
+    setError("Unexpected error occurred.");
+  }
+  setLoading(false);
+};
 
   if (loading) return <p className="text-gray-500 italic text-center py-10">Loading segment data...</p>;
   if (error) return <p className="text-red-500 text-center py-10">{error}</p>;

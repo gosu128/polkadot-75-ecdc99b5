@@ -3,7 +3,7 @@ import { ArrowLeft } from 'lucide-react';
 import PMFScores from './PMFScores';
 import { supabase } from '@/integrations/supabase/client';
 
-// Define the function to format text with consistent bullet point styling
+// Function to format text properly
 const formatText = (text: string | undefined | null): React.ReactNode => {
   if (!text) return <p className="italic text-gray-500">Content not available.</p>;
 
@@ -11,7 +11,6 @@ const formatText = (text: string | undefined | null): React.ReactNode => {
   const formattedContent: JSX.Element[] = [];
 
   paragraphs.forEach((paragraph, index) => {
-    // Highlight headings (###) in bold & pink
     if (paragraph.trim().startsWith('###')) {
       formattedContent.push(
         <h4 key={`heading-${index}`} className="text-xl font-bold text-polkadot-pink mt-6">
@@ -21,7 +20,6 @@ const formatText = (text: string | undefined | null): React.ReactNode => {
       return;
     }
 
-    // Convert bullet points ("- item") into proper lists
     if (paragraph.trim().startsWith('-')) {
       const bulletPoints = paragraph.split('\n').map((point, idx) => {
         const cleanedPoint = point.replace(/^-/, '').trim();
@@ -34,7 +32,6 @@ const formatText = (text: string | undefined | null): React.ReactNode => {
       return;
     }
 
-    // Apply bold formatting to words/phrases between *asterisks*
     const formattedText = paragraph.replace(/\*([^*]+)\*/g, '<strong>$1</strong>');
 
     formattedContent.push(
@@ -45,51 +42,43 @@ const formatText = (text: string | undefined | null): React.ReactNode => {
   return formattedContent.length > 0 ? formattedContent : <p className="italic text-gray-500">Content coming soon...</p>;
 };
 
-// Section and Subsection components for consistent styling
-const Section = ({ title, children }: { title: string; children: React.ReactNode }) => {
-  return (
-    <div className="mb-12">
-      <h2 className="text-2xl font-bold text-polkadot-pink mb-4">{title}</h2>
-      <hr className="border-t-2 border-gray-300 mb-6" />
-      <div>{children}</div>
-    </div>
-  );
-};
+// Section & Subsection Components
+const Section = ({ title, children }: { title: string; children: React.ReactNode }) => (
+  <div className="mb-12">
+    <h2 className="text-2xl font-bold text-polkadot-pink mb-4">{title}</h2>
+    <hr className="border-t-2 border-gray-300 mb-6" />
+    <div>{children}</div>
+  </div>
+);
 
-const Subsection = ({ title, content }: { title: string; content?: string | null }) => {
-  return (
-    <div className="mb-6">
-      <h3 className="text-xl font-semibold text-polkadot-pink mb-2">{title}</h3>
-      <hr className="border-t border-gray-200 mb-4" />
-      <div className="text-gray-700 leading-relaxed">{formatText(content)}</div>
-    </div>
-  );
-};
+const Subsection = ({ title, content }: { title: string; content?: string | null }) => (
+  <div className="mb-6">
+    <h3 className="text-xl font-semibold text-polkadot-pink mb-2">{title}</h3>
+    <hr className="border-t border-gray-200 mb-4" />
+    <div className="text-gray-700 leading-relaxed">{formatText(content)}</div>
+  </div>
+);
 
-// SegmentProfile component
+// SegmentProfile Component
 const SegmentProfile = ({ segment, industry, onBack }: { segment: any; industry: any; onBack: () => void }) => {
   const [segmentData, setSegmentData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchSegmentData = async () => {
       try {
         const { data, error } = await supabase
           .from('segments')
-          .select('*')
+          .select('id, abstract, definition, trends, regions, challenges, usecases_general, usecases_web3, personas_1, personas_2, personas_3, value_prop, positioning_statement, messaging') // Removed missing columns
           .eq('id', segment.id)
           .single();
 
-        if (error) {
-          console.error('Error fetching segment data:', error);
-          return;
-        }
-
-        if (data) {
-          setSegmentData(data);
-        }
+        if (error) throw error;
+        setSegmentData(data);
       } catch (err) {
-        console.error('Error in segment data fetch:', err);
+        setError('Failed to load segment data.');
+        console.error('Error fetching segment data:', err);
       } finally {
         setLoading(false);
       }
@@ -98,9 +87,8 @@ const SegmentProfile = ({ segment, industry, onBack }: { segment: any; industry:
     fetchSegmentData();
   }, [segment.id]);
 
-  if (loading) {
-    return <p className="text-gray-500 italic text-center py-10">Loading segment data...</p>;
-  }
+  if (loading) return <p className="text-gray-500 italic text-center py-10">Loading segment data...</p>;
+  if (error) return <p className="text-red-500 text-center py-10">{error}</p>;
 
   return (
     <div className="flex flex-col w-full max-w-6xl mx-auto py-8 px-4">
@@ -142,14 +130,10 @@ const SegmentProfile = ({ segment, industry, onBack }: { segment: any; industry:
             title="3.1. Target Audiences"
             content={`${segmentData?.personas_1 || ''}\n\n${segmentData?.personas_2 || ''}\n\n${segmentData?.personas_3 || ''}`}
           />
-          <Subsection
-            title="3.2. Capability Assessment"
-            content={`${segmentData?.ca_1 || ''}\n\n${segmentData?.ca_2 || ''}\n\n${segmentData?.ca_3 || ''}\n\n${segmentData?.ca_4 || ''}`}
-          />
-          <Subsection title="3.3. Value Proposition" content={segmentData?.value_prop} />
-          <Subsection title="3.4. Positioning" content={segmentData?.positioning_statement} />
-          <Subsection title="3.5. Messaging Strategy" content={segmentData?.messaging} />
-          <Subsection title="3.6. Proof Points" content="Coming soon..." />
+          <Subsection title="3.2. Value Proposition" content={segmentData?.value_prop} />
+          <Subsection title="3.3. Positioning" content={segmentData?.positioning_statement} />
+          <Subsection title="3.4. Messaging Strategy" content={segmentData?.messaging} />
+          <Subsection title="3.5. Proof Points" content="Coming soon..." />
         </Section>
 
         {/* Section 4: Other */}

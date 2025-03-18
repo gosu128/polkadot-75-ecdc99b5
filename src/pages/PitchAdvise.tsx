@@ -105,7 +105,7 @@ const PitchAdvise = () => {
           <SectionHeader icon={Info} title="How to Navigate this Website" />
           <div className="text-gray-700 leading-relaxed space-y-4">{formatContent(content.how)}</div>
 
-          <SectionHeader icon={AlertTriangle} title="Why Polkadot Must Expand Beyond Web3 to Secure Its Future Growth" />
+          <SectionHeader icon={AlertTriangle} title="Why Polkadot Must Expand Beyond Web3" />
           <div className="text-gray-700 leading-relaxed space-y-4">{formatContent(content.why, true)}</div>
         </div>
       </div>

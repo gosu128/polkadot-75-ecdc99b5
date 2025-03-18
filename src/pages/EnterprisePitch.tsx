@@ -3,10 +3,23 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { createClient } from '@supabase/supabase-js';
 
-// Securely connect to Supabase (replace with your NEW regenerated Anon Key)
+// Supabase connection using the "polkadot" project
 const supabaseUrl = "https://qhxgyizmewdtvwebpmie.supabase.co";
-const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFoeGd5aXptZXdkdHZ3ZWJwbWllIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDExNjk0NjAsImV4cCI6MjA1Njc0NTQ2MH0.MxQbO5TTL1vbfohLB2dHtKOotwp0sUGDQfcpBgT1EL8";  // Replace this after regenerating!
+const supabaseKey = "YOUR_NEW_ANON_KEY_HERE";  // Replace this after regenerating!
 const supabase = createClient(supabaseUrl, supabaseKey);
+
+// Function to format text (bold text and paragraph breaks)
+const formatText = (text: string) => {
+  if (!text) return "";
+
+  // Bold formatting for text enclosed within "*"
+  let formattedText = text.replace(/\*(.*?)\*/g, "<strong>$1</strong>");
+
+  // Replace "- " at the beginning of a line with a paragraph break
+  formattedText = formattedText.replace(/^- /gm, "<br/>");
+
+  return formattedText;
+};
 
 // Section component
 const Section = ({ title, children }: { title: string; children: React.ReactNode }) => {
@@ -25,7 +38,11 @@ const Subsection = ({ title, content }: { title: string; content?: string }) => 
     <div className="mb-6">
       <h3 className="text-xl font-semibold text-polkadot-pink mb-2">{title}</h3>
       <hr className="border-t border-gray-200 mb-4" />
-      {content !== null ? <p className="text-gray-700">{content}</p> : <p className="text-gray-400 italic">Loading...</p>}
+      {content !== null ? (
+        <p className="text-gray-700" dangerouslySetInnerHTML={{ __html: formatText(content) }} />
+      ) : (
+        <p className="text-gray-400 italic">Loading...</p>
+      )}
     </div>
   );
 };

@@ -7,14 +7,12 @@ const Header = () => {
   const location = useLocation();
   const [isHovered, setIsHovered] = useState<number | null>(null);
 
-  // Navigation items - moved Home to first position
+  // Updated navigation items with merged sections and new Enterprise Pitch
   const navItems = [
     { name: "Home", link: "/" },
-    { name: "Segment Profiles", link: "/segments" },
-    { name: "Segment Ratings", link: "/pmf-scores" },
-    { name: "Resources", link: "/case-studies" },
-    { name: "BD Teams", link: "/bd-teams" },
-    { name: "Methodology", link: "/methodology" }
+    { name: "Enterprise Pitch", link: "/enterprise-pitch" },
+    { name: "Segments", link: "/segments" },
+    { name: "Resources", link: "/resources" }
   ];
 
   return (

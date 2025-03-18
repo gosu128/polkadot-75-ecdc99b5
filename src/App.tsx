@@ -4,13 +4,11 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Index from "./pages/Index";
-import NotFound from "./pages/NotFound";
-import PMFScores from "./components/PMFScores";
-import Methodology from "./pages/Methodology";
-import BDTeams from "./pages/BDTeams";
-import CaseStudies from "./pages/CaseStudies";
 import PitchAdvise from "./pages/PitchAdvise";
+import EnterprisePitch from "./pages/EnterprisePitch";
+import Segments from "./pages/Segments";
+import Resources from "./pages/Resources";
+import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
 
@@ -22,11 +20,14 @@ const App = () => (
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<PitchAdvise />} />
-          <Route path="/segments" element={<Index />} />
-          <Route path="/pmf-scores" element={<PMFScores />} />
-          <Route path="/methodology" element={<Methodology />} />
-          <Route path="/bd-teams" element={<BDTeams />} />
-          <Route path="/case-studies" element={<CaseStudies />} />
+          <Route path="/enterprise-pitch" element={<EnterprisePitch />} />
+          <Route path="/segments" element={<Segments />} />
+          <Route path="/resources" element={<Resources />} />
+          {/* Redirects for old routes */}
+          <Route path="/pmf-scores" element={<Segments />} />
+          <Route path="/bd-teams" element={<Resources />} />
+          <Route path="/case-studies" element={<Resources />} />
+          <Route path="/methodology" element={<Resources />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

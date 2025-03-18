@@ -106,6 +106,10 @@ const SegmentProfile = ({ segment, industry, onBack }: { segment: any; industry:
   if (error) return <p className="text-red-500 text-center py-10">{error}</p>;
   if (!segmentData) return <p className="text-red-500 text-center py-10">No data found for this segment.</p>;
 
+  // Generate the image URL dynamically
+  const formattedSegmentName = segmentData?.name.replace(/ /g, "_").replace(/&/g, "and"); // Adjust spaces and symbols
+  const imageUrl = `https://qhxgyizmewdtvwebpmie.supabase.co/storage/v1/object/public/polkadot//Software_&_Tech_-_${formattedSegmentName}.png`;
+
   return (
     <div className="flex flex-col w-full max-w-6xl mx-auto py-8 px-4">
       {/* Back button and title area */}
@@ -133,6 +137,16 @@ const SegmentProfile = ({ segment, industry, onBack }: { segment: any; industry:
           <Subsection title="2.1. Definition" content={segmentData?.definition} />
           <Subsection title="2.2. Market Trends" content={segmentData?.trends} />
           <Subsection title="2.3. Geographical Hotspots" content={segmentData?.regions} />
+
+          {/* Dynamically Loaded Image */}
+          <div className="flex justify-center mt-6">
+            <img
+              src={imageUrl}
+              alt={`${segmentData?.name} Geographical Hotspots`}
+              className="w-full h-auto"
+            />
+          </div>
+
           <Subsection title="2.4. Challenges" content={segmentData?.challenges} />
           <Subsection title="2.5. Use Cases" content={segmentData?.usecases_general} />
         </Section>

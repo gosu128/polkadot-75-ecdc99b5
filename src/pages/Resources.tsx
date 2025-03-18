@@ -32,7 +32,7 @@ const Resources = () => {
           <div className="relative w-full max-w-[900px] mx-auto">
             <div className="relative w-full" style={{ paddingTop: "60.3%" }}>  
               <iframe 
-                src="https://docs.google.com/spreadsheets/d/1rzMvSxH5IBAzb8EzezO-1dYneX6nIkDUIs-7MhFirgw/edit?gid=842874053#gid=842874053&range=A1"
+                src="https://docs.google.com/spreadsheets/d/1rzMvSxH5IBAzb8EzezO-1dYneX6nIkDUIs-7MhFirgw/preview?gid=842874053#gid=842874053&range=A1"
                 className="absolute top-0 left-0 w-full h-full border-0" 
                 frameBorder="0" 
                 allowFullScreen 

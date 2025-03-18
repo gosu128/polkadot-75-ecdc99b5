@@ -12,7 +12,7 @@ const formatText = (text: string | undefined | null): React.ReactNode => {
   paragraphs.forEach((paragraph, index) => {
     if (paragraph.trim().startsWith('###')) {
       formattedContent.push(
-        <h4 key={`heading-${index}`} className="text-xl font-bold text-polkadot-pink mt-6">
+        <h4 key={`heading-${index}`} className="text-xl font-bold text-polkadot-pink mt-6 mb-6">
           {paragraph.replace(/^###/, '').trim()}
         </h4>
       );

@@ -92,7 +92,7 @@ const EnterprisePitch = () => {
   return (
     <div className="w-full min-h-screen bg-white">
       <Header />
-      <div className="container mx-auto p-4 pt-32 max-w-5xl">
+      <div className="container mx-auto p-4 pt-32 max-w-5xl text-left">
         
         {/* Display error message if data fetch fails */}
         {error && <p className="text-red-500 text-center">{error}</p>}

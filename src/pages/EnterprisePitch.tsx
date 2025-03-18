@@ -184,7 +184,7 @@ const EnterprisePitch = () => {
 
         {/* Section 1: Introduction */}
         <Section title="1. Introduction">
-          <Subsection title="1.1. General Advice" content={loading ? null : content[1]} />
+          <Subsection title="1.1. General Advise" content={loading ? null : content[1]} />
           <Subsection title="1.2. Do's & Don'ts" content={loading ? null : content[2]} />
         </Section>
 

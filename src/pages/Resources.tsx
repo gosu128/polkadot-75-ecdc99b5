@@ -1,4 +1,3 @@
-
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 
@@ -29,11 +28,11 @@ const Resources = () => {
           <h2 className="text-2xl font-bold text-polkadot-pink mb-8 text-center">Proof Points</h2>
           <hr className="border-t-2 border-gray-300 mb-10" />
           
-          {/* First Slide Deck (Only one remains) */}
+          {/* Google Sheets Embedded Document */}
           <div className="relative w-full max-w-[900px] mx-auto">
             <div className="relative w-full" style={{ paddingTop: "60.3%" }}>  
               <iframe 
-                src="https://docs.google.com/presentation/d/1JhftKc5G9VVjvD59tOk06SzMxB5FQclGu4P1i-tQ_gg/embed?start=false&loop=false&delayms=3000" 
+                src="https://docs.google.com/spreadsheets/d/1rzMvSxH5IBAzb8EzezO-1dYneX6nIkDUIs-7MhFirgw/edit?gid=842874053#gid=842874053&range=A1"
                 className="absolute top-0 left-0 w-full h-full border-0" 
                 frameBorder="0" 
                 allowFullScreen 
@@ -49,7 +48,7 @@ const Resources = () => {
           <div className="relative w-full max-w-[900px] mx-auto">
             <div className="relative w-full" style={{ paddingTop: "60.3%" }}>  
               <iframe 
-                src="https://docs.google.com/presentation/d/1_ZD9gZb7flXCKxO_3t4R0HIm1TdjCHltD1hvtU_2z0M/embed?start=false&loop=false&delayms=3000" 
+                src="https://docs.google.com/spreadsheets/d/1rzMvSxH5IBAzb8EzezO-1dYneX6nIkDUIs-7MhFirgw/edit?gid=842874053#gid=842874053&range=A1"
                 className="absolute top-0 left-0 w-full h-full border-0" 
                 frameBorder="0" 
                 allowFullScreen 

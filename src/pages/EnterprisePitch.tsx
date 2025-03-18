@@ -16,14 +16,14 @@ const formatText = (text: string) => {
   // Convert "*bold text*" into <strong>bold text</strong>
   let formattedText = text.replace(/\*(.*?)\*/g, "<strong>$1</strong>");
 
-  // Convert "- Bullet point" into <li> items, ensuring proper text alignment
-  formattedText = formattedText.replace(/^- (.*?)(\n|$)/gm, "<li class='pl-2 text-gray-700'><span class='inline-block align-top w-full'> $1 </span></li>");
+  // Convert "- Bullet point" into <li> items
+  formattedText = formattedText.replace(/^- (.*?)(\n|$)/gm, "<li class='ml-6 pl-2 text-gray-700'>$1</li>");
 
-  // Wrap bullet points inside a <ul> with improved indentation
+  // Wrap bullet points inside a <ul> with proper spacing and alignment
   if (formattedText.includes("<li>")) {
     formattedText = formattedText.replace(
       /(<li.*?>.*?<\/li>)/gs,
-      "<ul class='list-disc pl-6 space-y-2 marker:text-gray-700'>$1</ul>"
+      "<ul class='list-disc pl-6 space-y-2'>$1</ul>"
     );
   }
 

@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { ArrowLeft } from 'lucide-react';
 import PMFScores from './PMFScores';
@@ -66,38 +67,47 @@ const SegmentProfile = ({ segment, industry, onBack }: { segment: any; industry:
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-   const fetchSegments = async () => {
-  console.log(`Fetching data for segment: ${name}`); // Logging the name for debugging
+    const fetchSegmentData = async () => {
+      if (!segment || !segment.name) {
+        setError("Invalid segment data");
+        setLoading(false);
+        return;
+      }
 
-  try {
-    const { data, error } = await supabase
-      .from("segments")
-      .select(`
-        id, name, abstract, definition, trends, regions, challenges, 
-        usecases_general, usecases_web3, personas_1, personas_2, personas_3, 
-        ca_interoperability, ca_resiliance, ca_scalability, ca_customization, 
-        value_prop, positioning_statement, messaging, proof_points
-      `)
-      .eq("name", name) // ✅ Correctly using "name"
-      .limit(1)
-      .single();
+      try {
+        console.log(`Fetching data for segment: ${segment.name}`);
 
-    if (error) {
-      console.error("Error fetching segment:", error);
-      setError("Failed to load segment data.");
-    } else {
-      console.log("Fetched segment data:", data);
-      setSegmentData(data);
-    }
-  } catch (err) {
-    console.error("Unexpected error:", err);
-    setError("Unexpected error occurred.");
-  }
-  setLoading(false);
-};
+        const { data, error: fetchError } = await supabase
+          .from("segments")
+          .select(`
+            id, name, abstract, definition, trends, regions, challenges, 
+            usecases_general, usecases_web3, personas_1, personas_2, personas_3, 
+            ca_interoperability, ca_resiliance, ca_scalability, ca_customization, 
+            value_prop, positioning_statement, messaging, proof_points
+          `)
+          .eq("name", segment.name)
+          .single();
+
+        if (fetchError) {
+          console.error("Error fetching segment:", fetchError);
+          setError("Failed to load segment data.");
+        } else {
+          console.log("Fetched segment data:", data);
+          setSegmentData(data);
+        }
+      } catch (err) {
+        console.error("Unexpected error:", err);
+        setError("Unexpected error occurred.");
+      }
+      setLoading(false);
+    };
+
+    fetchSegmentData();
+  }, [segment]);
 
   if (loading) return <p className="text-gray-500 italic text-center py-10">Loading segment data...</p>;
   if (error) return <p className="text-red-500 text-center py-10">{error}</p>;
+  if (!segmentData) return <p className="text-red-500 text-center py-10">No data found for this segment.</p>;
 
   return (
     <div className="flex flex-col w-full max-w-6xl mx-auto py-8 px-4">
@@ -139,10 +149,14 @@ const SegmentProfile = ({ segment, industry, onBack }: { segment: any; industry:
             title="3.1. Target Audiences"
             content={`${segmentData?.personas_1 || ''}\n\n${segmentData?.personas_2 || ''}\n\n${segmentData?.personas_3 || ''}`}
           />
-          <Subsection title="3.2. Value Proposition" content={segmentData?.value_prop} />
-          <Subsection title="3.3. Positioning" content={segmentData?.positioning_statement} />
-          <Subsection title="3.4. Messaging Strategy" content={segmentData?.messaging} />
-          <Subsection title="3.5. Proof Points" content={segmentData?.proof_points || "Coming soon..."} />
+          <Subsection
+            title="3.2. Capability Assessment"
+            content={`${segmentData?.ca_interoperability || ''}\n\n${segmentData?.ca_resiliance || ''}\n\n${segmentData?.ca_scalability || ''}\n\n${segmentData?.ca_customization || ''}`}
+          />
+          <Subsection title="3.3. Value Proposition" content={segmentData?.value_prop} />
+          <Subsection title="3.4. Positioning" content={segmentData?.positioning_statement} />
+          <Subsection title="3.5. Messaging Strategy" content={segmentData?.messaging} />
+          <Subsection title="3.6. Proof Points" content={segmentData?.proof_points || "Coming soon..."} />
         </Section>
 
         {/* Section 4: Other */}
@@ -151,6 +165,7 @@ const SegmentProfile = ({ segment, industry, onBack }: { segment: any; industry:
           <div className="mb-10">
             <PMFScores segment={segmentData} />
           </div>
+          <Subsection title="4.2. Recommended Reading Material" content="Coming soon..." />
         </Section>
       </div>
     </div>
@@ -158,4 +173,3 @@ const SegmentProfile = ({ segment, industry, onBack }: { segment: any; industry:
 };
 
 export default SegmentProfile;
-

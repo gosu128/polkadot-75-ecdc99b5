@@ -48,8 +48,6 @@ export type Database = {
           awareness: number | null
           ca_customization: string | null
           ca_interoperability: string | null
-          ca_other: string | null
-          ca_reliability: string | null
           ca_resiliance: string | null
           ca_scalability: string | null
           challenges: string | null
@@ -60,14 +58,14 @@ export type Database = {
           id: number
           industry_id: number | null
           interoperability: number | null
+          messaging: string | null
           name: string | null
           personas_1: string | null
           personas_2: string | null
           personas_3: string | null
           pmf: number | null
-          positioning_headline: string | null
           positioning_statement: string | null
-          positioning_subheadline: string | null
+          proof_points: string | null
           regions: string | null
           reliability: number | null
           roi: number | null
@@ -77,14 +75,13 @@ export type Database = {
           trends: string | null
           usecases_general: string | null
           usecases_web3: string | null
+          value_prop: string | null
         }
         Insert: {
           abstract?: string | null
           awareness?: number | null
           ca_customization?: string | null
           ca_interoperability?: string | null
-          ca_other?: string | null
-          ca_reliability?: string | null
           ca_resiliance?: string | null
           ca_scalability?: string | null
           challenges?: string | null
@@ -95,14 +92,14 @@ export type Database = {
           id: number
           industry_id?: number | null
           interoperability?: number | null
+          messaging?: string | null
           name?: string | null
           personas_1?: string | null
           personas_2?: string | null
           personas_3?: string | null
           pmf?: number | null
-          positioning_headline?: string | null
           positioning_statement?: string | null
-          positioning_subheadline?: string | null
+          proof_points?: string | null
           regions?: string | null
           reliability?: number | null
           roi?: number | null
@@ -112,14 +109,13 @@ export type Database = {
           trends?: string | null
           usecases_general?: string | null
           usecases_web3?: string | null
+          value_prop?: string | null
         }
         Update: {
           abstract?: string | null
           awareness?: number | null
           ca_customization?: string | null
           ca_interoperability?: string | null
-          ca_other?: string | null
-          ca_reliability?: string | null
           ca_resiliance?: string | null
           ca_scalability?: string | null
           challenges?: string | null
@@ -130,14 +126,14 @@ export type Database = {
           id?: number
           industry_id?: number | null
           interoperability?: number | null
+          messaging?: string | null
           name?: string | null
           personas_1?: string | null
           personas_2?: string | null
           personas_3?: string | null
           pmf?: number | null
-          positioning_headline?: string | null
           positioning_statement?: string | null
-          positioning_subheadline?: string | null
+          proof_points?: string | null
           regions?: string | null
           reliability?: number | null
           roi?: number | null
@@ -147,6 +143,7 @@ export type Database = {
           trends?: string | null
           usecases_general?: string | null
           usecases_web3?: string | null
+          value_prop?: string | null
         }
         Relationships: [
           {

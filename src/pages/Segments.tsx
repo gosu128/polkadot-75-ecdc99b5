@@ -1,4 +1,3 @@
-
 import React from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -28,14 +27,13 @@ interface Segment {
   personas_2: string | null;
   personas_3: string | null;
   positioning_statement: string | null;
-  positioning_headline: string | null;
-  positioning_subheadline: string | null;
   ca_interoperability: string | null;
   ca_resiliance: string | null;
   ca_scalability: string | null;
   ca_customization: string | null;
-  ca_reliability: string | null;
-  ca_other: string | null;
+  messaging: string | null;
+  value_prop: string | null;
+  proof_points: string | null;
   pmf: number | null;
   interoperability: number;
   roi: number;
@@ -77,10 +75,17 @@ const Segments = () => {
 
   useEffect(() => {
     const fetchSegments = async () => {
-      const {
-        data,
-        error
-      } = await supabase.from("segments").select("id, name, industry_id, abstract, definition, trends, regions, challenges, usecases_general, usecases_web3, personas_1, personas_2, personas_3, positioning_statement, positioning_headline, positioning_subheadline, ca_interoperability, ca_resiliance, ca_scalability, ca_customization, ca_reliability, ca_other, interoperability, roi, scalability, customization, awareness, tech, tam, compliance, complexity, reliability, pmf").order("name");
+      const { data, error } = await supabase
+        .from("segments")
+        .select(`
+          id, name, industry_id, abstract, definition, trends, regions, challenges, 
+          usecases_general, usecases_web3, personas_1, personas_2, personas_3, 
+          positioning_statement, ca_interoperability, ca_resiliance, ca_scalability, 
+          ca_customization, messaging, value_prop, proof_points,
+          interoperability, roi, scalability, customization, awareness, tech, tam, 
+          compliance, complexity, reliability, pmf
+        `)
+        .order("name");
       
       if (error) {
         console.error("Error fetching segments:", error);

@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -52,7 +53,7 @@ const Subsection = ({ title, content }: { title: string; content?: string }) => 
           dangerouslySetInnerHTML={{ __html: formatText(content) }} 
         />
       ) : (
-        <p className="text-gray-400 italic">Loading...</p>
+        <p className="text-gray-400 italic text-left">Loading...</p>
       )}
     </div>
   );
@@ -94,10 +95,10 @@ const EnterprisePitch = () => {
   return (
     <div className="w-full min-h-screen bg-white">
       <Header />
-      <div className="container mx-auto p-4 pt-32 max-w-5xl text-left">
+      <div className="container mx-auto p-4 pt-32 max-w-5xl">
         
         {/* Display error message if data fetch fails */}
-        {error && <p className="text-red-500 text-center">{error}</p>}
+        {error && <p className="text-red-500 text-left">{error}</p>}
 
         {/* Section 1: Introduction */}
         <Section title="1. Introduction">

@@ -13,7 +13,7 @@ const SectionHeader = ({ icon: Icon, title }: { icon: React.ElementType; title: 
   </div>
 );
 
-const formatContent = (text: string | undefined) => {
+const formatContent = (text: string | undefined, insertImage: boolean = false) => {
   if (!text) return <p className="italic text-gray-500">Content not available.</p>;
 
   const paragraphs = text.split("\n\n");
@@ -42,65 +42,14 @@ const formatContent = (text: string | undefined) => {
     }
 
     const formattedText = paragraph.replace(/\*([^*]+)\*/g, "<strong>$1</strong>");
-
     formattedContent.push(<p key={`text-${index}`} dangerouslySetInnerHTML={{ __html: formattedText }} />);
-  });
 
-  return formattedContent.length > 0 ? formattedContent : <p className="italic text-gray-500">Content coming soon...</p>;
-};
-
-const PitchAdvise = () => {
-  const [content, setContent] = useState<{ how?: string; why?: string }>({});
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchContent = async () => {
-      const { data, error } = await supabase.from("home").select("how, why").single();
-
-      if (error) {
-        console.error("Error fetching content:", error);
-      } else if (data) {
-        setContent(data);
-      }
-      setLoading(false);
-    };
-
-    fetchContent();
-  }, []);
-
-  if (loading) {
-    return <div className="text-center text-gray-500 mt-10">Loading...</div>;
-  }
-
-  return (
-    <div className="w-full min-h-screen bg-white">
-      <Header />
-      
-      {/* Hero section */}
-      <div className="flex items-center justify-center min-h-screen px-4">
-        <h1 className="text-5xl sm:text-6xl md:text-7xl font-unbounded font-bold leading-tight text-center">
-          Welcome to the
-          <br />
-          <span className="bg-clip-text text-transparent bg-gradient-to-r from-polkadot-pink via-[#9B87F5] to-[#7E69AB]">
-            Polkadot Sales Hub
-          </span>
-        </h1>
-      </div>
-      
-      {/* Content sections */}
-      <div className="flex flex-col text-left px-4 sm:px-6 lg:px-8 py-16 lg:py-20 max-w-5xl mx-auto">
-        <div className="space-y-10 max-w-4xl">
-          <SectionHeader icon={Info} title="How to Navigate this Website" />
-          <div className="text-gray-700 leading-relaxed space-y-4">{formatContent(content.how)}</div>
-
-          <SectionHeader icon={AlertTriangle} title="Our Focus on B2B" />
-          <div className="text-gray-700 leading-relaxed space-y-4">{formatContent(content.why)}</div>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-export default PitchAdvise;
+    // Insert image after the first paragraph of the "why" section
+    if (insertImage && index === 0) {
+      formattedContent.push(
+        <div key="why-image" className="flex justify-center mt-6">
+          <img
+            src="https://qhxgyizmewdtvwebpmie.supabase.co/storage/v1/object/public/docs//audiences.png"
+            alt="Pol
 
 

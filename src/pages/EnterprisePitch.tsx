@@ -44,7 +44,11 @@ const Subsection = ({ title, content }: { title: string; content?: string }) => 
       <h3 className="text-xl font-semibold text-polkadot-pink mb-2">{title}</h3>
       <hr className="border-t border-gray-200 mb-4" />
       {content !== null ? (
-        <div className="text-gray-700" dangerouslySetInnerHTML={{ __html: formatText(content) }} />
+        <div 
+          className="text-gray-700 leading-relaxed" 
+          style={{ marginLeft: "0px", paddingLeft: "0px" }} // Ensures left alignment
+          dangerouslySetInnerHTML={{ __html: formatText(content) }} 
+        />
       ) : (
         <p className="text-gray-400 italic">Loading...</p>
       )}

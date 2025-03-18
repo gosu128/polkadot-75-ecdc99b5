@@ -21,7 +21,7 @@ const formatText = (text: string) => {
 
   // Ensure bullet points are wrapped inside a <ul> tag
   if (formattedText.includes("<li>")) {
-    formattedText = formattedText.replace(/(<li.*?>.*?<\/li>)/gs, "<ul class='list-disc pl-5 space-y-3'>$1</ul>");
+    formattedText = formattedText.replace(/(<li.*?>.*?<\/li>)/gs, "<ul class='list-disc pl-5 space-y-2'>$1</ul>");
   }
 
   // Convert lines starting with "###" into bold pink text
@@ -55,11 +55,11 @@ const Subsection = ({ title, content }: { title: string; content?: string }) => 
       <hr className="border-t border-gray-200 mb-4" />
       {content !== null ? (
         <div 
-          className="text-gray-700 leading-relaxed text-left" 
-          dangerouslySetInnerHTML={{ __html: formatText(content) }} 
+          className="text-gray-700 leading-relaxed" 
+          dangerouslySetInnerHTML={{ __html: formatText(content || "") }} 
         />
       ) : (
-        <p className="text-gray-400 italic text-left">Loading...</p>
+        <p className="text-gray-400 italic">Loading...</p>
       )}
     </div>
   );
@@ -104,7 +104,7 @@ const EnterprisePitch = () => {
       <div className="container mx-auto p-4 pt-32 max-w-5xl">
         
         {/* Display error message if data fetch fails */}
-        {error && <p className="text-red-500 text-left">{error}</p>}
+        {error && <p className="text-red-500">{error}</p>}
 
         {/* Section 1: Introduction */}
         <Section title="1. Introduction">

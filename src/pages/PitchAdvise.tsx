@@ -101,11 +101,15 @@ const PitchAdvise = () => {
       {/* Content sections - only visible on scroll */}
       <div className="flex flex-col text-left px-4 sm:px-6 lg:px-8 py-16 lg:py-20 max-w-5xl mx-auto">
         <div className="space-y-10 max-w-4xl">
-          <SectionHeader icon={Info} title="Introduction" />
-          <div className="text-gray-700 leading-relaxed space-y-4">{formatContent(content["introduction"])}</div>
+          <SectionHeader icon={Info} title="How to Navigate this Website" />
+          <div className="text-gray-700 leading-relaxed space-y-4">
+            <p className="italic text-gray-500">Coming soon...</p>
+          </div>
 
-          <SectionHeader icon={AlertTriangle} title="Things to Keep in Mind during B2B Pitches" />
-          <div className="text-gray-700 leading-relaxed space-y-4">{formatContent(content["b2b_pitches"])}</div>
+          <SectionHeader icon={AlertTriangle} title="Our Focus on B2B" />
+          <div className="text-gray-700 leading-relaxed space-y-4">
+            <p className="italic text-gray-500">Coming soon...</p>
+          </div>
 
           <SectionHeader icon={Lightbulb} title="Important B2B Use Cases" />
           <div className="text-gray-700 leading-relaxed space-y-4">{formatContent(content["use_cases"])}</div>

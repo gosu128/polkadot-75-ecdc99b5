@@ -66,26 +66,32 @@ const SegmentProfile = ({ segment, industry, onBack }: { segment: any; industry:
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchSegmentData = async () => {
-      try {
-        const { data, error } = await supabase
-          .from('segments')
-          .select('id, abstract, definition, trends, regions, challenges, usecases_general, usecases_web3, personas_1, personas_2, personas_3, value_prop, positioning_statement, messaging') // Removed missing columns
-          .eq('id', segment.id)
-          .single();
+  const fetchSegments = async () => {
+    try {
+      const { data, error } = await supabase
+        .from("segments")
+        .select(`
+          id, name, trends, regions, challenges, usecases_general, usecases_web3,
+          personas_1, personas_2, personas_3, ca_interoperability, ca_resilience, 
+          ca_scalability, ca_customization, value_prop, positioning_statement, 
+          messaging, proof_points
+        `);
 
-        if (error) throw error;
-        setSegmentData(data);
-      } catch (err) {
-        setError('Failed to load segment data.');
-        console.error('Error fetching segment data:', err);
-      } finally {
-        setLoading(false);
+      if (error) {
+        console.error("Error fetching segments:", error);
+      } else {
+        console.log("Fetched segments:", data); // Debugging log
+        setSegments(data || []);
       }
-    };
+    } catch (err) {
+      console.error("Unexpected error:", err);
+    }
+    setLoading(false);
+  };
 
-    fetchSegmentData();
-  }, [segment.id]);
+  fetchSegments();
+}, []);
+
 
   if (loading) return <p className="text-gray-500 italic text-center py-10">Loading segment data...</p>;
   if (error) return <p className="text-red-500 text-center py-10">{error}</p>;

@@ -1,4 +1,3 @@
-
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 
@@ -8,9 +7,10 @@ const Resources = () => {
       <Header />
       <div className="container mx-auto p-4 pt-32 flex flex-col items-center space-y-36 py-[200px]">
         
-        {/* BD Teams Content (First) */}
+        {/* Overview of BD Stakeholders (First) */}
         <section id="bd-teams" className="w-full">
-          <h2 className="text-2xl font-bold mb-8 text-center">BD Teams</h2>
+          <h2 className="text-2xl font-bold text-polkadot-pink mb-8 text-center">Overview of BD Stakeholders</h2>
+          <hr className="border-t-2 border-gray-300 mb-10" />
           <div className="relative w-full max-w-[900px] mx-auto">
             <div className="relative w-full" style={{ paddingTop: "60.3%" }}>  
               <iframe
@@ -22,10 +22,11 @@ const Resources = () => {
             </div>
           </div>
         </section>
-        
-        {/* Case Studies Content (Second) */}
+
+        {/* Proof Points (Second) */}
         <section id="case-studies" className="w-full">
-          <h2 className="text-2xl font-bold mb-8 text-center">Case Studies</h2>
+          <h2 className="text-2xl font-bold text-polkadot-pink mb-8 text-center">Proof Points</h2>
+          <hr className="border-t-2 border-gray-300 mb-10" />
           
           {/* First Slide Deck */}
           <div className="relative w-full max-w-[900px] mx-auto mb-16">
@@ -51,10 +52,17 @@ const Resources = () => {
             </div>
           </div>
         </section>
-        
-        {/* Methodology Content (Third) */}
+
+        {/* Case Studies (Third - Added New Header) */}
+        <section id="case-studies-header" className="w-full">
+          <h2 className="text-2xl font-bold text-polkadot-pink mb-8 text-center">Case Studies</h2>
+          <hr className="border-t-2 border-gray-300 mb-10" />
+        </section>
+
+        {/* Methodology Content (Fourth) */}
         <section id="methodology" className="w-full">
-          <h2 className="text-2xl font-bold mb-8 text-center">Methodology</h2>
+          <h2 className="text-2xl font-bold text-polkadot-pink mb-8 text-center">Methodology</h2>
+          <hr className="border-t-2 border-gray-300 mb-10" />
           <div className="relative w-full max-w-[900px] mx-auto">
             <div className="relative w-full" style={{ paddingTop: "60.3%" }}>  
               <iframe
@@ -66,6 +74,7 @@ const Resources = () => {
             </div>
           </div>
         </section>
+
       </div>
       <Footer />
     </div>

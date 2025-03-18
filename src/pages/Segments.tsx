@@ -6,7 +6,6 @@ import SalesDropdown from '@/components/SalesDropdown';
 import SegmentProfile from '@/components/SegmentProfile';
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { Star } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 interface Industry {
@@ -23,7 +22,6 @@ interface Segment {
   trends: string | null;
   regions: string | null;
   challenges: string | null;
-  use_cases: string | null;
   usecases_general: string | null;
   usecases_web3: string | null;
   personas_1: string | null;
@@ -82,7 +80,8 @@ const Segments = () => {
       const {
         data,
         error
-      } = await supabase.from("segments").select("id, name, industry_id, abstract, definition, trends, regions, challenges, use_cases, usecases_general, usecases_web3, personas_1, personas_2, personas_3, positioning_statement, positioning_headline, positioning_subheadline, ca_interoperability, ca_resiliance, ca_scalability, ca_customization, ca_reliability, ca_other, interoperability, roi, scalability, customization, awareness, tech, tam, compliance, complexity, reliability, pmf").order("name");
+      } = await supabase.from("segments").select("id, name, industry_id, abstract, definition, trends, regions, challenges, usecases_general, usecases_web3, personas_1, personas_2, personas_3, positioning_statement, positioning_headline, positioning_subheadline, ca_interoperability, ca_resiliance, ca_scalability, ca_customization, ca_reliability, ca_other, interoperability, roi, scalability, customization, awareness, tech, tam, compliance, complexity, reliability, pmf").order("name");
+      
       if (error) {
         console.error("Error fetching segments:", error);
       } else {
@@ -98,10 +97,13 @@ const Segments = () => {
     setSelectedIndustry(industry);
   };
 
-  const getCellStyle = (score: number, id: number, metric: string) => {
+  const getCellStyle = (score: number | null | undefined, id: number, metric: string) => {
+    if (score === null || score === undefined) return "py-2 px-2 text-center text-xs md:text-sm transition-all duration-200 font-unbounded";
+    
     const isHovered = hoveredCell === `${id}-${metric}`;
     const baseClasses = "py-2 px-2 text-center text-xs md:text-sm transition-all duration-200 font-unbounded";
     let scoreClass = "";
+    
     if (score >= 8) {
       scoreClass = "text-emerald-600";
     } else if (score <= 4) {
@@ -127,7 +129,7 @@ const Segments = () => {
     } else {
       const aValue = a[sortField] || 0;
       const bValue = b[sortField] || 0;
-      return sortDirection === "asc" ? aValue - bValue : bValue - aValue;
+      return sortDirection === "asc" ? Number(aValue) - Number(bValue) : Number(bValue) - Number(aValue);
     }
   });
 
@@ -156,7 +158,10 @@ const Segments = () => {
       
       {/* Segment Profiles Section */}
       <div className="container mx-auto px-4 pt-32 pb-16">
-        <h1 className="text-3xl font-bold mb-12 text-center">Segment Profiles</h1>
+        <h1 className="text-5xl sm:text-6xl md:text-7xl font-unbounded font-bold mb-12 leading-tight text-center">
+          Who do you want to <br />
+          pitch <span className="bg-clip-text text-transparent bg-gradient-to-r from-polkadot-pink via-[#9B87F5] to-[#7E69AB]">Polkadot</span> to?
+        </h1>
         
         <div className="mx-auto max-w-5xl">
           <SalesDropdown onSelectSegment={handleSegmentSelect} />
@@ -207,7 +212,7 @@ const Segments = () => {
                     sortedSegments.map(segment => (
                       <tr key={segment.id} className="border-b border-gray-200 hover:bg-gray-50 transition-colors font-unbounded">
                         <td className="py-3 px-4 text-gray-800 whitespace-nowrap text-xs md:text-sm">{segment.name}</td>
-                        <td className={`py-2 px-2 text-center text-xs md:text-sm transition-all duration-200 font-unbounded ${segment.pmf >= 8 ? "text-emerald-600" : segment.pmf <= 4 ? "text-rose-600" : "text-polkadot-pink"} ${hoveredCell === `${segment.id}-pmf` ? "scale-125 font-bold shadow-sm rounded-md bg-white z-10 relative text-polkadot-pink" : ""}`} onMouseEnter={() => setHoveredCell(`${segment.id}-pmf`)} onMouseLeave={() => setHoveredCell(null)}>
+                        <td className={`py-2 px-2 text-center text-xs md:text-sm transition-all duration-200 font-unbounded text-polkadot-pink ${hoveredCell === `${segment.id}-pmf` ? "scale-125 font-bold shadow-sm rounded-md bg-white z-10 relative" : ""}`} onMouseEnter={() => setHoveredCell(`${segment.id}-pmf`)} onMouseLeave={() => setHoveredCell(null)}>
                           {segment.pmf?.toFixed(1) || "N/A"}
                         </td>
                         <td className={getCellStyle(segment.interoperability, segment.id, "interop")} onMouseEnter={() => setHoveredCell(`${segment.id}-interop`)} onMouseLeave={() => setHoveredCell(null)}>

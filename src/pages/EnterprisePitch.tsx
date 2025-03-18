@@ -1,16 +1,20 @@
 
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import Hero from '@/components/Hero';
+import NetworkSection from '@/components/NetworkSection';
+import Features from '@/components/Features';
+import WorldMap from '@/components/WorldMap';
 
 const EnterprisePitch = () => {
   return (
     <div className="w-full min-h-screen bg-white">
       <Header />
-      <div className="container mx-auto p-4 pt-32 flex flex-col items-center py-[200px]">
+      <div className="container mx-auto p-4 pt-32">
         <h1 className="text-3xl font-bold mb-8 text-center">Enterprise Pitch</h1>
-        <div className="max-w-3xl w-full bg-gray-50 p-8 rounded-lg shadow-sm">
+        <div className="max-w-3xl mx-auto w-full bg-gray-50 p-8 rounded-lg shadow-sm mb-16">
           <p className="text-lg mb-6">
-            This page will contain enterprise-specific pitch content for Polkadot.
+            Enterprise-specific pitch content for Polkadot.
           </p>
           <div className="flex flex-col space-y-4">
             <div className="p-4 border border-gray-200 rounded-md hover:border-polkadot-pink transition-colors">
@@ -27,6 +31,12 @@ const EnterprisePitch = () => {
             </div>
           </div>
         </div>
+        
+        {/* Content from the Home page */}
+        <Hero />
+        <NetworkSection />
+        <Features />
+        <WorldMap />
       </div>
       <Footer />
     </div>

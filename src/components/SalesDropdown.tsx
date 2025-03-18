@@ -1,9 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
-import { ChevronDown, ChevronUp, Info, Layers, TrendingUp } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { ChevronDown } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
-import SegmentProfile from './SegmentProfile';
 
 // Define types for our data
 type Industry = {
@@ -20,7 +18,6 @@ type Segment = {
   trends: string | null;
   regions: string | null;
   challenges: string | null;
-  use_cases: string | null;
   usecases_general: string | null;
   usecases_web3: string | null;
   personas_1: string | null;
@@ -36,6 +33,16 @@ type Segment = {
   ca_reliability: string | null;
   ca_other: string | null;
   pmf: number | null;
+  interoperability: number;
+  roi: number;
+  scalability: number;
+  customization: number;
+  awareness: number;
+  tech: number;
+  tam: number;
+  compliance: number;
+  complexity: number;
+  reliability: number;
 };
 
 type SalesDropdownProps = {
@@ -48,7 +55,6 @@ const SalesDropdown = ({ onSelectSegment }: SalesDropdownProps) => {
   const [segments, setSegments] = useState<Segment[]>([]);
   const [filteredSegments, setFilteredSegments] = useState<Segment[]>([]);
   const [selectedIndustry, setSelectedIndustry] = useState<Industry | null>(null);
-  const [selectedSegment, setSelectedSegment] = useState<Segment | null>(null);
   const [loading, setLoading] = useState(true);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
@@ -80,7 +86,7 @@ const SalesDropdown = ({ onSelectSegment }: SalesDropdownProps) => {
       try {
         const { data: segmentsData, error } = await supabase
           .from('segments')
-          .select('*')
+          .select('id, name, industry_id, abstract, definition, trends, regions, challenges, usecases_general, usecases_web3, personas_1, personas_2, personas_3, positioning_statement, positioning_headline, positioning_subheadline, ca_interoperability, ca_resiliance, ca_scalability, ca_customization, ca_reliability, ca_other, interoperability, roi, scalability, customization, awareness, tech, tam, compliance, complexity, reliability, pmf')
           .order('name');
 
         if (error) throw error;

@@ -80,7 +80,7 @@ const SegmentProfile = ({ segment, industry, onBack }: { segment: any; industry:
           .select(`
             id, name, abstract, definition, trends, regions, challenges, 
             usecases_general, personas_1, capability, value_prop, 
-            positioning_statement, messaging, proof_points
+            positioning_statement, messaging, proof_points, industry_id
           `)
           .eq("name", segment.name)
           .single();
@@ -106,9 +106,12 @@ const SegmentProfile = ({ segment, industry, onBack }: { segment: any; industry:
   if (error) return <p className="text-red-500 text-center py-10">{error}</p>;
   if (!segmentData) return <p className="text-red-500 text-center py-10">No data found for this segment.</p>;
 
-  // Generate the image URL dynamically
-  const formattedSegmentName = segmentData?.name.replace(/ /g, "_").replace(/&/g, "and"); // Adjust spaces and symbols
-  const imageUrl = `https://qhxgyizmewdtvwebpmie.supabase.co/storage/v1/object/public/polkadot//Software_&_Tech_-_${formattedSegmentName}.png`;
+  // Generate the correct image URL based on segment category and name
+  const formattedSegmentName = segmentData?.name.replace(/ /g, "_"); // Replace spaces with underscores
+  const categoryPrefix = industry?.name.replace(/ /g, "_"); // Ensure category is formatted correctly
+
+  // Final Image URL
+  const imageUrl = `https://qhxgyizmewdtvwebpmie.supabase.co/storage/v1/object/public/polkadot/${categoryPrefix}_-_${formattedSegmentName}.png`;
 
   return (
     <div className="flex flex-col w-full max-w-6xl mx-auto py-8 px-4">
@@ -144,6 +147,9 @@ const SegmentProfile = ({ segment, industry, onBack }: { segment: any; industry:
               src={imageUrl}
               alt={`${segmentData?.name} Geographical Hotspots`}
               className="w-full h-auto"
+              onError={(e) => {
+                (e.target as HTMLImageElement).style.display = "none"; // Hide if the image doesn't exist
+              }}
             />
           </div>
 

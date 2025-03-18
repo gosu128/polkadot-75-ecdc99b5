@@ -1,5 +1,4 @@
-
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ArrowLeft } from 'lucide-react';
 import PMFScores from './PMFScores';
 import { supabase } from '@/integrations/supabase/client';
@@ -12,10 +11,10 @@ const formatText = (text: string | undefined | null): React.ReactNode => {
   const formattedContent: JSX.Element[] = [];
 
   paragraphs.forEach((paragraph, index) => {
-    // Highlight headings (###) 
+    // Highlight headings (###) in bold & pink
     if (paragraph.trim().startsWith('###')) {
       formattedContent.push(
-        <h4 key={`heading-${index}`} className="text-xl font-bold text-gray-900 mt-6">
+        <h4 key={`heading-${index}`} className="text-xl font-bold text-polkadot-pink mt-6">
           {paragraph.replace(/^###/, '').trim()}
         </h4>
       );
@@ -25,13 +24,13 @@ const formatText = (text: string | undefined | null): React.ReactNode => {
     // Convert bullet points ("- item") into proper lists
     if (paragraph.trim().startsWith('-')) {
       const bulletPoints = paragraph.split('\n').map((point, idx) => {
-        const cleanedPoint = point.replace(/^-/, '').trim(); // Remove the leading dash
-        const formattedPoint = cleanedPoint.replace(/\*([^*]+)\*/g, '<strong>$1</strong>'); // Bold text inside *asterisks*
+        const cleanedPoint = point.replace(/^-/, '').trim();
+        const formattedPoint = cleanedPoint.replace(/\*([^*]+)\*/g, '<strong>$1</strong>');
 
         return <li key={`bullet-${index}-${idx}`} className="text-gray-700" dangerouslySetInnerHTML={{ __html: formattedPoint }} />;
       });
 
-      formattedContent.push(<ul key={`list-${index}`} className="list-disc pl-5 space-y-2">{bulletPoints}</ul>);
+      formattedContent.push(<ul key={`list-${index}`} className="list-disc pl-6 space-y-3">{bulletPoints}</ul>);
       return;
     }
 
@@ -39,7 +38,7 @@ const formatText = (text: string | undefined | null): React.ReactNode => {
     const formattedText = paragraph.replace(/\*([^*]+)\*/g, '<strong>$1</strong>');
 
     formattedContent.push(
-      <p key={`text-${index}`} className="text-gray-700 leading-relaxed" dangerouslySetInnerHTML={{ __html: formattedText }} />
+      <p key={`text-${index}`} className="text-gray-700 leading-relaxed mb-4" dangerouslySetInnerHTML={{ __html: formattedText }} />
     );
   });
 
@@ -62,50 +61,46 @@ const Subsection = ({ title, content }: { title: string; content?: string | null
     <div className="mb-6">
       <h3 className="text-xl font-semibold text-polkadot-pink mb-2">{title}</h3>
       <hr className="border-t border-gray-200 mb-4" />
-      <div className="text-gray-700 leading-relaxed">
-        {formatText(content)}
-      </div>
+      <div className="text-gray-700 leading-relaxed">{formatText(content)}</div>
     </div>
   );
 };
 
 // SegmentProfile component
-const SegmentProfile = ({ 
-  segment, 
-  industry, 
-  onBack 
-}: { 
-  segment: any; 
-  industry: any; 
-  onBack: () => void;
-}) => {
-  const [readingMaterial, setReadingMaterial] = useState<string | null>(null);
-  
-  // Fetch reading material from Supabase if available
-  React.useEffect(() => {
-    const fetchReadingMaterial = async () => {
+const SegmentProfile = ({ segment, industry, onBack }: { segment: any; industry: any; onBack: () => void }) => {
+  const [segmentData, setSegmentData] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchSegmentData = async () => {
       try {
         const { data, error } = await supabase
-          .from('segment_reading_material')
-          .select('content')
-          .eq('segment', segment.name)
+          .from('segments')
+          .select('*')
+          .eq('id', segment.id)
           .single();
-        
+
         if (error) {
-          console.error('Error fetching reading material:', error);
+          console.error('Error fetching segment data:', error);
           return;
         }
-        
+
         if (data) {
-          setReadingMaterial(data.content);
+          setSegmentData(data);
         }
       } catch (err) {
-        console.error('Error in reading material fetch:', err);
+        console.error('Error in segment data fetch:', err);
+      } finally {
+        setLoading(false);
       }
     };
-    
-    fetchReadingMaterial();
-  }, [segment.name]);
+
+    fetchSegmentData();
+  }, [segment.id]);
+
+  if (loading) {
+    return <p className="text-gray-500 italic text-center py-10">Loading segment data...</p>;
+  }
 
   return (
     <div className="flex flex-col w-full max-w-6xl mx-auto py-8 px-4">
@@ -126,28 +121,35 @@ const SegmentProfile = ({
       <div className="space-y-10">
         {/* Section 1: Abstract */}
         <Section title="1. Abstract">
-          <div className="prose prose-lg max-w-none">
-            {formatText(segment.abstract)}
-          </div>
+          <div className="prose prose-lg max-w-none">{formatText(segmentData?.abstract)}</div>
         </Section>
 
         {/* Section 2: General Segment Information */}
         <Section title="2. General Segment Information">
-          <Subsection title="2.1. Definition" content={segment.definition} />
-          <Subsection title="2.2. Market Trends" content={segment.market_trends} />
-          <Subsection title="2.3. Geographical Hotspots" content={segment.geographical_hotspots} />
-          <Subsection title="2.4. Challenges" content={segment.challenges} />
-          <Subsection title="2.5. Use Cases" content={segment.use_cases} />
+          <Subsection title="2.1. Definition" content={segmentData?.definition} />
+          <Subsection title="2.2. Market Trends" content={segmentData?.trends} />
+          <Subsection title="2.3. Geographical Hotspots" content={segmentData?.regions} />
+          <Subsection title="2.4. Challenges" content={segmentData?.challenges} />
+          <Subsection
+            title="2.5. Use Cases"
+            content={`${segmentData?.usecases_general || ''}\n\n${segmentData?.usecases_web3 || ''}`}
+          />
         </Section>
 
         {/* Section 3: The Pitch */}
         <Section title="3. The Pitch">
-          <Subsection title="3.1. Target Audiences" content={segment.target_audiences} />
-          <Subsection title="3.2. Capability Assessment" content={segment.capability_assessment} />
-          <Subsection title="3.3. Value Proposition" content={segment.value_proposition} />
-          <Subsection title="3.4. Positioning" content={segment.positioning} />
-          <Subsection title="3.5. Messaging Strategy" content={segment.messaging_strategy} />
-          <Subsection title="3.6. Proof Points" content={segment.proof_points} />
+          <Subsection
+            title="3.1. Target Audiences"
+            content={`${segmentData?.personas_1 || ''}\n\n${segmentData?.personas_2 || ''}\n\n${segmentData?.personas_3 || ''}`}
+          />
+          <Subsection
+            title="3.2. Capability Assessment"
+            content={`${segmentData?.ca_1 || ''}\n\n${segmentData?.ca_2 || ''}\n\n${segmentData?.ca_3 || ''}\n\n${segmentData?.ca_4 || ''}`}
+          />
+          <Subsection title="3.3. Value Proposition" content={segmentData?.value_prop} />
+          <Subsection title="3.4. Positioning" content={segmentData?.positioning_statement} />
+          <Subsection title="3.5. Messaging Strategy" content={segmentData?.messaging} />
+          <Subsection title="3.6. Proof Points" content="Coming soon..." />
         </Section>
 
         {/* Section 4: Other */}
@@ -156,7 +158,6 @@ const SegmentProfile = ({
           <div className="mb-10">
             <PMFScores segment={segment} />
           </div>
-          <Subsection title="4.2. Recommended Reading Material" content={readingMaterial} />
         </Section>
       </div>
     </div>

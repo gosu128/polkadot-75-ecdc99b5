@@ -26,7 +26,7 @@ const formatText = (text: string | undefined | null): React.ReactNode => {
         listItems = [];
         listCounter = 1;
       }
-      formattedContent.push(<h4 key={`heading-${index}`} className="text-xl font-bold text-polkadot-pink mt-6 mb-6">
+      formattedContent.push(<h4 key={`heading-${index}`} className="text-xl text-polkadot-pink mt-6 mb-6 font-semibold">
           {paragraph.replace(/^###/, '').trim()}
         </h4>);
       return;

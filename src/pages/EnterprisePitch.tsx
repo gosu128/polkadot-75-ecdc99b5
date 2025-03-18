@@ -113,11 +113,25 @@ const EnterprisePitch = () => {
         {/* Section 2: The Pitch */}
         <Section title="2. The Pitch">
           <Subsection title="2.1. Geographies" content={loading ? null : content[8]} />
+<div className="flex justify-center mt-6">
+  <img 
+    src="https://qhxgyizmewdtvwebpmie.supabase.co/storage/v1/object/public/polkadot//Pitch_Advise_-_World_Map.png"
+    alt="Geographical Hotspots Map"
+    className="w-full max-w-full h-auto"
+  />
+</div>
           <Subsection title="2.2. Use Cases" content={loading ? null : content[3]} />
           <Subsection title="2.3. Target Audiences" content={loading ? null : content[4]} />
           <Subsection title="2.4. Capability Assessment" content={loading ? null : content[6]} />
           <Subsection title="2.5. Value Proposition" content={loading ? null : content[7]} />
           <Subsection title="2.6. Messaging Strategy" content={loading ? null : content[5]} />
+<div className="flex justify-center mt-6">
+  <img 
+    src="https://qhxgyizmewdtvwebpmie.supabase.co/storage/v1/object/public/positioning//Pitch_Advise_-_Positioning.png"
+    alt="Polkadot's Messaging Strategy Positioning"
+    className="w-full max-w-full h-auto"
+  />
+</div>
           <Subsection title="2.7. Proof Points" />
         </Section>
 

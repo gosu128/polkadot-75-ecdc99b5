@@ -17,17 +17,20 @@ const formatText = (text: string) => {
   let formattedText = text.replace(/\*(.*?)\*/g, "<strong>$1</strong>");
 
   // Convert "- Bullet point" into <li> items
-  formattedText = formattedText.replace(/^- (.*?)(\n|$)/gm, "<li class='mb-3'>$1</li>");
+  formattedText = formattedText.replace(/^- (.*?)(\n|$)/gm, "<li class='mb-2'>$1</li>");
 
-  // Ensure bullet points are wrapped inside a <ul> tag
+  // Ensure bullet points are wrapped inside a <ul> tag and **remove left padding**
   if (formattedText.includes("<li>")) {
-    formattedText = formattedText.replace(/(<li.*?>.*?<\/li>)/gs, "<ul class='list-disc pl-5 space-y-3'>$1</ul>");
+    formattedText = formattedText.replace(
+      /(<li.*?>.*?<\/li>)/gs,
+      "<ul class='list-disc space-y-2'>$1</ul>"
+    );
   }
 
   // Convert lines starting with "###" into bold pink text
   formattedText = formattedText.replace(/^###(.*?)(\n|$)/gm, "<p class='text-polkadot-pink font-bold'>$1</p>");
 
-  // Convert blank lines into proper paragraph breaks with **extra spacing**
+  // Convert blank lines into paragraph breaks with **extra spacing**
   formattedText = formattedText
     .split(/\n\s*\n/) // Split text at blank lines
     .map((paragraph) => `<p class="text-gray-700 leading-relaxed mt-5">${paragraph.trim()}</p>`) // Increased "mt-5" for spacing

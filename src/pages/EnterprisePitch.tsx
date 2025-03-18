@@ -17,17 +17,17 @@ const formatText = (text: string) => {
   let formattedText = text.replace(/\*(.*?)\*/g, "<strong>$1</strong>");
 
   // Convert "- Bullet point" into <li> items
-  formattedText = formattedText.replace(/^- (.*?)(\n|$)/gm, "<li>$1</li>");
+  formattedText = formattedText.replace(/^- (.*?)(\n|$)/gm, "<li class='mb-3'>$1</li>"); // Added "mb-3" for more spacing
 
   // Ensure bullet points are wrapped inside a <ul> tag
-  if (formattedText.includes("<li>")) {
-    formattedText = formattedText.replace(/(<li>.*?<\/li>)/gs, "<ul class='list-disc pl-5 space-y-2'>$1</ul>");
+  if (formattedText.includes("<li")) {
+    formattedText = formattedText.replace(/(<li.*?>.*?<\/li>)/gs, "<ul class='list-disc pl-5 space-y-3'>$1</ul>"); // Increased "space-y-3"
   }
 
   // Convert blank lines into proper paragraph breaks with **extra spacing**
   formattedText = formattedText
     .split(/\n\s*\n/) // Split text at blank lines
-    .map((paragraph) => `<p class="text-gray-700 leading-relaxed mt-4">${paragraph.trim()}</p>`) // Added "mt-4" for more spacing
+    .map((paragraph) => `<p class="text-gray-700 leading-relaxed mt-5">${paragraph.trim()}</p>`) // Increased "mt-5" for paragraph spacing
     .join("");
 
   return formattedText;

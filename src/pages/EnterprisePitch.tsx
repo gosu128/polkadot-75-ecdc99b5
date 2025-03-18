@@ -45,7 +45,8 @@ const Subsection = ({ title, content }: { title: string; content?: string }) => 
       <hr className="border-t border-gray-200 mb-4" />
       {content !== null ? (
         <div 
-          className="text-gray-700 leading-relaxed text-left" // Ensures proper alignment
+          className="text-gray-700 leading-relaxed" 
+          style={{ textAlign: "left", marginLeft: "0", paddingLeft: "0" }} // Ensures proper alignment
           dangerouslySetInnerHTML={{ __html: formatText(content) }} 
         />
       ) : (

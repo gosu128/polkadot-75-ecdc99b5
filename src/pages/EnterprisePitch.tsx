@@ -5,7 +5,7 @@ import { createClient } from '@supabase/supabase-js';
 
 // Supabase connection using the "polkadot" project
 const supabaseUrl = "https://qhxgyizmewdtvwebpmie.supabase.co";
-const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFoeGd5aXptZXdkdHZ3ZWJwbWllIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDExNjk0NjAsImV4cCI6MjA1Njc0NTQ2MH0.MxQbO5TTL1vbfohLB2dHtKOotwp0sUGDQfcpBgT1EL8";  // Replace with your actual Anon Key
+const supabaseKey = "YOUR_NEW_ANON_KEY_HERE";  // Replace this after regenerating!
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 // Function to format text (bold text and bullet points)
@@ -15,12 +15,15 @@ const formatText = (text: string) => {
   // Convert "*bold text*" into <strong>bold text</strong>
   let formattedText = text.replace(/\*(.*?)\*/g, "<strong>$1</strong>");
 
-  // Convert "- text" at the beginning of a paragraph into bullet points with spacing
-  formattedText = formattedText.replace(/^- (.*?)(\n|$)/gm, "<p class='mb-3'><li>$1</li></p>");
+  // Ensure bullet points are properly structured
+  formattedText = formattedText.replace(/^- (.*?)(\n|$)/gm, "<li>$1</li>");
 
-  // Wrap bullet points in a <ul> if they exist
+  // Wrap bullet points in a <ul> tag if they exist
   if (formattedText.includes("<li>")) {
-    formattedText = "<ul class='list-disc ml-5'>" + formattedText + "</ul>";
+    formattedText = `<ul class='list-disc pl-5 space-y-2'>${formattedText}</ul>`;
+  } else {
+    // Wrap normal text in a <p> tag to maintain spacing and alignment
+    formattedText = `<p class='mb-4'>${formattedText}</p>`;
   }
 
   return formattedText;
@@ -45,8 +48,7 @@ const Subsection = ({ title, content }: { title: string; content?: string }) => 
       <hr className="border-t border-gray-200 mb-4" />
       {content !== null ? (
         <div 
-          className="text-gray-700 leading-relaxed" 
-          style={{ textAlign: "left", marginLeft: "0", paddingLeft: "0" }} // Ensures proper alignment
+          className="text-gray-700 leading-relaxed text-left" 
           dangerouslySetInnerHTML={{ __html: formatText(content) }} 
         />
       ) : (

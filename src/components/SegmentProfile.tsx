@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { ArrowLeft } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
@@ -106,12 +107,15 @@ const SegmentProfile = ({ segment, industry, onBack }: { segment: any; industry:
   if (error) return <p className="text-red-500 text-center py-10">{error}</p>;
   if (!segmentData) return <p className="text-red-500 text-center py-10">No data found for this segment.</p>;
 
-  // Generate the correct image URL based on segment category and name
+  // Generate image URLs
   const formattedSegmentName = segmentData?.name.replace(/ /g, "_"); // Replace spaces with underscores
   const categoryPrefix = industry?.name.replace(/ /g, "_"); // Ensure category is formatted correctly
 
-  // Final Image URL
-  const imageUrl = `https://qhxgyizmewdtvwebpmie.supabase.co/storage/v1/object/public/polkadot/${categoryPrefix}_-_${formattedSegmentName}.png`;
+  // Geographic hotspot image URL (polkadot bucket)
+  const geoImageUrl = `https://qhxgyizmewdtvwebpmie.supabase.co/storage/v1/object/public/polkadot/${categoryPrefix}_-_${formattedSegmentName}.png`;
+  
+  // Messaging strategy image URL (positioning bucket)
+  const messagingImageUrl = `https://qhxgyizmewdtvwebpmie.supabase.co/storage/v1/object/public/positioning/${categoryPrefix}_-_${formattedSegmentName}.png`;
 
   return (
     <div className="flex flex-col w-full max-w-6xl mx-auto py-8 px-4">
@@ -141,12 +145,12 @@ const SegmentProfile = ({ segment, industry, onBack }: { segment: any; industry:
           <Subsection title="2.2. Market Trends" content={segmentData?.trends} />
           <Subsection title="2.3. Geographical Hotspots" content={segmentData?.regions} />
 
-          {/* Dynamically Loaded Image */}
+          {/* Geographic Hotspots Image */}
           <div className="flex justify-center mt-6">
             <img
-              src={imageUrl}
+              src={geoImageUrl}
               alt={`${segmentData?.name} Geographical Hotspots`}
-              className="w-full h-auto"
+              className="w-full h-auto rounded-lg shadow-md"
               onError={(e) => {
                 (e.target as HTMLImageElement).style.display = "none"; // Hide if the image doesn't exist
               }}
@@ -164,6 +168,19 @@ const SegmentProfile = ({ segment, industry, onBack }: { segment: any; industry:
           <Subsection title="3.3. Value Proposition" content={segmentData?.value_prop} />
           <Subsection title="3.4. Positioning" content={segmentData?.positioning_statement} />
           <Subsection title="3.5. Messaging Strategy" content={segmentData?.messaging} />
+          
+          {/* Messaging Strategy Image */}
+          <div className="flex justify-center mt-6 mb-6">
+            <img
+              src={messagingImageUrl}
+              alt={`${segmentData?.name} Messaging Strategy`}
+              className="w-full h-auto rounded-lg shadow-md"
+              onError={(e) => {
+                (e.target as HTMLImageElement).style.display = "none"; // Hide if the image doesn't exist
+              }}
+            />
+          </div>
+          
           <Subsection title="3.6. Proof Points" content={segmentData?.proof_points || "Coming soon..."} />
         </Section>
       </div>

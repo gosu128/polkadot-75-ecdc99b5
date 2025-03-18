@@ -3,28 +3,28 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { createClient } from '@supabase/supabase-js';
 
-// Supabase connection using the "polkadot" project
+// Supabase connection (DO NOT CHANGE THE API KEY)
 const supabaseUrl = "https://qhxgyizmewdtvwebpmie.supabase.co";
-const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFoeGd5aXptZXdkdHZ3ZWJwbWllIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDExNjk0NjAsImV4cCI6MjA1Njc0NTQ2MH0.MxQbO5TTL1vbfohLB2dHtKOotwp0sUGDQfcpBgT1EL8";  // Replace this after regenerating!
+const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFoeGd5aXptZXdkdHZ3ZWJwbWllIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDExNjk0NjAsImV4cCI6MjA1Njc0NTQ2MH0.MxQbO5TTL1vbfohLB2dHtKOotwp0sUGDQfcpBgT1EL8";
 const supabase = createClient(supabaseUrl, supabaseKey);
 
-// Function to format text (bold text and bullet points)
+// Function to format text based on the four rules
 const formatText = (text: string) => {
   if (!text) return "";
 
   // Convert "*bold text*" into <strong>bold text</strong>
   let formattedText = text.replace(/\*(.*?)\*/g, "<strong>$1</strong>");
 
-  // Ensure bullet points are properly structured
+  // Convert "- Bullet point" into <li> items
   formattedText = formattedText.replace(/^- (.*?)(\n|$)/gm, "<li>$1</li>");
 
-  // Wrap bullet points in a <ul> tag if they exist
+  // Ensure bullet points are wrapped inside a <ul> tag
   if (formattedText.includes("<li>")) {
-    formattedText = `<ul class='list-disc pl-5 space-y-2'>${formattedText}</ul>`;
-  } else {
-    // Wrap normal text in a <p> tag to maintain spacing and alignment
-    formattedText = `<p class='mb-4'>${formattedText}</p>`;
+    formattedText = `<ul class='list-disc pl-6 space-y-2'>${formattedText}</ul>`;
   }
+
+  // Convert empty lines into paragraph breaks
+  formattedText = formattedText.replace(/\n\s*\n/g, "<br/><br/>");
 
   return formattedText;
 };
@@ -67,7 +67,7 @@ const EnterprisePitch = () => {
     const fetchContent = async () => {
       try {
         const { data, error } = await supabase
-          .from("pitch_advise")  // Fetching from the correct table
+          .from("pitch_advise") // Fetching from the correct table
           .select("id, content");
 
         if (error) throw error;
@@ -123,4 +123,3 @@ const EnterprisePitch = () => {
 };
 
 export default EnterprisePitch;
-

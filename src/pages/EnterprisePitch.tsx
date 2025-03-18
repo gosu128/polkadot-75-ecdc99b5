@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -13,27 +12,104 @@ const supabase = createClient(supabaseUrl, supabaseKey);
 const formatText = (text: string) => {
   if (!text) return "";
 
-  // Convert "*bold text*" into <strong>bold text</strong>
-  let formattedText = text.replace(/\*(.*?)\*/g, "<strong>$1</strong>");
+  // Split text into paragraphs
+  const paragraphs = text.split('\n\n');
+  const formattedBlocks: string[] = [];
+  
+  let inNumberedList = false;
+  let inBulletList = false;
+  let currentList = '';
 
-  // Convert "- Bullet point" into <li> items
-  formattedText = formattedText.replace(/^- (.*?)(\n|$)/gm, "<li class='mb-3'>$1</li>");
-
-  // Ensure bullet points are wrapped inside a <ul> tag
-  if (formattedText.includes("<li>")) {
-    formattedText = formattedText.replace(/(<li.*?>.*?<\/li>)/gs, "<ul class='list-disc pl-5 space-y-2'>$1</ul>");
+  paragraphs.forEach(paragraph => {
+    // Process text within a paragraph
+    const processedText = paragraph.replace(/\*(.*?)\*/g, "<strong>$1</strong>");
+    
+    // Check if this is a heading
+    if (processedText.trim().startsWith("###")) {
+      // Close any open lists
+      if (inNumberedList) {
+        formattedBlocks.push(`<ol class='list-decimal pl-6 space-y-3 my-4'>${currentList}</ol>`);
+        inNumberedList = false;
+        currentList = '';
+      } else if (inBulletList) {
+        formattedBlocks.push(`<ul class='list-disc pl-6 space-y-3 my-4'>${currentList}</ul>`);
+        inBulletList = false;
+        currentList = '';
+      }
+      
+      // Add the heading
+      formattedBlocks.push(`<p class='text-polkadot-pink font-bold text-xl my-4'>${processedText.replace(/^###/, '').trim()}</p>`);
+      return;
+    }
+    
+    // Check if paragraph contains multiple lines
+    const lines = processedText.split('\n');
+    
+    // Check if all lines in paragraph are bullet points
+    const isBulletList = lines.every(line => line.trim().startsWith('-'));
+    
+    // Check if all lines in paragraph are numbered
+    const isNumberedList = lines.every(line => /^\d+\./.test(line.trim()));
+    
+    // Handle bullet lists
+    if (isBulletList) {
+      if (inNumberedList) {
+        // Close previous numbered list if switching to bullet list
+        formattedBlocks.push(`<ol class='list-decimal pl-6 space-y-3 my-4'>${currentList}</ol>`);
+        inNumberedList = false;
+        currentList = '';
+      }
+      
+      inBulletList = true;
+      
+      lines.forEach(line => {
+        const cleanedPoint = line.replace(/^-/, '').trim();
+        currentList += `<li class='text-gray-700 mb-2'>${cleanedPoint}</li>`;
+      });
+      return;
+    }
+    
+    // Handle numbered lists
+    if (isNumberedList) {
+      if (inBulletList) {
+        // Close previous bullet list if switching to numbered list
+        formattedBlocks.push(`<ul class='list-disc pl-6 space-y-3 my-4'>${currentList}</ul>`);
+        inBulletList = false;
+        currentList = '';
+      }
+      
+      inNumberedList = true;
+      
+      lines.forEach(line => {
+        const cleanedPoint = line.replace(/^\d+\./, '').trim();
+        currentList += `<li class='text-gray-700 mb-2'>${cleanedPoint}</li>`;
+      });
+      return;
+    }
+    
+    // If reaching here, it's a regular paragraph, so close any open lists
+    if (inNumberedList) {
+      formattedBlocks.push(`<ol class='list-decimal pl-6 space-y-3 my-4'>${currentList}</ol>`);
+      inNumberedList = false;
+      currentList = '';
+    } else if (inBulletList) {
+      formattedBlocks.push(`<ul class='list-disc pl-6 space-y-3 my-4'>${currentList}</ul>`);
+      inBulletList = false;
+      currentList = '';
+    }
+    
+    // Regular paragraph
+    formattedBlocks.push(`<p class="text-gray-700 leading-relaxed mt-5">${processedText}</p>`);
+  });
+  
+  // Close any remaining open lists at the end
+  if (inNumberedList) {
+    formattedBlocks.push(`<ol class='list-decimal pl-6 space-y-3 my-4'>${currentList}</ol>`);
+  } else if (inBulletList) {
+    formattedBlocks.push(`<ul class='list-disc pl-6 space-y-3 my-4'>${currentList}</ul>`);
   }
 
-  // Convert lines starting with "###" into bold pink text
-  formattedText = formattedText.replace(/^###(.*?)(\n|$)/gm, "<p class='text-polkadot-pink font-bold'>$1</p>");
-
-  // Convert blank lines into proper paragraph breaks with **extra spacing**
-  formattedText = formattedText
-    .split(/\n\s*\n/) // Split text at blank lines
-    .map((paragraph) => `<p class="text-gray-700 leading-relaxed mt-5">${paragraph.trim()}</p>`) // Increased "mt-5" for spacing
-    .join("");
-
-  return formattedText;
+  return formattedBlocks.join("");
 };
 
 // Section component

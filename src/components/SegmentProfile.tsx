@@ -10,8 +10,27 @@ const formatText = (text: string | undefined | null): React.ReactNode => {
   const paragraphs = text.split('\n\n');
   const formattedContent: JSX.Element[] = [];
 
+  let inNumberedList = false;
+  let inBulletList = false;
+  let listItems: JSX.Element[] = [];
+  let listCounter = 1;
+
   paragraphs.forEach((paragraph, index) => {
+    // Handle heading (lines starting with ###)
     if (paragraph.trim().startsWith('###')) {
+      // If we were in a list, close it before starting a new heading
+      if (inNumberedList || inBulletList) {
+        if (inNumberedList) {
+          formattedContent.push(<ol key={`list-${index}`} className="list-decimal pl-6 space-y-3 my-4">{listItems}</ol>);
+        } else {
+          formattedContent.push(<ul key={`list-${index}`} className="list-disc pl-6 space-y-3 my-4">{listItems}</ul>);
+        }
+        inNumberedList = false;
+        inBulletList = false;
+        listItems = [];
+        listCounter = 1;
+      }
+
       formattedContent.push(
         <h4 key={`heading-${index}`} className="text-xl font-bold text-polkadot-pink mt-6 mb-6">
           {paragraph.replace(/^###/, '').trim()}
@@ -20,24 +39,90 @@ const formatText = (text: string | undefined | null): React.ReactNode => {
       return;
     }
 
-    if (paragraph.trim().startsWith('-')) {
-      const bulletPoints = paragraph.split('\n').map((point, idx) => {
-        const cleanedPoint = point.replace(/^-/, '').trim();
+    // Check if paragraph contains multiple lines that may be list items
+    const lines = paragraph.split('\n');
+    
+    // Check if this paragraph is a list
+    const isBulletList = lines.every(line => line.trim().startsWith('-'));
+    const isNumberedList = lines.every(line => /^\d+\./.test(line.trim()));
+
+    // Handle bullet points (lines starting with -)
+    if (isBulletList) {
+      if (inNumberedList) {
+        // Close the previous numbered list if we're switching to bullet list
+        formattedContent.push(<ol key={`num-list-${index}`} className="list-decimal pl-6 space-y-3 my-4">{listItems}</ol>);
+        listItems = [];
+        inNumberedList = false;
+      }
+
+      inBulletList = true;
+      
+      lines.forEach((line, lineIdx) => {
+        const cleanedPoint = line.replace(/^-/, '').trim();
         const formattedPoint = cleanedPoint.replace(/\*([^*]+)\*/g, '<strong>$1</strong>');
-
-        return <li key={`bullet-${index}-${idx}`} className="text-gray-700" dangerouslySetInnerHTML={{ __html: formattedPoint }} />;
+        
+        listItems.push(
+          <li key={`bullet-${index}-${lineIdx}`} className="text-gray-700 mb-2" dangerouslySetInnerHTML={{ __html: formattedPoint }} />
+        );
       });
+      
+      // Don't close the list yet, it might continue in the next paragraph
+      return;
+    }
+    
+    // Handle numbered lists (lines starting with digit + period)
+    if (isNumberedList) {
+      if (inBulletList) {
+        // Close the previous bullet list if we're switching to numbered list
+        formattedContent.push(<ul key={`bullet-list-${index}`} className="list-disc pl-6 space-y-3 my-4">{listItems}</ul>);
+        listItems = [];
+        inBulletList = false;
+      }
 
-      formattedContent.push(<ul key={`list-${index}`} className="list-disc pl-6 space-y-3">{bulletPoints}</ul>);
+      inNumberedList = true;
+      
+      lines.forEach((line, lineIdx) => {
+        const cleanedPoint = line.replace(/^\d+\./, '').trim();
+        const formattedPoint = cleanedPoint.replace(/\*([^*]+)\*/g, '<strong>$1</strong>');
+        
+        listItems.push(
+          <li key={`num-${index}-${lineIdx}`} className="text-gray-700 mb-2" dangerouslySetInnerHTML={{ __html: formattedPoint }} />
+        );
+      });
+      
+      // Don't close the list yet, it might continue in the next paragraph
       return;
     }
 
-    const formattedText = paragraph.replace(/\*([^*]+)\*/g, '<strong>$1</strong>');
+    // If we reach here, this is a regular paragraph, so close any open lists
+    if (inBulletList) {
+      formattedContent.push(<ul key={`bullet-list-end-${index}`} className="list-disc pl-6 space-y-3 my-4">{listItems}</ul>);
+      inBulletList = false;
+      listItems = [];
+    }
+    
+    if (inNumberedList) {
+      formattedContent.push(<ol key={`num-list-end-${index}`} className="list-decimal pl-6 space-y-3 my-4">{listItems}</ol>);
+      inNumberedList = false;
+      listItems = [];
+      listCounter = 1;
+    }
 
+    // Handle regular paragraph
+    const formattedText = paragraph.replace(/\*([^*]+)\*/g, '<strong>$1</strong>');
     formattedContent.push(
       <p key={`text-${index}`} className="text-gray-700 leading-relaxed mb-4" dangerouslySetInnerHTML={{ __html: formattedText }} />
     );
   });
+
+  // Close any remaining open lists at the end
+  if (inBulletList && listItems.length > 0) {
+    formattedContent.push(<ul key="final-bullet-list" className="list-disc pl-6 space-y-3 my-4">{listItems}</ul>);
+  }
+  
+  if (inNumberedList && listItems.length > 0) {
+    formattedContent.push(<ol key="final-num-list" className="list-decimal pl-6 space-y-3 my-4">{listItems}</ol>);
+  }
 
   return formattedContent.length > 0 ? formattedContent : <p className="italic text-gray-500">Content coming soon...</p>;
 };

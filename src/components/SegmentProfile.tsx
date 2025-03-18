@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { ArrowLeft } from 'lucide-react';
 import PMFScores from './PMFScores';
@@ -12,10 +11,10 @@ const formatText = (text: string | undefined | null): React.ReactNode => {
   const formattedContent: JSX.Element[] = [];
 
   paragraphs.forEach((paragraph, index) => {
-    // Highlight headings (###) 
+    // Highlight headings (###) in bold & pink
     if (paragraph.trim().startsWith('###')) {
       formattedContent.push(
-        <h4 key={`heading-${index}`} className="text-xl font-bold text-gray-900 mt-6">
+        <h4 key={`heading-${index}`} className="text-xl font-bold text-polkadot-pink mt-6">
           {paragraph.replace(/^###/, '').trim()}
         </h4>
       );
@@ -31,7 +30,7 @@ const formatText = (text: string | undefined | null): React.ReactNode => {
         return <li key={`bullet-${index}-${idx}`} className="text-gray-700" dangerouslySetInnerHTML={{ __html: formattedPoint }} />;
       });
 
-      formattedContent.push(<ul key={`list-${index}`} className="list-disc pl-5 space-y-2">{bulletPoints}</ul>);
+      formattedContent.push(<ul key={`list-${index}`} className="list-disc pl-6 space-y-3">{bulletPoints}</ul>);
       return;
     }
 
@@ -39,7 +38,7 @@ const formatText = (text: string | undefined | null): React.ReactNode => {
     const formattedText = paragraph.replace(/\*([^*]+)\*/g, '<strong>$1</strong>');
 
     formattedContent.push(
-      <p key={`text-${index}`} className="text-gray-700 leading-relaxed" dangerouslySetInnerHTML={{ __html: formattedText }} />
+      <p key={`text-${index}`} className="text-gray-700 leading-relaxed mb-4" dangerouslySetInnerHTML={{ __html: formattedText }} />
     );
   });
 

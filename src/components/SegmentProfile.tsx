@@ -72,7 +72,7 @@ const SegmentProfile = ({ segment, industry, onBack }: { segment: any; industry:
         .from("segments")
         .select(`
           id, name, trends, regions, challenges, usecases_general, usecases_web3,
-          personas_1, personas_2, personas_3, ca_interoperability, ca_resilience, 
+          personas_1, personas_2, personas_3, ca_interoperability, ca_resiliance, 
           ca_scalability, ca_customization, value_prop, positioning_statement, 
           messaging, proof_points
         `);
@@ -91,7 +91,6 @@ const SegmentProfile = ({ segment, industry, onBack }: { segment: any; industry:
 
   fetchSegments();
 }, []);
-
 
   if (loading) return <p className="text-gray-500 italic text-center py-10">Loading segment data...</p>;
   if (error) return <p className="text-red-500 text-center py-10">{error}</p>;

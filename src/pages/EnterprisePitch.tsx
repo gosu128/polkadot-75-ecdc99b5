@@ -19,15 +19,15 @@ const formatText = (text: string) => {
   // Convert "- Bullet point" into <li> items
   formattedText = formattedText.replace(/^- (.*?)(\n|$)/gm, "<li>$1</li>");
 
-  // Ensure bullet points are wrapped inside a <ul> tag, but only where needed
+  // Ensure bullet points are wrapped inside a <ul> tag
   if (formattedText.includes("<li>")) {
     formattedText = formattedText.replace(/(<li>.*?<\/li>)/gs, "<ul class='list-disc pl-5 space-y-2'>$1</ul>");
   }
 
-  // Convert blank lines into proper paragraph breaks WITHOUT indentation
+  // Convert blank lines into proper paragraph breaks with **extra spacing**
   formattedText = formattedText
     .split(/\n\s*\n/) // Split text at blank lines
-    .map((paragraph) => `<p class="text-gray-700 leading-relaxed">${paragraph.trim()}</p>`) // No extra padding or indent
+    .map((paragraph) => `<p class="text-gray-700 leading-relaxed mt-4">${paragraph.trim()}</p>`) // Added "mt-4" for more spacing
     .join("");
 
   return formattedText;

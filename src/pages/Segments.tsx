@@ -40,11 +40,11 @@ const Segments = () => {
         }
 
         if (data) {
-          setSegments(data as Segment[]);
+          setSegments(data as unknown as Segment[]);
 
           // Extract unique categories
           const uniqueCategories = Array.from(
-            new Set(data.map((segment: Segment) => segment.category))
+            new Set(data.map((segment: any) => segment.category))
           ).sort();
           setCategories(uniqueCategories);
 

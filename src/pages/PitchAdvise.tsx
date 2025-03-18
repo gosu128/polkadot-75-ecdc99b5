@@ -1,7 +1,6 @@
-
 import React, { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { AlertTriangle, Info, Lightbulb, Star, Target, Users, Globe } from "lucide-react";
+import { AlertTriangle, Info } from "lucide-react";
 import Header from "@/components/Header";
 
 const SectionHeader = ({ icon: Icon, title }: { icon: React.ElementType; title: string }) => (
@@ -110,44 +109,6 @@ const PitchAdvise = () => {
           <div className="text-gray-700 leading-relaxed space-y-4">
             <p className="italic text-gray-500">Coming soon...</p>
           </div>
-
-          <SectionHeader icon={Lightbulb} title="Important B2B Use Cases" />
-          <div className="text-gray-700 leading-relaxed space-y-4">{formatContent(content["use_cases"])}</div>
-
-          <SectionHeader icon={Globe} title="Geographical Hotspots" />
-          <div className="text-gray-700 leading-relaxed space-y-4">{formatContent(content["geographies"])}</div>
-
-          {/* World Map Image */}
-          <div className="flex justify-center mt-6">
-            <img
-              src="https://qhxgyizmewdtvwebpmie.supabase.co/storage/v1/object/public/polkadot//Pitch_Advise_-_World_Map.png"
-              alt="Geographical Hotspots Map"
-              className="max-w-full h-auto"
-            />
-          </div>
-
-          <SectionHeader icon={Users} title="Important B2B Personas" />
-          <div className="text-gray-700 leading-relaxed space-y-6">{formatContent(content["personas"])}</div>
-
-          <SectionHeader icon={Target} title="Polkadot's Messaging Strategy" />
-          <div className="text-gray-700 leading-relaxed space-y-4">
-            {formatContent(content["messaging_strategy"])}
-
-            {/* Positioning Image */}
-            <div className="flex justify-center mt-6">
-              <img
-                src="https://qhxgyizmewdtvwebpmie.supabase.co/storage/v1/object/public/positioning//Pitch_Advise_-_Positioning.png"
-                alt="Polkadot's Messaging Strategy Positioning"
-                className="max-w-full h-auto"
-              />
-            </div>
-          </div>
-
-          <SectionHeader icon={Star} title="Polkadot's Value Proposition" />
-          <div className="text-gray-700 leading-relaxed space-y-4">{formatContent(content["value_proposition"])}</div>
-
-          <SectionHeader icon={Star} title="Polkadot's Capability Assessment" />
-          <div className="text-gray-700 leading-relaxed space-y-4">{formatContent(content["capability_assessment"])}</div>
         </div>
       </div>
     </div>
@@ -155,3 +116,4 @@ const PitchAdvise = () => {
 };
 
 export default PitchAdvise;
+

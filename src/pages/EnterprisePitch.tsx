@@ -21,13 +21,13 @@ const formatText = (text: string) => {
 
   // Ensure bullet points are wrapped inside a <ul> tag
   if (formattedText.includes("<li>")) {
-    formattedText = `<ul class='list-disc pl-6 space-y-2'>${formattedText}</ul>`;
+    formattedText = `<ul class="list-disc pl-5 space-y-2 text-left">${formattedText}</ul>`;
   }
 
-  // Convert double line breaks into paragraph tags for proper spacing
+  // Convert double line breaks into paragraph tags for correct spacing & alignment
   formattedText = formattedText
-    .split(/\n\s*\n/)
-    .map((paragraph) => `<p class='text-left'>${paragraph.trim()}</p>`)
+    .split(/\n\s*\n/) // Splits by empty lines
+    .map((paragraph) => `<p class="text-left">${paragraph.trim()}</p>`)
     .join("");
 
   return formattedText;

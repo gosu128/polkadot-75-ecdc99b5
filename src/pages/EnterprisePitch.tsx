@@ -5,7 +5,7 @@ import { createClient } from '@supabase/supabase-js';
 
 // Supabase connection using the "polkadot" project
 const supabaseUrl = "https://qhxgyizmewdtvwebpmie.supabase.co";
-const supabaseKey = "YOUR_NEW_ANON_KEY_HERE";  // Replace this after regenerating!
+const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFoeGd5aXptZXdkdHZ3ZWJwbWllIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDExNjk0NjAsImV4cCI6MjA1Njc0NTQ2MH0.MxQbO5TTL1vbfohLB2dHtKOotwp0sUGDQfcpBgT1EL8";  // Replace this after regenerating!
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 // Function to format text (bold text and paragraph breaks)

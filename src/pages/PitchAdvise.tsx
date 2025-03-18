@@ -20,21 +20,19 @@ const formatContent = (text: string | undefined) => {
   const formattedContent: JSX.Element[] = [];
 
   paragraphs.forEach((paragraph, index) => {
-    // Highlight Persona Names (###) Without Boxes
     if (paragraph.trim().startsWith("###")) {
       formattedContent.push(
-        <h4 key={`persona-title-${index}`} className="text-xl font-bold text-gray-900 mt-6">
+        <h4 key={`heading-${index}`} className="text-xl font-bold text-polkadot-pink mt-6 mb-6">
           {paragraph.replace(/^###/, "").trim()}
         </h4>
       );
       return;
     }
 
-    // Convert bullet points ("- item") into proper lists & REMOVE extra "-"
     if (paragraph.trim().startsWith("-")) {
       const bulletPoints = paragraph.split("\n").map((point, idx) => {
-        const cleanedPoint = point.replace(/^-/, "").trim(); // Remove the extra "-"
-        const formattedPoint = cleanedPoint.replace(/\*([^*]+)\*/g, "<strong>$1</strong>"); // Bold text inside *asterisks*
+        const cleanedPoint = point.replace(/^-/, "").trim();
+        const formattedPoint = cleanedPoint.replace(/\*([^*]+)\*/g, "<strong>$1</strong>");
 
         return <li key={`bullet-${index}-${idx}`} className="text-gray-700" dangerouslySetInnerHTML={{ __html: formattedPoint }} />;
       });
@@ -43,7 +41,6 @@ const formatContent = (text: string | undefined) => {
       return;
     }
 
-    // Apply bold formatting ONLY to words/phrases between *asterisks*
     const formattedText = paragraph.replace(/\*([^*]+)\*/g, "<strong>$1</strong>");
 
     formattedContent.push(<p key={`text-${index}`} dangerouslySetInnerHTML={{ __html: formattedText }} />);
@@ -52,25 +49,18 @@ const formatContent = (text: string | undefined) => {
   return formattedContent.length > 0 ? formattedContent : <p className="italic text-gray-500">Content coming soon...</p>;
 };
 
-
 const PitchAdvise = () => {
-  const [content, setContent] = useState<{ [key: string]: string | undefined }>({});
+  const [content, setContent] = useState<{ how?: string; why?: string }>({});
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchContent = async () => {
-      const { data, error } = await supabase.from("pitch_advise").select("section, content");
+      const { data, error } = await supabase.from("home").select("how, why").single();
 
       if (error) {
         console.error("Error fetching content:", error);
       } else if (data) {
-        const contentMap: { [key: string]: string | undefined } = {};
-        data.forEach((row) => {
-          if (row.section && row.content) {
-            contentMap[row.section] = row.content;
-          }
-        });
-        setContent(contentMap);
+        setContent(data);
       }
       setLoading(false);
     };
@@ -86,7 +76,7 @@ const PitchAdvise = () => {
     <div className="w-full min-h-screen bg-white">
       <Header />
       
-      {/* Hero section with centered title and lots of vertical space */}
+      {/* Hero section */}
       <div className="flex items-center justify-center min-h-screen px-4">
         <h1 className="text-5xl sm:text-6xl md:text-7xl font-unbounded font-bold leading-tight text-center">
           Welcome to the
@@ -97,18 +87,14 @@ const PitchAdvise = () => {
         </h1>
       </div>
       
-      {/* Content sections - only visible on scroll */}
+      {/* Content sections */}
       <div className="flex flex-col text-left px-4 sm:px-6 lg:px-8 py-16 lg:py-20 max-w-5xl mx-auto">
         <div className="space-y-10 max-w-4xl">
           <SectionHeader icon={Info} title="How to Navigate this Website" />
-          <div className="text-gray-700 leading-relaxed space-y-4">
-            <p className="italic text-gray-500">Coming soon...</p>
-          </div>
+          <div className="text-gray-700 leading-relaxed space-y-4">{formatContent(content.how)}</div>
 
           <SectionHeader icon={AlertTriangle} title="Our Focus on B2B" />
-          <div className="text-gray-700 leading-relaxed space-y-4">
-            <p className="italic text-gray-500">Coming soon...</p>
-          </div>
+          <div className="text-gray-700 leading-relaxed space-y-4">{formatContent(content.why)}</div>
         </div>
       </div>
     </div>
@@ -116,4 +102,5 @@ const PitchAdvise = () => {
 };
 
 export default PitchAdvise;
+
 

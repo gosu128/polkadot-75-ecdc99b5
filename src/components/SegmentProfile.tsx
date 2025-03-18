@@ -67,6 +67,8 @@ const SegmentProfile = ({ segment, industry, onBack }: { segment: any; industry:
 
   useEffect(() => {
     const fetchSegments = async () => {
+      console.log(`Fetching data for segment: ${segment.name}`);
+
       try {
         const { data, error } = await supabase
           .from("segments")
@@ -77,16 +79,15 @@ const SegmentProfile = ({ segment, industry, onBack }: { segment: any; industry:
             value_prop, positioning_statement, messaging, proof_points
           `)
           .eq("name", segment.name) // Fetch only the matching segment
-          .limit(1); // Only return one record
+          .limit(1) // Only return one record
+          .single(); // Return as a single object
 
         if (error) {
-          console.error("Error fetching segments:", error);
+          console.error("Error fetching segment:", error);
           setError("Failed to load segment data.");
-        } else if (data.length > 0) {
-          console.log("Fetched segment:", data[0]); // Debugging log
-          setSegmentData(data[0]);
         } else {
-          setError("No segment data found.");
+          console.log("Fetched segment data:", data); // Debugging log
+          setSegmentData(data);
         }
       } catch (err) {
         console.error("Unexpected error:", err);
@@ -141,11 +142,10 @@ const SegmentProfile = ({ segment, industry, onBack }: { segment: any; industry:
             title="3.1. Target Audiences"
             content={`${segmentData?.personas_1 || ''}\n\n${segmentData?.personas_2 || ''}\n\n${segmentData?.personas_3 || ''}`}
           />
-          <Subsection title="3.2. Capability Assessment" content={`${segmentData?.ca_interoperability || ''}\n\n${segmentData?.ca_resiliance || ''}\n\n${segmentData?.ca_scalability || ''}\n\n${segmentData?.ca_customization || ''}`} />
-          <Subsection title="3.3. Value Proposition" content={segmentData?.value_prop} />
-          <Subsection title="3.4. Positioning" content={segmentData?.positioning_statement} />
-          <Subsection title="3.5. Messaging Strategy" content={segmentData?.messaging} />
-          <Subsection title="3.6. Proof Points" content="Coming soon..." />
+          <Subsection title="3.2. Value Proposition" content={segmentData?.value_prop} />
+          <Subsection title="3.3. Positioning" content={segmentData?.positioning_statement} />
+          <Subsection title="3.4. Messaging Strategy" content={segmentData?.messaging} />
+          <Subsection title="3.5. Proof Points" content={segmentData?.proof_points || "Coming soon..."} />
         </Section>
 
         {/* Section 4: Other */}
@@ -161,3 +161,4 @@ const SegmentProfile = ({ segment, industry, onBack }: { segment: any; industry:
 };
 
 export default SegmentProfile;
+

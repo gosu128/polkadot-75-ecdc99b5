@@ -66,31 +66,37 @@ const SegmentProfile = ({ segment, industry, onBack }: { segment: any; industry:
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-  const fetchSegments = async () => {
-    try {
-      const { data, error } = await supabase
-        .from("segments")
-        .select(`
-          id, name, abstract, definition, trends, regions, challenges, 
-          usecases_general, usecases_web3, personas_1, personas_2, personas_3, 
-          ca_interoperability, ca_resiliance, ca_scalability, ca_customization, 
-          value_prop, positioning_statement, messaging, proof_points
-        `);
+    const fetchSegments = async () => {
+      try {
+        const { data, error } = await supabase
+          .from("segments")
+          .select(`
+            id, name, abstract, definition, trends, regions, challenges, 
+            usecases_general, usecases_web3, personas_1, personas_2, personas_3, 
+            ca_interoperability, ca_resiliance, ca_scalability, ca_customization, 
+            value_prop, positioning_statement, messaging, proof_points
+          `)
+          .eq("name", segment.name) // Fetch only the matching segment
+          .limit(1); // Only return one record
 
-      if (error) {
-        console.error("Error fetching segments:", error);
-      } else {
-        console.log("Fetched segments:", data); // Debugging log
-        setSegments(data || []);
+        if (error) {
+          console.error("Error fetching segments:", error);
+          setError("Failed to load segment data.");
+        } else if (data.length > 0) {
+          console.log("Fetched segment:", data[0]); // Debugging log
+          setSegmentData(data[0]);
+        } else {
+          setError("No segment data found.");
+        }
+      } catch (err) {
+        console.error("Unexpected error:", err);
+        setError("Unexpected error occurred.");
       }
-    } catch (err) {
-      console.error("Unexpected error:", err);
-    }
-    setLoading(false);
-  };
+      setLoading(false);
+    };
 
-  fetchSegments();
-}, []);
+    fetchSegments();
+  }, [segment.name]);
 
   if (loading) return <p className="text-gray-500 italic text-center py-10">Loading segment data...</p>;
   if (error) return <p className="text-red-500 text-center py-10">{error}</p>;
@@ -106,7 +112,7 @@ const SegmentProfile = ({ segment, industry, onBack }: { segment: any; industry:
           <ArrowLeft size={20} />
         </button>
         <h1 className="ml-4 text-3xl font-bold font-unbounded">
-          {segment.name} {industry && `- ${industry.name}`}
+          {segmentData?.name} {industry && `- ${industry.name}`}
         </h1>
       </div>
 
@@ -135,17 +141,18 @@ const SegmentProfile = ({ segment, industry, onBack }: { segment: any; industry:
             title="3.1. Target Audiences"
             content={`${segmentData?.personas_1 || ''}\n\n${segmentData?.personas_2 || ''}\n\n${segmentData?.personas_3 || ''}`}
           />
-          <Subsection title="3.2. Value Proposition" content={segmentData?.value_prop} />
-          <Subsection title="3.3. Positioning" content={segmentData?.positioning_statement} />
-          <Subsection title="3.4. Messaging Strategy" content={segmentData?.messaging} />
-          <Subsection title="3.5. Proof Points" content="Coming soon..." />
+          <Subsection title="3.2. Capability Assessment" content={`${segmentData?.ca_interoperability || ''}\n\n${segmentData?.ca_resiliance || ''}\n\n${segmentData?.ca_scalability || ''}\n\n${segmentData?.ca_customization || ''}`} />
+          <Subsection title="3.3. Value Proposition" content={segmentData?.value_prop} />
+          <Subsection title="3.4. Positioning" content={segmentData?.positioning_statement} />
+          <Subsection title="3.5. Messaging Strategy" content={segmentData?.messaging} />
+          <Subsection title="3.6. Proof Points" content="Coming soon..." />
         </Section>
 
         {/* Section 4: Other */}
         <Section title="4. Other">
           <Subsection title="4.1. PMF-Score" content={null} />
           <div className="mb-10">
-            <PMFScores segment={segment} />
+            <PMFScores segment={segmentData} />
           </div>
         </Section>
       </div>

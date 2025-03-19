@@ -5,166 +5,79 @@ import { supabase } from '@/integrations/supabase/client';
 // Function to format text properly
 const formatText = (text: string | undefined | null): React.ReactNode => {
   if (!text) return <p className="italic text-gray-500">Content not available.</p>;
+
   const paragraphs = text.split('\n\n');
   const formattedContent: JSX.Element[] = [];
-  let inNumberedList = false;
-  let inBulletList = false;
-  let listItems: JSX.Element[] = [];
-  let listCounter = 1;
+
   paragraphs.forEach((paragraph, index) => {
-    // Handle heading (lines starting with ###)
     if (paragraph.trim().startsWith('###')) {
-      // If we were in a list, close it before starting a new heading
-      if (inNumberedList || inBulletList) {
-        if (inNumberedList) {
-          formattedContent.push(<ol key={`list-${index}`} className="list-decimal pl-6 space-y-3 my-4">{listItems}</ol>);
-        } else {
-          formattedContent.push(<ul key={`list-${index}`} className="list-disc pl-6 space-y-3 my-4">{listItems}</ul>);
-        }
-        inNumberedList = false;
-        inBulletList = false;
-        listItems = [];
-        listCounter = 1;
-      }
-      formattedContent.push(<h4 key={`heading-${index}`} className="text-xl text-polkadot-pink mt-6 mb-6 font-semibold">
+      formattedContent.push(
+        <h4 key={`heading-${index}`} className="text-xl text-polkadot-pink mt-6 mb-6 font-semibold">
           {paragraph.replace(/^###/, '').trim()}
-        </h4>);
+        </h4>
+      );
       return;
     }
 
-    // Check if paragraph contains multiple lines that may be list items
-    const lines = paragraph.split('\n');
-
-    // Check if this paragraph is a list
-    const isBulletList = lines.every(line => line.trim().startsWith('-'));
-    const isNumberedList = lines.every(line => /^\d+\./.test(line.trim()));
-
-    // Handle bullet points (lines starting with -)
-    if (isBulletList) {
-      if (inNumberedList) {
-        // Close the previous numbered list if we're switching to bullet list
-        formattedContent.push(<ol key={`num-list-${index}`} className="list-decimal pl-6 space-y-3 my-4">{listItems}</ol>);
-        listItems = [];
-        inNumberedList = false;
-      }
-      inBulletList = true;
-      lines.forEach((line, lineIdx) => {
-        const cleanedPoint = line.replace(/^-/, '').trim();
+    if (paragraph.trim().startsWith('-')) {
+      const bulletPoints = paragraph.split('\n').map((point, idx) => {
+        const cleanedPoint = point.replace(/^-/, '').trim();
         const formattedPoint = cleanedPoint.replace(/\*([^*]+)\*/g, '<strong>$1</strong>');
-        listItems.push(<li key={`bullet-${index}-${lineIdx}`} className="text-gray-700 mb-2" dangerouslySetInnerHTML={{
-          __html: formattedPoint
-        }} />);
+
+        return <li key={`bullet-${index}-${idx}`} className="text-gray-700 mb-2" dangerouslySetInnerHTML={{ __html: formattedPoint }} />;
       });
 
-      // Don't close the list yet, it might continue in the next paragraph
+      formattedContent.push(<ul key={`list-${index}`} className="list-disc pl-6 space-y-3">{bulletPoints}</ul>);
       return;
     }
 
-    // Handle numbered lists (lines starting with digit + period)
-    if (isNumberedList) {
-      if (inBulletList) {
-        // Close the previous bullet list if we're switching to numbered list
-        formattedContent.push(<ul key={`bullet-list-${index}`} className="list-disc pl-6 space-y-3 my-4">{listItems}</ul>);
-        listItems = [];
-        inBulletList = false;
-      }
-      inNumberedList = true;
-      lines.forEach((line, lineIdx) => {
-        const cleanedPoint = line.replace(/^\d+\./, '').trim();
-        const formattedPoint = cleanedPoint.replace(/\*([^*]+)\*/g, '<strong>$1</strong>');
-        listItems.push(<li key={`num-${index}-${lineIdx}`} className="text-gray-700 mb-2" dangerouslySetInnerHTML={{
-          __html: formattedPoint
-        }} />);
-      });
-
-      // Don't close the list yet, it might continue in the next paragraph
-      return;
-    }
-
-    // If we reach here, this is a regular paragraph, so close any open lists
-    if (inBulletList) {
-      formattedContent.push(<ul key={`bullet-list-end-${index}`} className="list-disc pl-6 space-y-3 my-4">{listItems}</ul>);
-      inBulletList = false;
-      listItems = [];
-    }
-    if (inNumberedList) {
-      formattedContent.push(<ol key={`num-list-end-${index}`} className="list-decimal pl-6 space-y-3 my-4">{listItems}</ol>);
-      inNumberedList = false;
-      listItems = [];
-      listCounter = 1;
-    }
-
-    // Handle regular paragraph
     const formattedText = paragraph.replace(/\*([^*]+)\*/g, '<strong>$1</strong>');
-    formattedContent.push(<p key={`text-${index}`} className="text-gray-700 leading-relaxed mb-4" dangerouslySetInnerHTML={{
-      __html: formattedText
-    }} />);
+    formattedContent.push(<p key={`text-${index}`} className="text-gray-700 leading-relaxed mb-4" dangerouslySetInnerHTML={{ __html: formattedText }} />);
   });
 
-  // Close any remaining open lists at the end
-  if (inBulletList && listItems.length > 0) {
-    formattedContent.push(<ul key="final-bullet-list" className="list-disc pl-6 space-y-3 my-4">{listItems}</ul>);
-  }
-  if (inNumberedList && listItems.length > 0) {
-    formattedContent.push(<ol key="final-num-list" className="list-decimal pl-6 space-y-3 my-4">{listItems}</ol>);
-  }
   return formattedContent.length > 0 ? formattedContent : <p className="italic text-gray-500">Content coming soon...</p>;
 };
 
 // Section & Subsection Components
-const Section = ({
-  title,
-  children
-}: {
-  title: string;
-  children: React.ReactNode;
-}) => <div className="mb-12">
+const Section = ({ title, children }: { title: string; children: React.ReactNode }) => (
+  <div className="mb-12">
     <h2 className="text-2xl font-bold text-polkadot-pink mb-4">{title}</h2>
     <hr className="border-t-2 border-gray-300 mb-6" />
     <div>{children}</div>
-  </div>;
-const Subsection = ({
-  title,
-  content
-}: {
-  title: string;
-  content?: string | null;
-}) => <div className="mb-6">
+  </div>
+);
+
+const Subsection = ({ title, content }: { title: string; content?: string | null }) => (
+  <div className="mb-6">
     <h3 className="text-xl text-polkadot-pink mb-2 font-bold">{title}</h3>
     <hr className="border-t border-gray-200 mb-4" />
     <div className="text-gray-700 leading-relaxed">{formatText(content)}</div>
-  </div>;
+  </div>
+);
 
 // SegmentProfile Component
-const SegmentProfile = ({
-  segment,
-  industry,
-  onBack
-}: {
-  segment: any;
-  industry: any;
-  onBack: () => void;
-}) => {
+const SegmentProfile = ({ segment, industry, onBack }: { segment: any; industry: any; onBack: () => void }) => {
   const [segmentData, setSegmentData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
   useEffect(() => {
     const fetchSegmentData = async () => {
-      if (!segment || !segment.name) {
+      if (!segment || !segment.id) {
         setError("Invalid segment data");
         setLoading(false);
         return;
       }
+
       try {
-        console.log(`Fetching data for segment: ${segment.name}`);
-        const {
-          data,
-          error: fetchError
-        } = await supabase.from("segments").select(`
-            id, name, abstract, definition, trends, regions, challenges, 
-            usecases_general, personas_1, capability, value_prop, 
-            positioning_statement, messaging, proof_points, industry_id
-          `).eq("name", segment.name).single();
+        console.log(`Fetching data for segment ID: ${segment.id}`);
+
+        const { data, error: fetchError } = await supabase
+          .from("segments")
+          .select("id, name, abstract, definition, trends, regions, challenges, usecases_general, personas_1, capability, value_prop, positioning_statement, messaging, proof_points, industry_id")
+          .eq("id", segment.id)
+          .single();
+
         if (fetchError) {
           console.error("Error fetching segment:", fetchError);
           setError("Failed to load segment data.");
@@ -178,22 +91,20 @@ const SegmentProfile = ({
       }
       setLoading(false);
     };
+
     fetchSegmentData();
   }, [segment]);
+
   if (loading) return <p className="text-gray-500 italic text-center py-10">Loading segment data...</p>;
   if (error) return <p className="text-red-500 text-center py-10">{error}</p>;
   if (!segmentData) return <p className="text-red-500 text-center py-10">No data found for this segment.</p>;
 
-  // Generate image URLs
-  const formattedSegmentName = segmentData?.name.replace(/ /g, "_"); // Replace spaces with underscores
-  const categoryPrefix = industry?.name.replace(/ /g, "_"); // Ensure category is formatted correctly
+  // Image URLs using segment ID
+  const geoImageUrl = `https://qhxgyizmewdtvwebpmie.supabase.co/storage/v1/object/public/polkadot/map_${segmentData?.id}.png`;
+  const messagingImageUrl = `https://qhxgyizmewdtvwebpmie.supabase.co/storage/v1/object/public/polkadot/matrix_${segmentData?.id}.png`;
 
-  // Geographic hotspot image URL (polkadot bucket)
-  const geoImageUrl = `https://qhxgyizmewdtvwebpmie.supabase.co/storage/v1/object/public/polkadot/${categoryPrefix}_-_${formattedSegmentName}.png`;
-
-  // Messaging strategy image URL (positioning bucket)
-  const messagingImageUrl = `https://qhxgyizmewdtvwebpmie.supabase.co/storage/v1/object/public/positioning/${categoryPrefix}_-_${formattedSegmentName}.png`;
-  return <div className="flex flex-col w-full max-w-6xl mx-auto py-8 px-4">
+  return (
+    <div className="flex flex-col w-full max-w-6xl mx-auto py-8 px-4">
       {/* Back button and title area */}
       <div className="mb-8 flex items-center">
         <button onClick={onBack} className="bg-polkadot-pink text-white rounded-full p-2 hover:bg-polkadot-pink-light transition-colors">
@@ -219,9 +130,14 @@ const SegmentProfile = ({
 
           {/* Geographic Hotspots Image */}
           <div className="flex justify-center mt-6">
-            <img src={geoImageUrl} alt={`${segmentData?.name} Geographical Hotspots`} className="w-full h-auto rounded-lg shadow-md" onError={e => {
-            (e.target as HTMLImageElement).style.display = "none"; // Hide if the image doesn't exist
-          }} />
+            <img
+              src={geoImageUrl}
+              alt={`${segmentData?.name} Geographical Hotspots`}
+              className="w-full h-auto rounded-lg shadow-md"
+              onError={(e) => {
+                (e.target as HTMLImageElement).style.display = "none"; // Hide if the image doesn't exist
+              }}
+            />
           </div>
 
           <Subsection title="2.4. Challenges" content={segmentData?.challenges} />
@@ -238,14 +154,21 @@ const SegmentProfile = ({
           
           {/* Messaging Strategy Image */}
           <div className="flex justify-center mt-6 mb-6">
-            <img src={messagingImageUrl} alt={`${segmentData?.name} Messaging Strategy`} className="w-full h-auto rounded-lg shadow-md" onError={e => {
-            (e.target as HTMLImageElement).style.display = "none"; // Hide if the image doesn't exist
-          }} />
+            <img
+              src={messagingImageUrl}
+              alt={`${segmentData?.name} Messaging Strategy`}
+              className="w-full h-auto rounded-lg shadow-md"
+              onError={(e) => {
+                (e.target as HTMLImageElement).style.display = "none"; // Hide if the image doesn't exist
+              }}
+            />
           </div>
           
           <Subsection title="3.6. Proof Points" content={segmentData?.proof_points || "Coming soon..."} />
         </Section>
       </div>
-    </div>;
+    </div>
+  );
 };
+
 export default SegmentProfile;

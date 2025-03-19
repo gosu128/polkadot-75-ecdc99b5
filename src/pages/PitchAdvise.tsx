@@ -31,7 +31,7 @@ const formatContent = (text: string | undefined, insertImage: boolean = false) =
     // Handle special formatting for headings (###)
     if (paragraph.trim().startsWith("###")) {
       formattedContent.push(<div key={`spacer-${index}`} className="mt-6"></div>); // Extra space ONLY before headings
-      formattedContent.push(<p key={`heading-${index}`} className="text-xl font-bold text-polkadot-pink mt-2 mb-2 my-[25px]">
+      formattedContent.push(<p key={`heading-${index}`} className="text-xl font-bold text-polkadot-pink mt-2 mb-2 my-[25px] py-0">
           {paragraph.replace(/^###/, "").trim()}
         </p>);
       return;

@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -136,14 +135,12 @@ const Subsection = ({
     }} /> : <p className="text-gray-400 italic">Loading...</p>}
     </div>;
 };
-
 const EnterprisePitch = () => {
   const [content, setContent] = useState<{
     [key: number]: string | null;
   }>({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  
   useEffect(() => {
     const fetchContent = async () => {
       try {
@@ -174,7 +171,6 @@ const EnterprisePitch = () => {
     };
     fetchContent();
   }, []);
-  
   return <div className="w-full min-h-screen bg-white">
       <Header />
       <div className="container mx-auto p-4 pt-32 max-w-5xl">
@@ -191,9 +187,9 @@ const EnterprisePitch = () => {
         {/* Section 2: The Pitch */}
         <Section title="2. The Pitch">
           <Subsection title="2.1. Geographies" content={loading ? null : content[8]} />
-          <div className="flex justify-center mt-6">
-            <img src="https://qhxgyizmewdtvwebpmie.supabase.co/storage/v1/object/public/polkadot//Pitch_Advise_-_World_Map.png" alt="Geographical Hotspots Map" className="w-full max-w-full h-auto" />
-          </div>
+        <div className="flex justify-center mt-6">
+  <img src="https://qhxgyizmewdtvwebpmie.supabase.co/storage/v1/object/public/polkadot//Pitch_Advise_-_World_Map.png" alt="Geographical Hotspots Map" className="w-full max-w-full h-auto" />
+        </div>
           <Subsection title="2.2. Use Cases" content={loading ? null : content[3]} />
           <Subsection title="2.3. Target Audiences" content={loading ? null : content[4]} />
           <Subsection title="2.4. Value Proposition" content={loading ? null : content[7]} />
@@ -204,9 +200,9 @@ const EnterprisePitch = () => {
           <Subsection title="2.6. Messaging Strategy" content={loading ? null : content[5]} />
           <Subsection title="2.7. Proof Points" />
         </Section>
+
       </div>
       <Footer />
     </div>;
 };
-
 export default EnterprisePitch;

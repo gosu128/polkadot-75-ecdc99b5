@@ -78,7 +78,7 @@ const Resources = () => {
           content={loading ? null : content[1]}
         >
           <div className="relative w-full max-w-full mx-auto">
-            <div className="relative w-full" style={{ paddingTop: "59.6%" }}>  
+            <div className="relative w-full" style={{ paddingTop: "59.9%" }}>  
               <iframe
                 src="https://docs.google.com/presentation/d/1z13q5HFfK39eZVtA6sdHk8jC-EmTQdnBnIjsW0Acyfk/embed?start=false&loop=false&delayms=3000"
                 className="absolute top-0 left-0 w-full h-full border-0"
@@ -96,7 +96,7 @@ const Resources = () => {
           content={loading ? null : content[2]}
         >
           <div className="relative w-full max-w-full mx-auto">
-            <div className="relative w-full" style={{ paddingTop: "59.6%" }}>  
+            <div className="relative w-full" style={{ paddingTop: "59.9%" }}>  
               <iframe 
                 src="https://docs.google.com/spreadsheets/d/1rzMvSxH5IBAzb8EzezO-1dYneX6nIkDUIs-7MhFirgw/preview?gid=842874053"
                 className="absolute top-0 left-0 w-full h-full border-0" 
@@ -114,7 +114,7 @@ const Resources = () => {
           content={loading ? null : content[3]}
         >
           <div className="relative w-full max-w-full mx-auto">
-            <div className="relative w-full" style={{ paddingTop: "59.6%" }}>  
+            <div className="relative w-full" style={{ paddingTop: "59.9%" }}>  
               <iframe 
                 src="https://docs.google.com/presentation/d/1miW8bJb2ZHLrMjMlQC6IC5r-qDHtXxdoR1mwxsZ7uEg/embed?start=false&loop=false&delayms=3000"
                 className="absolute top-0 left-0 w-full h-full border-0" 
@@ -132,7 +132,7 @@ const Resources = () => {
           content={loading ? null : content[4]}
         >
           <div className="relative w-full max-w-full mx-auto">
-            <div className="relative w-full" style={{ paddingTop: "59.6%" }}>  
+            <div className="relative w-full" style={{ paddingTop: "59.9%" }}>  
               <iframe
                 src="https://docs.google.com/presentation/d/1_ZD9gZb7flXCKxO_3t4R0HIm1TdjCHltD1hvtU_2z0M/embed?start=false&loop=false&delayms=3000" 
                 className="absolute top-0 left-0 w-full h-full border-0" 

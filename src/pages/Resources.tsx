@@ -96,7 +96,7 @@ const Resources = () => {
           content={loading ? null : content[2]}
         >
           <div className="relative w-full max-w-full mx-auto">
-            <div className="relative w-full" style={{ paddingTop: "59.9" }}>  
+            <div className="relative w-full" style={{ paddingTop: "59.9%" }}>  
               <iframe 
                 src="https://docs.google.com/spreadsheets/d/1rzMvSxH5IBAzb8EzezO-1dYneX6nIkDUIs-7MhFirgw/preview?gid=842874053"
                 className="absolute top-0 left-0 w-full h-full border-0" 

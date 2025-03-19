@@ -42,17 +42,17 @@ const formatContent = (text: string | undefined, insertImage: boolean = false) =
 };
 
 const HomePage = () => {
-  const [content, setContent] = useState<{ how?: string; why?: string }>({});
+  const [content, setContent] = useState<{ how_1?: string; how_2?: string; why?: string }>({});
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchContent = async () => {
-      const { data, error } = await supabase.from("home").select("how, why").single();
+      const { data, error } = await supabase.from("home").select("how_1, how_2, why").single();
 
       if (error) {
         console.error("Error fetching content:", error);
       } else if (data) {
-        setContent({ how: data.how, why: data.why });
+        setContent({ how_1: data.how_1, how_2: data.how_2, why: data.why });
       }
       setLoading(false);
     };
@@ -83,7 +83,9 @@ const HomePage = () => {
       <div className="container mx-auto p-4 pt-16 max-w-5xl">
         <div className="space-y-10">
           <SectionHeader icon={Info} title="How to Navigate this Website" />
-          <div className="text-gray-700 leading-relaxed space-y-4">{formatContent(content.how)}</div>
+          <div className="text-gray-700 leading-relaxed space-y-4">
+            {formatContent(`${content.how_1 || ""}\n\n${content.how_2 || ""}`)}
+          </div>
 
           <SectionHeader icon={AlertTriangle} title="Why Polkadot Must Expand Beyond Web3 to Secure Its Future Growth" />
           <div className="text-gray-700 leading-relaxed space-y-4">{formatContent(content.why, true)}</div>
@@ -96,3 +98,4 @@ const HomePage = () => {
 };
 
 export default HomePage;
+

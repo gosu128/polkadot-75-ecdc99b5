@@ -24,7 +24,7 @@ const formatContent = (text: string | undefined, insertImage: boolean = false) =
     // Insert image after the first paragraph of "why" section
     if (insertImage && index === 1) {
       formattedContent.push(<div key="why-image" className="flex justify-center mt-6">
-          <img src="https://qhxgyizmewdtvwebpmie.supabase.co/storage/v1/object/public/docs//audiences.png" alt="Polkadot Audience Expansion" className="w-full max-w-full h-auto" />
+          <img src="https://qhxgyizmewdtvwebpmie.supabase.co/storage/v1/object/public/docs//audiences.png" alt="Polkadot Audience Expansion" className="w-full max-w-full h-auto object-fill" />
         </div>);
     }
 

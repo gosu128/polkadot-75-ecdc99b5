@@ -89,7 +89,7 @@ const HomePage = () => {
       {/* Content Sections with SAME WIDTH as Enterprise Pitch Page */}
       <div className="container mx-auto p-4 pt-16 max-w-5xl">
         <div className="space-y-10">
-          <SectionHeader icon={Info} title="How to Navigate this Website" />
+          <SectionHeader icon={Info} title="How to Navigate the Polkadot Sales Hub" />
           <div className="text-gray-700 leading-relaxed space-y-4">
             {formatContent(`${content.how_1 || ""}\n\n${content.how_2 || ""}`)}
           </div>

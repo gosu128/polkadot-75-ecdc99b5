@@ -1,12 +1,11 @@
 import { useEffect, useState } from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import { createClient } from '@supabase/supabase-js';
+import { supabase } from '@/integrations/supabase/client';
 
 // Supabase connection (DO NOT CHANGE THE API KEY)
 const supabaseUrl = "https://qhxgyizmewdtvwebpmie.supabase.co";
 const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFoeGd5aXptZXdkdHZ3ZWJwbWllIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDExNjk0NjAsImV4cCI6MjA1Njc0NTQ2MH0.MxQbO5TTL1vbfohLB2dHtKOotwp0sUGDQfcpBgT1EL8";
-const supabase = createClient(supabaseUrl, supabaseKey);
 
 // Function to format text based on the four rules
 const formatText = (text: string) => {
@@ -193,12 +192,12 @@ const EnterprisePitch = () => {
         </div>
           <Subsection title="2.2. Use Cases" content={loading ? null : content[3]} />
           <Subsection title="2.3. Target Audiences" content={loading ? null : content[4]} />
-          <Subsection title="2.4. Capability Assessment" content={loading ? null : content[6]} />
-          <Subsection title="2.5. Value Proposition" content={loading ? null : content[7]} />
+          <Subsection title="2.4. Value Proposition" content={loading ? null : content[7]} />
+          <Subsection title="2.5. Positioning" content={loading ? null : content[9]} />
+          <div className="flex justify-center mt-6">
+            <img src="https://qhxgyizmewdtvwebpmie.supabase.co/storage/v1/object/public/positioning//Pitch_Advise_-_Positioning.png" alt="Polkadot's Messaging Strategy Positioning" className="w-full max-w-full h-auto" />
+          </div>
           <Subsection title="2.6. Messaging Strategy" content={loading ? null : content[5]} />
-        <div className="flex justify-center mt-6">
-  <img src="https://qhxgyizmewdtvwebpmie.supabase.co/storage/v1/object/public/positioning//Pitch_Advise_-_Positioning.png" alt="Polkadot's Messaging Strategy Positioning" className="w-full max-w-full h-auto" />
-        </div>
           <Subsection title="2.7. Proof Points" />
         </Section>
 

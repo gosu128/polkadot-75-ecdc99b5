@@ -30,7 +30,7 @@ const Resources = () => {
         {/* Overview of BD Stakeholders - Section 1 */}
         <Section number="1" title="Overview of BD Stakeholders">
           <div className="relative w-full max-w-full mx-auto">
-            <div className="relative w-full" style={{ paddingTop: "60.1%" }}>  
+            <div className="relative w-full" style={{ paddingTop: "59.9%" }}>  
               <iframe
                 src="https://docs.google.com/presentation/d/1z13q5HFfK39eZVtA6sdHk8jC-EmTQdnBnIjsW0Acyfk/embed?start=false&loop=false&delayms=3000"
                 className="absolute top-0 left-0 w-full h-full border-0"
@@ -44,7 +44,7 @@ const Resources = () => {
         {/* Proof Points - Section 2 */}
         <Section number="2" title="Proof Points">
           <div className="relative w-full max-w-full mx-auto">
-            <div className="relative w-full" style={{ paddingTop: "60.3%" }}>  
+            <div className="relative w-full" style={{ paddingTop: "59.9%" }}>  
               <iframe 
                 src="https://docs.google.com/spreadsheets/d/1rzMvSxH5IBAzb8EzezO-1dYneX6nIkDUIs-7MhFirgw/preview?gid=842874053"
                 className="absolute top-0 left-0 w-full h-full border-0" 
@@ -58,7 +58,7 @@ const Resources = () => {
         {/* Case Studies - Section 3 */}
         <Section number="3" title="Case Studies">
           <div className="relative w-full max-w-full mx-auto">
-            <div className="relative w-full" style={{ paddingTop: "60.3%" }}>  
+            <div className="relative w-full" style={{ paddingTop: "59.9%" }}>  
               <iframe 
                 src="https://docs.google.com/presentation/d/1miW8bJb2ZHLrMjMlQC6IC5r-qDHtXxdoR1mwxsZ7uEg/embed?start=false&loop=false&delayms=3000"
                 className="absolute top-0 left-0 w-full h-full border-0" 
@@ -72,7 +72,7 @@ const Resources = () => {
         {/* Methodology - Section 4 */}
         <Section number="4" title="Methodology">
           <div className="relative w-full max-w-full mx-auto">
-            <div className="relative w-full" style={{ paddingTop: "60.3%" }}>  
+            <div className="relative w-full" style={{ paddingTop: "59.9%" }}>  
               <iframe
                 src="https://docs.google.com/presentation/d/1_ZD9gZb7flXCKxO_3t4R0HIm1TdjCHltD1hvtU_2z0M/embed?start=false&loop=false&delayms=3000" 
                 className="absolute top-0 left-0 w-full h-full border-0" 

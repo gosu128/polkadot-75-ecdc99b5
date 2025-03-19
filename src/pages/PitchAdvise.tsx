@@ -39,7 +39,7 @@ const formatContent = (text: string | undefined, insertImage: boolean = false) =
     const formattedText = paragraph.replace(/\*([^*]+)\*/g, "<strong>$1</strong>");
     formattedContent.push(<p key={`text-${index}`} dangerouslySetInnerHTML={{
       __html: formattedText
-    }} />);
+    }} className="my-[15px]" />);
   });
   return formattedContent;
 };

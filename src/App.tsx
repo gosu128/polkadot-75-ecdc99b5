@@ -4,7 +4,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import PitchAdvise from "./pages/PitchAdvise";
+import Index from "./pages/Index"; // Updated to use Index component
 import EnterprisePitch from "./pages/EnterprisePitch";
 import Segments from "./pages/Segments";
 import Resources from "./pages/Resources";
@@ -19,7 +19,7 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<PitchAdvise />} />
+          <Route path="/" element={<Index />} /> {/* Updated to use Index component */}
           <Route path="/enterprise-pitch" element={<EnterprisePitch />} />
           <Route path="/segments" element={<Segments />} />
           <Route path="/resources" element={<Resources />} />

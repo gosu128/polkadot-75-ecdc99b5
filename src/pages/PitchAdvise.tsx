@@ -3,80 +3,76 @@ import { supabase } from "@/integrations/supabase/client";
 import { AlertTriangle, Info } from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-
-const SectionHeader = ({ icon: Icon, title }: { icon: React.ElementType; title: string }) => (
-  <div className="mt-12 mb-4">
+const SectionHeader = ({
+  icon: Icon,
+  title
+}: {
+  icon: React.ElementType;
+  title: string;
+}) => <div className="mt-12 mb-4">
     <h2 className="text-polkadot-pink font-unbounded flex items-center text-xl font-semibold">
       <Icon className="mr-2 text-polkadot-pink w-6 h-6" />
       {title}
     </h2>
     <hr className="border-polkadot-pink my-2" />
-  </div>
-);
-
+  </div>;
 const formatContent = (text: string | undefined, insertImage: boolean = false) => {
   if (!text) return <p className="italic text-gray-500">Content not available.</p>;
-
   const paragraphs = text.split("\n\n");
   const formattedContent: JSX.Element[] = [];
-
   paragraphs.forEach((paragraph, index) => {
     // Insert image after the first paragraph of "why" section
     if (insertImage && index === 1) {
-      formattedContent.push(
-        <div key="why-image" className="flex justify-center mt-6">
-          <img
-            src="https://qhxgyizmewdtvwebpmie.supabase.co/storage/v1/object/public/docs//audiences.png"
-            alt="Polkadot Audience Expansion"
-            className="w-full max-w-full h-auto"
-          />
-        </div>
-      );
+      formattedContent.push(<div key="why-image" className="flex justify-center mt-6">
+          <img src="https://qhxgyizmewdtvwebpmie.supabase.co/storage/v1/object/public/docs//audiences.png" alt="Polkadot Audience Expansion" className="w-full max-w-full h-auto" />
+        </div>);
     }
 
     // Handle special formatting for headings (###)
     if (paragraph.trim().startsWith("###")) {
       formattedContent.push(<div key={`spacer-${index}`} className="mt-6"></div>); // Extra space ONLY before headings
-      formattedContent.push(
-        <p key={`heading-${index}`} className="text-xl font-bold text-polkadot-pink mt-2 mb-2">
+      formattedContent.push(<p key={`heading-${index}`} className="text-xl font-bold text-polkadot-pink mt-2 mb-2 my-[25px]">
           {paragraph.replace(/^###/, "").trim()}
-        </p>
-      );
+        </p>);
       return;
     }
-
     const formattedText = paragraph.replace(/\*([^*]+)\*/g, "<strong>$1</strong>");
-    formattedContent.push(<p key={`text-${index}`} dangerouslySetInnerHTML={{ __html: formattedText }} />);
+    formattedContent.push(<p key={`text-${index}`} dangerouslySetInnerHTML={{
+      __html: formattedText
+    }} />);
   });
-
   return formattedContent;
 };
-
 const HomePage = () => {
-  const [content, setContent] = useState<{ how_1?: string; how_2?: string; why?: string }>({});
+  const [content, setContent] = useState<{
+    how_1?: string;
+    how_2?: string;
+    why?: string;
+  }>({});
   const [loading, setLoading] = useState(true);
-
   useEffect(() => {
     const fetchContent = async () => {
-      const { data, error } = await supabase.from("home").select("how_1, how_2, why").single();
-
+      const {
+        data,
+        error
+      } = await supabase.from("home").select("how_1, how_2, why").single();
       if (error) {
         console.error("Error fetching content:", error);
       } else if (data) {
-        setContent({ how_1: data.how_1, how_2: data.how_2, why: data.why });
+        setContent({
+          how_1: data.how_1,
+          how_2: data.how_2,
+          why: data.why
+        });
       }
       setLoading(false);
     };
-
     fetchContent();
   }, []);
-
   if (loading) {
     return <div className="text-center text-gray-500 mt-10">Loading...</div>;
   }
-
-  return (
-    <div className="w-full min-h-screen bg-white flex flex-col">
+  return <div className="w-full min-h-screen bg-white flex flex-col">
       <Header />
 
       {/* Hero Section */}
@@ -104,8 +100,6 @@ const HomePage = () => {
       </div>
 
       <Footer />
-    </div>
-  );
+    </div>;
 };
-
 export default HomePage;

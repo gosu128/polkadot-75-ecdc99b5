@@ -140,7 +140,11 @@ const formatContent = (text: string | undefined, insertImage: boolean = false) =
 const Index = () => {
   const [selectedSegment, setSelectedSegment] = useState(null);
   const [selectedIndustry, setSelectedIndustry] = useState(null);
-  const [content, setContent] = useState<{ how?: string; why?: string }>({});
+  const [content, setContent] = useState<{ 
+    how_1?: string; 
+    how_2?: string; 
+    why?: string;
+  }>({});
   const [loading, setLoading] = useState(true);
 
   const handleSelectSegment = (segment, industry) => {
@@ -157,30 +161,20 @@ const Index = () => {
     const fetchContent = async () => {
       setLoading(true);
       try {
-        // Fetch "why" content
-        const { data: whyData, error: whyError } = await supabase
-          .from("pitch_advise")
-          .select("content")
-          .eq("section", "why")
+        // Fetch all content from the "home" table
+        const { data, error } = await supabase
+          .from("home")
+          .select("how_1, how_2, why")
           .single();
 
-        if (whyError) {
-          console.error("Error fetching why content:", whyError);
-        } else if (whyData) {
-          setContent(prev => ({ ...prev, why: whyData.content }));
-        }
-        
-        // Fetch "how" content
-        const { data: howData, error: howError } = await supabase
-          .from("pitch_advise")
-          .select("content")
-          .eq("section", "how")
-          .single();
-
-        if (howError) {
-          console.error("Error fetching how content:", howError);
-        } else if (howData) {
-          setContent(prev => ({ ...prev, how: howData.content }));
+        if (error) {
+          console.error("Error fetching home content:", error);
+        } else if (data) {
+          setContent({
+            how_1: data.how_1,
+            how_2: data.how_2,
+            why: data.why
+          });
         }
       } catch (error) {
         console.error("Error in content fetching:", error);
@@ -213,11 +207,12 @@ const Index = () => {
 
             {/* Content Sections */}
             {!loading && (
-              <div className="w-full max-w-7xl mx-auto px-4">
+              <div className="w-full max-w-5xl mx-auto px-4">
                 <div className="space-y-10 w-full">
                   <SectionHeader icon={Info} title="How to Navigate this Website" />
                   <div className="text-gray-700 leading-relaxed space-y-4 text-left">
-                    {formatContent(content.how)}
+                    {formatContent(content.how_1)}
+                    {formatContent(content.how_2)}
                   </div>
 
                   <SectionHeader icon={AlertTriangle} title="Why Polkadot Must Expand Beyond Web3" />

@@ -195,7 +195,7 @@ const EnterprisePitch = () => {
           <Subsection title="2.4. Value Proposition" content={loading ? null : content[7]} />
           <Subsection title="2.5. Positioning" content={loading ? null : content[9]} />
           <div className="flex justify-center mt-6">
-            <img src="https://qhxgyizmewdtvwebpmie.supabase.co/storage/v1/object/public/positioning//Pitch_Advise_-_Positioning.png" alt="Polkadot's Messaging Strategy Positioning" className="w-full max-w-full h-auto" />
+            <img src="https://qhxgyizmewdtvwebpmie.supabase.co/storage/v1/object/public/polkadot//Pitch_Advise_-_Positioning.png" alt="Polkadot's Messaging Strategy Positioning" className="w-full max-w-full h-auto" />
           </div>
           <Subsection title="2.6. Messaging Strategy" content={loading ? null : content[5]} />
           <Subsection title="2.7. Proof Points" />

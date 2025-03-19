@@ -1,17 +1,35 @@
+
+import React from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+
+// Section component to match Enterprise Pitch page style
+const Section = ({
+  number,
+  title,
+  children
+}: {
+  number: string;
+  title: string;
+  children: React.ReactNode;
+}) => {
+  return (
+    <div className="mb-12">
+      <h2 className="text-2xl font-bold text-polkadot-pink mb-4">{number}. {title}</h2>
+      <hr className="border-t-2 border-gray-300 mb-6" />
+      <div>{children}</div>
+    </div>
+  );
+};
 
 const Resources = () => {
   return (
     <div className="w-full min-h-screen bg-white">
       <Header />
-      <div className="container mx-auto p-4 pt-32 flex flex-col items-center space-y-36 py-[200px]">
-        
-        {/* Overview of BD Stakeholders (First) */}
-        <section id="bd-teams" className="w-full">
-          <h2 className="text-2xl font-bold text-polkadot-pink mb-8 text-center">Overview of BD Stakeholders</h2>
-          <hr className="border-t-2 border-gray-300 mb-10" />
-          <div className="relative w-full max-w-[900px] mx-auto">
+      <div className="container mx-auto p-4 pt-32 max-w-5xl">
+        {/* Overview of BD Stakeholders - Section 1 */}
+        <Section number="1" title="Overview of BD Stakeholders">
+          <div className="relative w-full max-w-full mx-auto">
             <div className="relative w-full" style={{ paddingTop: "60.3%" }}>  
               <iframe
                 src="https://docs.google.com/presentation/d/1z13q5HFfK39eZVtA6sdHk8jC-EmTQdnBnIjsW0Acyfk/embed?start=false&loop=false&delayms=3000"
@@ -21,15 +39,11 @@ const Resources = () => {
               />
             </div>
           </div>
-        </section>
+        </Section>
 
-        {/* Proof Points (Second) */}
-        <section id="proof-points" className="w-full">
-          <h2 className="text-2xl font-bold text-polkadot-pink mb-8 text-center">Proof Points</h2>
-          <hr className="border-t-2 border-gray-300 mb-10" />
-          
-          {/* Google Sheets in Presentation Mode */}
-          <div className="relative w-full max-w-[900px] mx-auto">
+        {/* Proof Points - Section 2 */}
+        <Section number="2" title="Proof Points">
+          <div className="relative w-full max-w-full mx-auto">
             <div className="relative w-full" style={{ paddingTop: "60.3%" }}>  
               <iframe 
                 src="https://docs.google.com/spreadsheets/d/1rzMvSxH5IBAzb8EzezO-1dYneX6nIkDUIs-7MhFirgw/preview?gid=842874053"
@@ -39,13 +53,11 @@ const Resources = () => {
               />
             </div>
           </div>
-        </section>
+        </Section>
 
-        {/* Case Studies (Third - New Document) */}
-        <section id="case-studies" className="w-full">
-          <h2 className="text-2xl font-bold text-polkadot-pink mb-8 text-center">Case Studies</h2>
-          <hr className="border-t-2 border-gray-300 mb-10" />
-          <div className="relative w-full max-w-[900px] mx-auto">
+        {/* Case Studies - Section 3 */}
+        <Section number="3" title="Case Studies">
+          <div className="relative w-full max-w-full mx-auto">
             <div className="relative w-full" style={{ paddingTop: "60.3%" }}>  
               <iframe 
                 src="https://docs.google.com/presentation/d/1miW8bJb2ZHLrMjMlQC6IC5r-qDHtXxdoR1mwxsZ7uEg/embed?start=false&loop=false&delayms=3000"
@@ -55,13 +67,11 @@ const Resources = () => {
               />
             </div>
           </div>
-        </section>
+        </Section>
 
-        {/* Methodology Content (Fourth) */}
-        <section id="methodology" className="w-full">
-          <h2 className="text-2xl font-bold text-polkadot-pink mb-8 text-center">Methodology</h2>
-          <hr className="border-t-2 border-gray-300 mb-10" />
-          <div className="relative w-full max-w-[900px] mx-auto">
+        {/* Methodology - Section 4 */}
+        <Section number="4" title="Methodology">
+          <div className="relative w-full max-w-full mx-auto">
             <div className="relative w-full" style={{ paddingTop: "60.3%" }}>  
               <iframe
                 src="https://docs.google.com/presentation/d/1_ZD9gZb7flXCKxO_3t4R0HIm1TdjCHltD1hvtU_2z0M/embed?start=false&loop=false&delayms=3000" 
@@ -71,8 +81,7 @@ const Resources = () => {
               />
             </div>
           </div>
-        </section>
-
+        </Section>
       </div>
       <Footer />
     </div>
@@ -80,4 +89,3 @@ const Resources = () => {
 };
 
 export default Resources;
-

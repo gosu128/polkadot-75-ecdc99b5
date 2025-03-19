@@ -128,7 +128,7 @@ const SegmentProfile = ({ segment, industry, onBack }: { segment: any; industry:
           <Subsection title="2.2. Market Trends" content={segmentData?.trends} />
           <Subsection title="2.3. Geographical Hotspots" content={segmentData?.regions} />
 
-          {/* Geographic Hotspots Image (No shadows or effects) */}
+          {/* Geographic Hotspots Image */}
           <div className="flex justify-center mt-6">
             <img
               src={geoImageUrl}
@@ -150,20 +150,20 @@ const SegmentProfile = ({ segment, industry, onBack }: { segment: any; industry:
           <Subsection title="3.2. Capability Assessment" content={segmentData?.capability} />
           <Subsection title="3.3. Value Proposition" content={segmentData?.value_prop} />
           <Subsection title="3.4. Positioning" content={segmentData?.positioning_statement} />
-          <Subsection title="3.5. Messaging Strategy" content={segmentData?.messaging} />
           
-          {/* Messaging Strategy Image (No shadows or effects) */}
+          {/* Messaging Strategy Image (Moved here) */}
           <div className="flex justify-center mt-6 mb-6">
             <img
               src={messagingImageUrl}
-              alt={`${segmentData?.name} Messaging Strategy`}
+              alt={`${segmentData?.name} Positioning Strategy`}
               className="w-full h-auto"
               onError={(e) => {
                 (e.target as HTMLImageElement).style.display = "none"; // Hide if the image doesn't exist
               }}
             />
           </div>
-          
+
+          <Subsection title="3.5. Messaging Strategy" content={segmentData?.messaging} />
           <Subsection title="3.6. Proof Points" content={segmentData?.proof_points || "Coming soon..."} />
         </Section>
       </div>

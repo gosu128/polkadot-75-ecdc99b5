@@ -161,20 +161,36 @@ const Index = () => {
     const fetchContent = async () => {
       setLoading(true);
       try {
-        // Fetch all content from the "home" table
-        const { data, error } = await supabase
-          .from("home")
-          .select("how_1, how_2, why")
+        // Fetch all content from the "pitch_advise" table
+        const { data: whyData, error: whyError } = await supabase
+          .from("pitch_advise")
+          .select("content")
+          .eq("section", "why")
           .single();
 
-        if (error) {
-          console.error("Error fetching home content:", error);
-        } else if (data) {
-          setContent({
-            how_1: data.how_1,
-            how_2: data.how_2,
-            why: data.why
-          });
+        if (whyError) {
+          console.error("Error fetching why content:", whyError);
+        } else if (whyData) {
+          setContent(prev => ({ ...prev, why: whyData.content }));
+        }
+        
+        // Fetch "how" content
+        const { data: howData, error: howError } = await supabase
+          .from("pitch_advise")
+          .select("content")
+          .eq("section", "how")
+          .single();
+
+        if (howError) {
+          console.error("Error fetching how content:", howError);
+        } else if (howData) {
+          // Split the "how" content into two parts for how_1 and how_2
+          const howParts = howData.content.split('---');
+          setContent(prev => ({
+            ...prev,
+            how_1: howParts[0] || '',
+            how_2: howParts.length > 1 ? howParts[1] : '',
+          }));
         }
       } catch (error) {
         console.error("Error in content fetching:", error);
@@ -198,11 +214,16 @@ const Index = () => {
           <>
             {/* Main Hero Content */}
             <section className="w-full max-w-4xl flex flex-col items-center justify-center py-32">
-              <h1 className="text-5xl sm:text-6xl md:text-7xl font-unbounded font-bold mb-12 leading-tight">
-                Who do you want to <br />
-                pitch <span className="bg-clip-text text-transparent bg-gradient-to-r from-polkadot-pink via-[#9B87F5] to-[#7E69AB]">Polkadot</span> to?
+              <h1 className="text-5xl sm:text-6xl md:text-7xl font-unbounded font-bold mb-6 leading-tight">
+                Welcome to the <br />
+                <span className="bg-clip-text text-transparent bg-gradient-to-r from-polkadot-pink via-[#9B87F5] to-[#7E69AB]">Polkadot Sales Hub</span>
               </h1>
-              <SalesDropdown onSelectSegment={handleSelectSegment} />
+              <p className="text-xl text-gray-700 max-w-2xl mb-12">
+                Your comprehensive resource for pitching Polkadot to different industry segments
+              </p>
+              <div className="w-full max-w-md">
+                <SalesDropdown onSelectSegment={handleSelectSegment} />
+              </div>
             </section>
 
             {/* Content Sections */}
@@ -243,7 +264,6 @@ const Index = () => {
         )}
       </main>
 
-      {/* Footer */}
       <Footer />
     </div>
   );

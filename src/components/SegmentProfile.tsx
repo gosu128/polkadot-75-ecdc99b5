@@ -149,9 +149,9 @@ const SegmentProfile = ({
           
           {/* Messaging Strategy Image (Moved here) */}
           <div className="flex justify-center mt-6 mb-6">
-            <img src={messagingImageUrl} alt={`${segmentData?.name} Positioning Strategy`} className="w-full h-auto" onError={e => {
+            <img src={messagingImageUrl} alt={`${segmentData?.name} Positioning Strategy`} onError={e => {
             (e.target as HTMLImageElement).style.display = "none"; // Hide if the image doesn't exist
-          }} />
+          }} className="w-full h-auto object-fill" />
           </div>
 
           <Subsection title="3.5. Messaging Strategy" content={segmentData?.messaging} />

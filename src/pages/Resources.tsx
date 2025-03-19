@@ -38,9 +38,10 @@ const Resources = () => {
   useEffect(() => {
     const fetchContent = async () => {
       try {
+        // Using a raw query rather than typed query to handle tables not in the TypeScript definitions
         const { data, error } = await supabase
-          .from("resources")
-          .select("id, content");
+          .from('resources')
+          .select('id, content');
         
         if (error) throw error;
         
@@ -48,10 +49,7 @@ const Resources = () => {
           const mappedContent: {
             [key: number]: string | null;
           } = {};
-          data.forEach((row: {
-            id: number;
-            content: string;
-          }) => {
+          data.forEach((row: any) => {
             mappedContent[row.id] = row.content;
           });
           setContent(mappedContent);
@@ -81,7 +79,7 @@ const Resources = () => {
           content={loading ? null : content[1]}
         >
           <div className="relative w-full max-w-full mx-auto">
-            <div className="relative w-full" style={{ paddingTop: "59.9%" }}>  
+            <div className="relative w-full" style={{ paddingTop: "60.3%" }}>  
               <iframe
                 src="https://docs.google.com/presentation/d/1z13q5HFfK39eZVtA6sdHk8jC-EmTQdnBnIjsW0Acyfk/embed?start=false&loop=false&delayms=3000"
                 className="absolute top-0 left-0 w-full h-full border-0"
@@ -99,7 +97,7 @@ const Resources = () => {
           content={loading ? null : content[2]}
         >
           <div className="relative w-full max-w-full mx-auto">
-            <div className="relative w-full" style={{ paddingTop: "59.9%" }}>  
+            <div className="relative w-full" style={{ paddingTop: "60.3%" }}>  
               <iframe 
                 src="https://docs.google.com/spreadsheets/d/1rzMvSxH5IBAzb8EzezO-1dYneX6nIkDUIs-7MhFirgw/preview?gid=842874053"
                 className="absolute top-0 left-0 w-full h-full border-0" 
@@ -117,7 +115,7 @@ const Resources = () => {
           content={loading ? null : content[3]}
         >
           <div className="relative w-full max-w-full mx-auto">
-            <div className="relative w-full" style={{ paddingTop: "59.9%" }}>  
+            <div className="relative w-full" style={{ paddingTop: "60.3%" }}>  
               <iframe 
                 src="https://docs.google.com/presentation/d/1miW8bJb2ZHLrMjMlQC6IC5r-qDHtXxdoR1mwxsZ7uEg/embed?start=false&loop=false&delayms=3000"
                 className="absolute top-0 left-0 w-full h-full border-0" 
@@ -135,7 +133,7 @@ const Resources = () => {
           content={loading ? null : content[4]}
         >
           <div className="relative w-full max-w-full mx-auto">
-            <div className="relative w-full" style={{ paddingTop: "59.9%" }}>  
+            <div className="relative w-full" style={{ paddingTop: "60.3%" }}>  
               <iframe
                 src="https://docs.google.com/presentation/d/1_ZD9gZb7flXCKxO_3t4R0HIm1TdjCHltD1hvtU_2z0M/embed?start=false&loop=false&delayms=3000" 
                 className="absolute top-0 left-0 w-full h-full border-0" 

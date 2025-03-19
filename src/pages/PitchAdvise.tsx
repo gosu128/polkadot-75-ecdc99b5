@@ -34,6 +34,17 @@ const formatContent = (text: string | undefined, insertImage: boolean = false) =
       );
     }
 
+    // Apply special formatting for headings (###)
+    if (paragraph.trim().startsWith("###")) {
+      formattedContent.push(<div key={`spacer-${index}`} className="mt-6"></div>); // Extra space before heading
+      formattedContent.push(
+        <p key={`heading-${index}`} className="text-xl font-bold text-polkadot-pink mt-2 mb-2">
+          {paragraph.replace(/^###/, "").trim()}
+        </p>
+      );
+      return;
+    }
+
     const formattedText = paragraph.replace(/\*([^*]+)\*/g, "<strong>$1</strong>");
     formattedContent.push(<p key={`text-${index}`} dangerouslySetInnerHTML={{ __html: formattedText }} />);
   });
@@ -98,4 +109,5 @@ const HomePage = () => {
 };
 
 export default HomePage;
+
 

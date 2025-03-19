@@ -30,7 +30,7 @@ const Resources = () => {
         {/* Overview of BD Stakeholders - Section 1 */}
         <Section number="1" title="Overview of BD Stakeholders">
           <div className="relative w-full max-w-full mx-auto">
-            <div className="relative w-full" style={{ paddingTop: "61.3%" }}>  
+            <div className="relative w-full" style={{ paddingTop: "60.1%" }}>  
               <iframe
                 src="https://docs.google.com/presentation/d/1z13q5HFfK39eZVtA6sdHk8jC-EmTQdnBnIjsW0Acyfk/embed?start=false&loop=false&delayms=3000"
                 className="absolute top-0 left-0 w-full h-full border-0"

@@ -94,7 +94,7 @@ const HomePage = () => {
             {formatContent(`${content.how_1 || ""}\n\n${content.how_2 || ""}`)}
           </div>
 
-          <SectionHeader icon={AlertTriangle} title="Why Polkadot Must Expand Beyond Web3 to Secure Its Future Growth" />
+          <SectionHeader icon={AlertTriangle} title="Why Polkadot Must Expand Beyond Web3" />
           <div className="text-gray-700 leading-relaxed space-y-4">{formatContent(content.why, true)}</div>
         </div>
       </div>

@@ -1,3 +1,4 @@
+
 import { useState, useRef, useEffect } from 'react';
 import { ChevronDown } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
@@ -53,8 +54,7 @@ const SalesDropdown = ({ onSelectSegment }: SalesDropdownProps) => {
   const [segments, setSegments] = useState<Segment[]>([]);
   const [featuredSegments, setFeaturedSegments] = useState<Segment[]>([]);
   const [otherSegments, setOtherSegments] = useState<Segment[]>([]);
-  const [selectedIndustry, setSelectedIndustry] = useState<Industry | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [showOtherSegments, setShowOtherSegments] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
 
@@ -77,7 +77,6 @@ const SalesDropdown = ({ onSelectSegment }: SalesDropdownProps) => {
         if (error) throw error;
         
         setIndustries(industriesData || []);
-        setLoading(false);
       } catch (error) {
         console.error('Error fetching industries:', error);
         toast({
@@ -85,7 +84,6 @@ const SalesDropdown = ({ onSelectSegment }: SalesDropdownProps) => {
           title: "Failed to load industries",
           description: "Please try again later."
         });
-        setLoading(false);
       }
     };
 
@@ -131,6 +129,7 @@ const SalesDropdown = ({ onSelectSegment }: SalesDropdownProps) => {
     const handleClickOutside = (event: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
         setIsOpen(false);
+        setShowOtherSegments(false);
       }
     };
 
@@ -142,12 +141,18 @@ const SalesDropdown = ({ onSelectSegment }: SalesDropdownProps) => {
 
   const handleSegmentSelect = (segment: Segment) => {
     setIsOpen(false);
+    setShowOtherSegments(false);
     
     const industry = industries.find(ind => ind.id === segment.industry_id);
     
     if (onSelectSegment && industry) {
       onSelectSegment(segment, industry);
     }
+  };
+
+  const toggleOtherSegments = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setShowOtherSegments(!showOtherSegments);
   };
 
   return (
@@ -166,38 +171,52 @@ const SalesDropdown = ({ onSelectSegment }: SalesDropdownProps) => {
         {isOpen && (
           <div className="absolute top-full left-0 right-0 mt-1 bg-white rounded-md shadow-lg border border-gray-200 animate-fade-in z-30">
             <div className="max-h-80 overflow-y-auto p-3">
-              {loading ? (
-                <div className="flex items-center justify-center p-6">
-                  <div className="w-5 h-5 border-2 border-polkadot-pink border-t-transparent rounded-full animate-spin"></div>
-                </div>
-              ) : (
-                <div className="grid grid-cols-1 gap-1">
-                  {featuredSegments.map((segment) => (
+              <div className="grid grid-cols-1 gap-1">
+                {featuredSegments.map((segment) => (
+                  <button
+                    key={segment.id}
+                    onClick={() => handleSegmentSelect(segment)}
+                    className="text-left p-2 rounded hover:bg-gray-50 transition-colors text-sm w-full"
+                  >
+                    <div className="font-medium">{segment.name}</div>
+                    {segment.abstract && (
+                      <p className="text-xs text-gray-500 line-clamp-1">{segment.abstract}</p>
+                    )}
+                  </button>
+                ))}
+                
+                {otherSegments.length > 0 && (
+                  <div className="mt-2 pt-2 border-t border-gray-200">
                     <button
-                      key={segment.id}
-                      onClick={() => handleSegmentSelect(segment)}
-                      className="text-left p-2 rounded hover:bg-gray-50 transition-colors text-sm w-full"
+                      className="text-left p-2 rounded hover:bg-gray-50 transition-colors text-sm w-full relative"
+                      onClick={toggleOtherSegments}
                     >
-                      <div className="font-medium">{segment.name}</div>
-                      {segment.abstract && (
-                        <p className="text-xs text-gray-500 line-clamp-1">{segment.abstract}</p>
-                      )}
+                      <div className="font-medium flex items-center justify-between">
+                        <span>Other Segments [WIP]</span>
+                        <ChevronDown className={`h-4 w-4 transition-transform ${showOtherSegments ? 'rotate-180' : ''}`} />
+                      </div>
+                      <p className="text-xs text-gray-500">These segments are still work in progress</p>
                     </button>
-                  ))}
-                  
-                  {otherSegments.length > 0 && (
-                    <div className="mt-2 pt-2 border-t border-gray-200">
-                      <button
-                        className="text-left p-2 rounded hover:bg-gray-50 transition-colors text-sm w-full opacity-75"
-                        disabled
-                      >
-                        <div className="font-medium">Other Segments [WIP]</div>
-                        <p className="text-xs text-gray-500">These segments are still work in progress</p>
-                      </button>
-                    </div>
-                  )}
-                </div>
-              )}
+                    
+                    {showOtherSegments && (
+                      <div className="pl-2 mt-1 border-l-2 border-gray-200">
+                        {otherSegments.map((segment) => (
+                          <button
+                            key={segment.id}
+                            onClick={() => handleSegmentSelect(segment)}
+                            className="text-left p-2 rounded hover:bg-gray-50 transition-colors text-sm w-full mt-1"
+                          >
+                            <div className="font-medium">{segment.name}</div>
+                            {segment.abstract && (
+                              <p className="text-xs text-gray-500 line-clamp-1">{segment.abstract}</p>
+                            )}
+                          </button>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         )}

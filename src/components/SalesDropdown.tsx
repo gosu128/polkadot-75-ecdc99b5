@@ -3,7 +3,6 @@ import { ChevronDown } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 
-// Define types for our data
 type Industry = {
   id: number;
   name: string;
@@ -52,11 +51,20 @@ const SalesDropdown = ({ onSelectSegment }: SalesDropdownProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [industries, setIndustries] = useState<Industry[]>([]);
   const [segments, setSegments] = useState<Segment[]>([]);
-  const [filteredSegments, setFilteredSegments] = useState<Segment[]>([]);
+  const [featuredSegments, setFeaturedSegments] = useState<Segment[]>([]);
+  const [otherSegments, setOtherSegments] = useState<Segment[]>([]);
   const [selectedIndustry, setSelectedIndustry] = useState<Industry | null>(null);
   const [loading, setLoading] = useState(true);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
+
+  const featuredSegmentNames = [
+    "Software & Tech - Artificial Intelligence",
+    "Software & Tech - Decentralized Networks",
+    "Transportation - Autonomous Vehicles",
+    "Entertainment & Media - Gaming",
+    "Supply Chain & Logistics - Customs & Trade Compliance"
+  ];
 
   useEffect(() => {
     const fetchIndustries = async () => {
@@ -97,7 +105,14 @@ const SalesDropdown = ({ onSelectSegment }: SalesDropdownProps) => {
 
         if (error) throw error;
         
-        setSegments(segmentsData as Segment[] || []);
+        const allSegments = segmentsData as Segment[] || [];
+        setSegments(allSegments);
+        
+        const featured = allSegments.filter(segment => featuredSegmentNames.includes(segment.name));
+        const others = allSegments.filter(segment => !featuredSegmentNames.includes(segment.name));
+        
+        setFeaturedSegments(featured);
+        setOtherSegments(others);
       } catch (error) {
         console.error('Error fetching segments:', error);
         toast({
@@ -113,15 +128,6 @@ const SalesDropdown = ({ onSelectSegment }: SalesDropdownProps) => {
   }, [toast]);
 
   useEffect(() => {
-    if (selectedIndustry) {
-      const filtered = segments.filter(segment => segment.industry_id === selectedIndustry.id);
-      setFilteredSegments(filtered);
-    } else {
-      setFilteredSegments([]);
-    }
-  }, [selectedIndustry, segments]);
-
-  useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
         setIsOpen(false);
@@ -134,19 +140,14 @@ const SalesDropdown = ({ onSelectSegment }: SalesDropdownProps) => {
     };
   }, []);
 
-  const handleIndustrySelect = (industry: Industry) => {
-    setSelectedIndustry(industry);
-  };
-
   const handleSegmentSelect = (segment: Segment) => {
     setIsOpen(false);
-    if (onSelectSegment && selectedIndustry) {
-      onSelectSegment(segment, selectedIndustry);
+    
+    const industry = industries.find(ind => ind.id === segment.industry_id);
+    
+    if (onSelectSegment && industry) {
+      onSelectSegment(segment, industry);
     }
-  };
-
-  const resetSelection = () => {
-    setSelectedIndustry(null);
   };
 
   return (
@@ -157,69 +158,47 @@ const SalesDropdown = ({ onSelectSegment }: SalesDropdownProps) => {
           className="w-full bg-white border border-gray-200 shadow-sm rounded-md px-4 py-3 flex items-center justify-between hover:border-gray-300 transition-colors text-sm"
         >
           <span className="text-gray-700">
-            {selectedIndustry 
-              ? `Industry: ${selectedIndustry.name}` 
-              : "Select industry vertical"}
+            Select segment
           </span>
           <ChevronDown className="h-4 w-4 text-gray-500" />
         </button>
         
         {isOpen && (
           <div className="absolute top-full left-0 right-0 mt-1 bg-white rounded-md shadow-lg border border-gray-200 animate-fade-in z-30">
-            {!selectedIndustry && (
-              <div className="max-h-80 overflow-y-auto p-3">
-                {loading ? (
-                  <div className="flex items-center justify-center p-6">
-                    <div className="w-5 h-5 border-2 border-polkadot-pink border-t-transparent rounded-full animate-spin"></div>
-                  </div>
-                ) : (
-                  <div className="grid grid-cols-1 gap-1">
-                    {industries.map((industry) => (
-                      <button
-                        key={industry.id}
-                        onClick={() => handleIndustrySelect(industry)}
-                        className="text-left p-2 rounded hover:bg-gray-50 transition-colors text-sm w-full"
-                      >
-                        <span>{industry.name}</span>
-                      </button>
-                    ))}
-                  </div>
-                )}
-              </div>
-            )}
-            
-            {selectedIndustry && (
-              <div className="max-h-80 overflow-y-auto p-3">
-                <div className="flex items-center justify-between mb-2 pb-2 border-b">
-                  <p className="text-sm font-medium">Segments in {selectedIndustry.name}</p>
-                  <button 
-                    onClick={resetSelection}
-                    className="text-xs text-polkadot-pink hover:text-polkadot-pink-light"
-                  >
-                    ← Back to Industries
-                  </button>
+            <div className="max-h-80 overflow-y-auto p-3">
+              {loading ? (
+                <div className="flex items-center justify-center p-6">
+                  <div className="w-5 h-5 border-2 border-polkadot-pink border-t-transparent rounded-full animate-spin"></div>
                 </div>
-                
-                {filteredSegments.length === 0 ? (
-                  <p className="text-center py-2 text-sm text-gray-500">No segments found for this industry.</p>
-                ) : (
-                  <div className="grid grid-cols-1 gap-1">
-                    {filteredSegments.map((segment) => (
+              ) : (
+                <div className="grid grid-cols-1 gap-1">
+                  {featuredSegments.map((segment) => (
+                    <button
+                      key={segment.id}
+                      onClick={() => handleSegmentSelect(segment)}
+                      className="text-left p-2 rounded hover:bg-gray-50 transition-colors text-sm w-full"
+                    >
+                      <div className="font-medium">{segment.name}</div>
+                      {segment.abstract && (
+                        <p className="text-xs text-gray-500 line-clamp-1">{segment.abstract}</p>
+                      )}
+                    </button>
+                  ))}
+                  
+                  {otherSegments.length > 0 && (
+                    <div className="mt-2 pt-2 border-t border-gray-200">
                       <button
-                        key={segment.id}
-                        onClick={() => handleSegmentSelect(segment)}
-                        className="text-left p-2 rounded hover:bg-gray-50 transition-colors text-sm w-full"
+                        className="text-left p-2 rounded hover:bg-gray-50 transition-colors text-sm w-full opacity-75"
+                        disabled
                       >
-                        <div className="font-medium">{segment.name}</div>
-                        {segment.abstract && (
-                          <p className="text-xs text-gray-500 line-clamp-1">{segment.abstract}</p>
-                        )}
+                        <div className="font-medium">Other Segments [WIP]</div>
+                        <p className="text-xs text-gray-500">These segments are still work in progress</p>
                       </button>
-                    ))}
-                  </div>
-                )}
-              </div>
-            )}
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
           </div>
         )}
       </div>

@@ -1,7 +1,9 @@
+
 import React, { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { AlertTriangle, Info } from "lucide-react";
 import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 
 const SectionHeader = ({ icon: Icon, title }: { icon: React.ElementType; title: string }) => (
   <div className="mt-12 mb-2">
@@ -139,12 +141,18 @@ const PitchAdvise = () => {
 
   useEffect(() => {
     const fetchContent = async () => {
-      const { data, error } = await supabase.from("home").select("how, why").single();
+      const { data, error } = await supabase.from("pitch_advise").select("content, section").eq("section", "why").single();
 
       if (error) {
         console.error("Error fetching content:", error);
       } else if (data) {
-        setContent(data);
+        setContent({ why: data.content });
+        
+        // Fetch "how" content
+        const howResult = await supabase.from("pitch_advise").select("content").eq("section", "how").single();
+        if (!howResult.error && howResult.data) {
+          setContent(prev => ({ ...prev, how: howResult.data.content }));
+        }
       }
       setLoading(false);
     };
@@ -157,10 +165,10 @@ const PitchAdvise = () => {
   }
 
   return (
-    <div className="w-full min-h-screen bg-white">
+    <div className="w-full min-h-screen bg-white flex flex-col">
       <Header />
       
-      <div className="flex items-center justify-center min-h-screen px-4">
+      <div className="flex items-center justify-center min-h-screen px-4 flex-grow">
         <h1 className="text-5xl sm:text-6xl md:text-7xl font-unbounded font-bold leading-tight text-center">
           Welcome to the
           <br />
@@ -179,6 +187,8 @@ const PitchAdvise = () => {
           <div className="text-gray-700 leading-relaxed space-y-4">{formatContent(content.why, true)}</div>
         </div>
       </div>
+      
+      <Footer />
     </div>
   );
 };

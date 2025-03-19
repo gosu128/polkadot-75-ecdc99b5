@@ -47,7 +47,6 @@ interface Segment {
   reliability: number;
 }
 
-// Column name mappings for tooltips
 const columnTooltips = {
   pmf: "Polkadot-Market-Fit Score",
   interoperability: "Interoperability Score",
@@ -115,7 +114,6 @@ const Segments = () => {
       scoreClass = "text-rose-600";
     }
 
-    // Enhanced hover effect
     return `${baseClasses} ${scoreClass} ${isHovered ? "scale-125 font-bold shadow-sm rounded-md bg-white z-10 relative text-polkadot-pink" : ""}`;
   };
 
@@ -138,7 +136,6 @@ const Segments = () => {
     }
   });
 
-  // Column headers with sorting and tooltips
   const renderSortableHeader = (field: SortField, label: string) => {
     const isCurrentSortField = sortField === field;
     const sortIcon = isCurrentSortField ? sortDirection === "asc" ? "↑" : "↓" : "";
@@ -161,7 +158,6 @@ const Segments = () => {
     <div className="w-full bg-white min-h-screen flex flex-col">
       <Header />
       
-      {/* Segment Profiles Section */}
       <div className="container mx-auto px-4 pt-32 pb-16">
         <h1 className="text-5xl sm:text-6xl md:text-7xl font-unbounded font-bold mb-12 leading-tight text-center">
           Who do you want to <br />
@@ -183,10 +179,9 @@ const Segments = () => {
         </div>
       </div>
       
-      {/* Segment Ratings Section */}
       <div className="bg-gray-50 py-16">
         <div className="max-w-6xl mx-auto p-4 py-8">
-          <h2 className="text-2xl font-bold mb-12 text-center">Segment Ratings</h2>
+          <h2 className="text-2xl font-bold mb-12 text-center">Polkadot-Market-Fit Score</h2>
 
           <div className="overflow-auto rounded-xl shadow-xl">
             <TooltipProvider>

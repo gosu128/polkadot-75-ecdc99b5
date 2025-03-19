@@ -28,7 +28,7 @@ const formatContent = (text: string | undefined, insertImage: boolean = false) =
           <img
             src="https://qhxgyizmewdtvwebpmie.supabase.co/storage/v1/object/public/docs//audiences.png"
             alt="Polkadot Audience Expansion"
-            className="max-w-full h-auto"
+            className="w-full max-w-full h-auto"
           />
         </div>
       );
@@ -79,8 +79,8 @@ const HomePage = () => {
         </h1>
       </div>
 
-      {/* Content Sections with Increased Width */}
-      <div className="flex flex-col text-left px-4 sm:px-6 lg:px-8 py-16 lg:py-20 max-w-full mx-auto">
+      {/* Content Sections with SAME WIDTH as Enterprise Pitch Page */}
+      <div className="container mx-auto p-4 pt-16 max-w-5xl">
         <div className="space-y-10">
           <SectionHeader icon={Info} title="How to Navigate this Website" />
           <div className="text-gray-700 leading-relaxed space-y-4">{formatContent(content.how)}</div>

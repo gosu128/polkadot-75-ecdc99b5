@@ -1,10 +1,12 @@
+
 import React, { useState, useEffect } from 'react';
 import { ArrowLeft } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 
 // Function to format text properly
 const formatText = (text: string | undefined | null): React.ReactNode => {
-  if (!text) return <p className="italic text-gray-500">Content not available.</p>;
+  if (!text) return <p className="italic text-gray-500">The information is currently unavailable, as it falls outside the scope of our project work at this stage.</p>;
+  
   const paragraphs = text.split('\n\n');
   const formattedContent: JSX.Element[] = [];
   paragraphs.forEach((paragraph, index) => {
@@ -45,6 +47,7 @@ const Section = ({
     <hr className="border-t-2 border-gray-300 mb-6" />
     <div>{children}</div>
   </div>;
+  
 const Subsection = ({
   title,
   content
@@ -155,7 +158,7 @@ const SegmentProfile = ({
           </div>
 
           <Subsection title="3.5. Messaging Strategy" content={segmentData?.messaging} />
-          <Subsection title="3.6. Proof Points" content={segmentData?.proof_points || "Coming soon..."} />
+          <Subsection title="3.6. Proof Points" content={segmentData?.proof_points} />
         </Section>
       </div>
     </div>;

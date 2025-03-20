@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -37,10 +38,9 @@ const Resources = () => {
   useEffect(() => {
     const fetchContent = async () => {
       try {
-        // Using a raw query rather than typed query to handle tables not in the TypeScript definitions
+        // Using a raw query with the SQL tag rather than trying to select from a typed table
         const { data, error } = await supabase
-          .from('resources')
-          .select('id, content');
+          .rpc('get_resources_content');
         
         if (error) throw error;
         

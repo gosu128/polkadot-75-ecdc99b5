@@ -38,9 +38,10 @@ const Resources = () => {
   useEffect(() => {
     const fetchContent = async () => {
       try {
-        // Using a raw query with the SQL tag rather than trying to select from a typed table
+        // Fetch from the resources table
         const { data, error } = await supabase
-          .rpc('get_resources_content');
+          .from('resources')
+          .select('id, content');
         
         if (error) throw error;
         
@@ -48,7 +49,7 @@ const Resources = () => {
           const mappedContent: {
             [key: number]: string | null;
           } = {};
-          data.forEach((row: any) => {
+          data.forEach((row) => {
             mappedContent[row.id] = row.content;
           });
           setContent(mappedContent);

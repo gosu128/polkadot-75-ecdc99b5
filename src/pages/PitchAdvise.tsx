@@ -3,6 +3,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { AlertTriangle, Info } from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+
 const SectionHeader = ({
   icon: Icon,
   title
@@ -16,21 +17,20 @@ const SectionHeader = ({
     </h2>
     <hr className="border-polkadot-pink my-2" />
   </div>;
+
 const formatContent = (text: string | undefined, insertImage: boolean = false) => {
   if (!text) return <p className="italic text-gray-500">Content not available.</p>;
   const paragraphs = text.split("\n\n");
   const formattedContent: JSX.Element[] = [];
   paragraphs.forEach((paragraph, index) => {
-    // Insert image after the first paragraph of "why" section
     if (insertImage && index === 1) {
       formattedContent.push(<div key="why-image" className="flex justify-center mt-6">
           <img src="https://qhxgyizmewdtvwebpmie.supabase.co/storage/v1/object/public/docs//audiences.png" alt="Polkadot Audience Expansion" className="w-full max-w-full h-auto object-fill" />
         </div>);
     }
 
-    // Handle special formatting for headings (###)
     if (paragraph.trim().startsWith("###")) {
-      formattedContent.push(<div key={`spacer-${index}`} className="mt-6"></div>); // Extra space ONLY before headings
+      formattedContent.push(<div key={`spacer-${index}`} className="mt-6"></div>);
       formattedContent.push(<p key={`heading-${index}`} className="text-xl font-bold text-polkadot-pink mt-2 mb-2 py-0 my-[20px]">
           {paragraph.replace(/^###/, "").trim()}
         </p>);
@@ -43,6 +43,7 @@ const formatContent = (text: string | undefined, insertImage: boolean = false) =
   });
   return formattedContent;
 };
+
 const HomePage = () => {
   const [content, setContent] = useState<{
     how_1?: string;
@@ -50,28 +51,38 @@ const HomePage = () => {
     why?: string;
   }>({});
   const [loading, setLoading] = useState(true);
+
   useEffect(() => {
     const fetchContent = async () => {
-      const {
-        data,
-        error
-      } = await supabase.from("home").select("how_1, how_2, why").single();
-      if (error) {
-        console.error("Error fetching content:", error);
-      } else if (data) {
-        setContent({
-          how_1: data.how_1,
-          how_2: data.how_2,
-          why: data.why
-        });
+      try {
+        const { data, error } = await supabase
+          .from("home")
+          .select("how_1, how_2, why")
+          .single();
+          
+        if (error) {
+          console.error("Error fetching content:", error);
+        } else if (data) {
+          setContent({
+            how_1: data.how_1,
+            how_2: data.how_2,
+            why: data.why
+          });
+        }
+      } catch (err) {
+        console.error("Error in content fetching:", err);
+      } finally {
+        setLoading(false);
       }
-      setLoading(false);
     };
+    
     fetchContent();
   }, []);
+
   if (loading) {
     return <div className="text-center text-gray-500 mt-10">Loading...</div>;
   }
+
   return <div className="w-full min-h-screen bg-white flex flex-col">
       <Header />
 
@@ -97,9 +108,12 @@ const HomePage = () => {
           <SectionHeader icon={AlertTriangle} title="Why Polkadot Must Expand Beyond Web3" />
           <div className="text-gray-700 leading-relaxed space-y-4">{formatContent(content.why, true)}</div>
         </div>
+        
+        <div className="py-20"></div>
       </div>
 
       <Footer />
     </div>;
 };
+
 export default HomePage;

@@ -135,6 +135,7 @@ const Subsection = ({
     }} /> : <p className="text-gray-400 italic">Loading...</p>}
     </div>;
 };
+
 const EnterprisePitch = () => {
   const [content, setContent] = useState<{
     [key: number]: string | null;
@@ -201,6 +202,8 @@ const EnterprisePitch = () => {
           <Subsection title="2.7. Proof Points" />
         </Section>
 
+        {/* Add spacing at the bottom */}
+        <div className="py-20"></div>
       </div>
       <Footer />
     </div>;

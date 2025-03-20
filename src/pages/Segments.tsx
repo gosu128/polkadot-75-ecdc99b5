@@ -257,6 +257,8 @@ const Segments = () => {
             </TooltipProvider>
           </div>
         </div>
+        
+        <div className="py-20"></div>
       </div>
       
       <Footer />

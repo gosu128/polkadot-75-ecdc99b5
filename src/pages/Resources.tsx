@@ -142,6 +142,9 @@ const Resources = () => {
             </div>
           </div>
         </Section>
+        
+        {/* Add spacing at the bottom */}
+        <div className="py-20"></div>
       </div>
       <Footer />
     </div>

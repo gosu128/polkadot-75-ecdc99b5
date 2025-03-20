@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { AlertTriangle, Info } from "lucide-react";
@@ -56,24 +55,18 @@ const HomePage = () => {
   useEffect(() => {
     const fetchContent = async () => {
       try {
-        // Fix: query the pitch_advise table instead of 'home'
         const { data, error } = await supabase
-          .from('pitch_advise')
-          .select('content, section');
+          .from("home")
+          .select("how_1, how_2, why")
+          .single();
           
         if (error) {
           console.error("Error fetching content:", error);
         } else if (data) {
-          // Map the data from the table based on section
-          const contentMap: {[key: string]: string} = {};
-          data.forEach(item => {
-            contentMap[item.section] = item.content;
-          });
-          
           setContent({
-            how_1: contentMap['how_1'],
-            how_2: contentMap['how_2'],
-            why: contentMap['why']
+            how_1: data.how_1,
+            how_2: data.how_2,
+            why: data.why
           });
         }
       } catch (err) {

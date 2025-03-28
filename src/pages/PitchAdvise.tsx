@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { AlertTriangle, Info } from "lucide-react";
@@ -56,18 +57,25 @@ const HomePage = () => {
     const fetchContent = async () => {
       try {
         const { data, error } = await supabase
-          .from("home")
-          .select("how_1, how_2, why")
-          .single();
+          .from("pitch_advise")
+          .select("section, content");
           
         if (error) {
           console.error("Error fetching content:", error);
         } else if (data) {
-          setContent({
-            how_1: data.how_1,
-            how_2: data.how_2,
-            why: data.why
+          const mappedContent: {
+            how_1?: string;
+            how_2?: string;
+            why?: string;
+          } = {};
+          
+          data.forEach(item => {
+            if (item.section === 'how_1') mappedContent.how_1 = item.content;
+            if (item.section === 'how_2') mappedContent.how_2 = item.content;
+            if (item.section === 'why') mappedContent.why = item.content;
           });
+          
+          setContent(mappedContent);
         }
       } catch (err) {
         console.error("Error in content fetching:", err);

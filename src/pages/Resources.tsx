@@ -38,9 +38,10 @@ const Resources = () => {
   useEffect(() => {
     const fetchContent = async () => {
       try {
-        // Use RPC call to fetch from the resources table
+        // Fetch directly from the resources table
         const { data, error } = await supabase
-          .rpc('get_resources_content');
+          .from('resources')
+          .select('id, content');
         
         if (error) throw error;
         
@@ -48,7 +49,7 @@ const Resources = () => {
           const mappedContent: {
             [key: number]: string | null;
           } = {};
-          data.forEach((row: {id: number, content: string}) => {
+          data.forEach((row) => {
             mappedContent[row.id] = row.content;
           });
           setContent(mappedContent);

@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -37,10 +38,9 @@ const Resources = () => {
   useEffect(() => {
     const fetchContent = async () => {
       try {
-        // Fetch from the resources table
+        // Use RPC call to fetch from the resources table
         const { data, error } = await supabase
-          .from('resources')
-          .select('id, content');
+          .rpc('get_resources_content');
         
         if (error) throw error;
         
@@ -48,7 +48,7 @@ const Resources = () => {
           const mappedContent: {
             [key: number]: string | null;
           } = {};
-          data.forEach((row) => {
+          data.forEach((row: {id: number, content: string}) => {
             mappedContent[row.id] = row.content;
           });
           setContent(mappedContent);

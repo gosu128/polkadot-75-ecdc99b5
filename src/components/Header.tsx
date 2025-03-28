@@ -7,11 +7,11 @@ const Header = () => {
   const location = useLocation();
   const [isHovered, setIsHovered] = useState<number | null>(null);
 
-  // Updated navigation items with merged sections and new Enterprise Pitch
+  // Updated navigation items with new names
   const navItems = [
     { name: "Home", link: "/" },
-    { name: "Enterprise Pitch", link: "/enterprise-pitch" },
-    { name: "Segments", link: "/segments" },
+    { name: "General Pitch", link: "/enterprise-pitch" },
+    { name: "Segment Pitches", link: "/segments" },
     { name: "Resources", link: "/resources" }
   ];
 

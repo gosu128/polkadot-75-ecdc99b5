@@ -1,4 +1,6 @@
-import { ArrowUpRight, Github, Twitter } from 'lucide-react';
+
+import { ArrowUpRight } from 'lucide-react';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 
 const Footer = () => {
   return (
@@ -24,9 +26,18 @@ const Footer = () => {
             <div>
               <h3 className="text-base font-semibold mb-4">Links</h3>
               <ul className="space-y-3 text-sm">
-                <li><a href="#" className="text-white/70 hover:text-white transition-colors">Home</a></li>
-                <li><a href="#" className="text-white/70 hover:text-white transition-colors">About So So Scaled!</a></li>
-                <li><a href="#" className="text-white/70 hover:text-white transition-colors">Contact</a></li>
+                <li>
+                  <Dialog>
+                    <DialogTrigger className="text-white/70 hover:text-white transition-colors">
+                      About So So Scaled!
+                    </DialogTrigger>
+                    <DialogContent>
+                      <DialogHeader>
+                        <DialogTitle>Coming soon...</DialogTitle>
+                      </DialogHeader>
+                    </DialogContent>
+                  </Dialog>
+                </li>
               </ul>
             </div>
 
@@ -34,9 +45,40 @@ const Footer = () => {
             <div>
               <h3 className="text-base font-semibold mb-4">Resources</h3>
               <ul className="space-y-3 text-sm">
-                <li><a href="#" className="text-white/70 hover:text-white transition-colors">Project Background</a></li>
-                <li><a href="#" className="text-white/70 hover:text-white transition-colors">Whitepaper</a></li>
-                <li><a href="#" className="text-white/70 hover:text-white transition-colors">Methodology</a></li>
+                <li>
+                  <a 
+                    href="https://polkadot.polkassembly.io/referenda/1090" 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className="text-white/70 hover:text-white transition-colors flex items-center"
+                  >
+                    Project Background
+                    <ArrowUpRight className="ml-1 w-3 h-3" />
+                  </a>
+                </li>
+                <li>
+                  <Dialog>
+                    <DialogTrigger className="text-white/70 hover:text-white transition-colors">
+                      Whitepaper
+                    </DialogTrigger>
+                    <DialogContent>
+                      <DialogHeader>
+                        <DialogTitle>Coming soon...</DialogTitle>
+                      </DialogHeader>
+                    </DialogContent>
+                  </Dialog>
+                </li>
+                <li>
+                  <a 
+                    href="https://docs.google.com/presentation/d/1_ZD9gZb7flXCKxO_3t4R0HIm1TdjCHltD1hvtU_2z0M/present" 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className="text-white/70 hover:text-white transition-colors flex items-center"
+                  >
+                    Methodology
+                    <ArrowUpRight className="ml-1 w-3 h-3" />
+                  </a>
+                </li>
               </ul>
             </div>
 
@@ -44,7 +86,17 @@ const Footer = () => {
             <div>
               <h3 className="text-base font-semibold mb-4">Community</h3>
               <ul className="space-y-3 text-sm">
-                <li><a href="#" className="text-white/70 hover:text-white transition-colors">Follow us on X</a></li>
+                <li>
+                  <a 
+                    href="https://x.com/sososcaled" 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className="text-white/70 hover:text-white transition-colors flex items-center"
+                  >
+                    Follow us on X
+                    <ArrowUpRight className="ml-1 w-3 h-3" />
+                  </a>
+                </li>
               </ul>
             </div>
           </div>
@@ -56,14 +108,6 @@ const Footer = () => {
             © {new Date().getFullYear()} So So Scaled. All rights reserved. Powered by 
             <a href="#" className="text-polkadot-pink hover:underline"> So So Scaled!</a>
           </p>
-          <div className="flex space-x-4 mt-4 md:mt-0">
-            <a href="#" className="text-white/60 hover:text-white transition-colors">
-              <Twitter className="w-4 h-4 mr-1" /> X
-            </a>
-            <a href="#" className="text-white/60 hover:text-white transition-colors">
-              <Github className="w-4 h-4 mr-1" /> GitHub
-            </a>
-          </div>
         </div>
       </div>
     </footer>

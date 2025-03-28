@@ -57,26 +57,14 @@ const HomePage = () => {
     const fetchContent = async () => {
       try {
         const { data, error } = await supabase
-          .from('pitch_advise')
-          .select('section, content')
-          .in('section', ['welcome', 'how', 'why']);
+          .from('home')
+          .select('*');
           
         if (error) {
           console.error("Error fetching content:", error);
         } else if (data && data.length > 0) {
-          const mappedContent: {
-            welcome?: string;
-            how?: string;
-            why?: string;
-          } = {};
-          
-          data.forEach(item => {
-            if (item.section === 'welcome') mappedContent.welcome = item.content;
-            if (item.section === 'how') mappedContent.how = item.content;
-            if (item.section === 'why') mappedContent.why = item.content;
-          });
-          
-          setContent(mappedContent);
+          // Assuming the home table has columns named "welcome", "how", and "why"
+          setContent(data[0]);
         }
       } catch (err) {
         console.error("Error in content fetching:", err);

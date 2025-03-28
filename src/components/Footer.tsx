@@ -1,4 +1,3 @@
-
 import { ArrowUpRight } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 
@@ -20,30 +19,11 @@ const Footer = () => {
             </p>
           </div>
 
-          {/* Links, Resources, and Community side-by-side */}
+          {/* Merged sections into Project Background and Other */}
           <div className="flex flex-wrap md:flex-nowrap gap-12 w-full md:w-2/3 justify-between">
-            {/* Links */}
+            {/* Project Background */}
             <div>
-              <h3 className="text-base font-semibold mb-4">Links</h3>
-              <ul className="space-y-3 text-sm">
-                <li>
-                  <Dialog>
-                    <DialogTrigger className="text-white/70 hover:text-white transition-colors">
-                      About So So Scaled!
-                    </DialogTrigger>
-                    <DialogContent>
-                      <DialogHeader>
-                        <DialogTitle>Coming soon...</DialogTitle>
-                      </DialogHeader>
-                    </DialogContent>
-                  </Dialog>
-                </li>
-              </ul>
-            </div>
-
-            {/* Resources */}
-            <div>
-              <h3 className="text-base font-semibold mb-4">Resources</h3>
+              <h3 className="text-base font-semibold mb-4">Project Background</h3>
               <ul className="space-y-3 text-sm">
                 <li>
                   <a 
@@ -52,21 +32,9 @@ const Footer = () => {
                     rel="noopener noreferrer" 
                     className="text-white/70 hover:text-white transition-colors flex items-center"
                   >
-                    Project Background
+                    Proposal
                     <ArrowUpRight className="ml-1 w-3 h-3" />
                   </a>
-                </li>
-                <li>
-                  <Dialog>
-                    <DialogTrigger className="text-white/70 hover:text-white transition-colors">
-                      Whitepaper
-                    </DialogTrigger>
-                    <DialogContent>
-                      <DialogHeader>
-                        <DialogTitle>Coming soon...</DialogTitle>
-                      </DialogHeader>
-                    </DialogContent>
-                  </Dialog>
                 </li>
                 <li>
                   <a 
@@ -82,10 +50,34 @@ const Footer = () => {
               </ul>
             </div>
 
-            {/* Community */}
+            {/* Other */}
             <div>
-              <h3 className="text-base font-semibold mb-4">Community</h3>
+              <h3 className="text-base font-semibold mb-4">Other</h3>
               <ul className="space-y-3 text-sm">
+                <li>
+                  <Dialog>
+                    <DialogTrigger className="text-white/70 hover:text-white transition-colors">
+                      About So So Scaled!
+                    </DialogTrigger>
+                    <DialogContent>
+                      <DialogHeader>
+                        <DialogTitle>Coming soon...</DialogTitle>
+                      </DialogHeader>
+                    </DialogContent>
+                  </Dialog>
+                </li>
+                <li>
+                  <Dialog>
+                    <DialogTrigger className="text-white/70 hover:text-white transition-colors">
+                      Whitepaper
+                    </DialogTrigger>
+                    <DialogContent>
+                      <DialogHeader>
+                        <DialogTitle>Coming soon...</DialogTitle>
+                      </DialogHeader>
+                    </DialogContent>
+                  </Dialog>
+                </li>
                 <li>
                   <a 
                     href="https://x.com/sososcaled" 

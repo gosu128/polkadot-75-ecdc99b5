@@ -1,3 +1,4 @@
+
 import { ArrowUpRight } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 
@@ -20,7 +21,7 @@ const Footer = () => {
           </div>
 
           {/* Merged sections into Project Background and Other */}
-          <div className="flex flex-wrap md:flex-nowrap gap-12 w-full md:w-2/3 justify-between">
+          <div className="flex flex-wrap md:flex-nowrap md:justify-evenly gap-8 w-full md:w-2/3">
             {/* Project Background */}
             <div>
               <h3 className="text-base font-semibold mb-4">Project Background</h3>

@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -38,9 +37,9 @@ const Resources = () => {
   useEffect(() => {
     const fetchContent = async () => {
       try {
-        // Fetch directly from the resources table
+        // Fetch directly from the pitch_advise table since resources table doesn't exist in the DB schema
         const { data, error } = await supabase
-          .from('resources')
+          .from('pitch_advise')
           .select('id, content');
         
         if (error) throw error;
@@ -54,9 +53,8 @@ const Resources = () => {
           });
           setContent(mappedContent);
         }
-      } catch (err) {
-        setError("Failed to load content. Please try again later.");
-        console.error("Error fetching data:", err);
+      } catch (error) {
+        console.error('Error fetching content:', error);
       } finally {
         setLoading(false);
       }

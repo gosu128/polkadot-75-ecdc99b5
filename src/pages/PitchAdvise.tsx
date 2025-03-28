@@ -1,7 +1,7 @@
 
 import React, { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { AlertTriangle, Info } from "lucide-react";
+import { AlertTriangle, Info, BookOpen } from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
@@ -47,8 +47,8 @@ const formatContent = (text: string | undefined, insertImage: boolean = false) =
 
 const HomePage = () => {
   const [content, setContent] = useState<{
-    how_1?: string;
-    how_2?: string;
+    welcome?: string;
+    how?: string;
     why?: string;
   }>({});
   const [loading, setLoading] = useState(true);
@@ -57,21 +57,21 @@ const HomePage = () => {
     const fetchContent = async () => {
       try {
         const { data, error } = await supabase
-          .from("pitch_advise")
+          .from("home")
           .select("section, content");
           
         if (error) {
           console.error("Error fetching content:", error);
         } else if (data) {
           const mappedContent: {
-            how_1?: string;
-            how_2?: string;
+            welcome?: string;
+            how?: string;
             why?: string;
           } = {};
           
           data.forEach(item => {
-            if (item.section === 'how_1') mappedContent.how_1 = item.content;
-            if (item.section === 'how_2') mappedContent.how_2 = item.content;
+            if (item.section === 'welcome') mappedContent.welcome = item.content;
+            if (item.section === 'how') mappedContent.how = item.content;
             if (item.section === 'why') mappedContent.why = item.content;
           });
           
@@ -108,9 +108,14 @@ const HomePage = () => {
       {/* Content Sections with SAME WIDTH as Enterprise Pitch Page */}
       <div className="container mx-auto p-4 pt-16 max-w-5xl">
         <div className="space-y-10">
+          <SectionHeader icon={BookOpen} title="Welcome to the Sales Hub" />
+          <div className="text-gray-700 leading-relaxed space-y-4">
+            {formatContent(content.welcome)}
+          </div>
+
           <SectionHeader icon={Info} title="How to Navigate the Polkadot Sales Hub" />
           <div className="text-gray-700 leading-relaxed space-y-4">
-            {formatContent(`${content.how_1 || ""}\n\n${content.how_2 || ""}`)}
+            {formatContent(content.how)}
           </div>
 
           <SectionHeader icon={AlertTriangle} title="Why Polkadot Must Expand Beyond Web3" />

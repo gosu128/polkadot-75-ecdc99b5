@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -38,28 +37,20 @@ const Resources = () => {
   useEffect(() => {
     const fetchContent = async () => {
       try {
-        // Check if the resources data is available directly in pitch_advise with section IDs
+        // Fetch directly from the resources table
         const { data, error } = await supabase
-          .from('pitch_advise')
-          .select('id, section, content');
+          .from('resources')
+          .select('id, content');
         
         if (error) throw error;
         
         if (data) {
-          // Filter content for resources sections (assuming they have resource_1, resource_2, etc.)
           const mappedContent: {
             [key: number]: string | null;
           } = {};
-          
           data.forEach((row) => {
-            // Match section names like "resource_1", "resource_2", etc.
-            const resourceMatch = row.section.match(/^resource_(\d+)$/);
-            if (resourceMatch) {
-              const sectionNumber = parseInt(resourceMatch[1], 10);
-              mappedContent[sectionNumber] = row.content;
-            }
+            mappedContent[row.id] = row.content;
           });
-          
           setContent(mappedContent);
         }
       } catch (err) {

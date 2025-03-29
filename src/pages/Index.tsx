@@ -117,7 +117,7 @@ const formatContent = (text: string | undefined, insertImage: boolean = false) =
       formattedContent.push(
         <div key="why-image" className="flex justify-center mt-6">
           <img
-            src="https://qhxgyizmewdtvwebpmie.supabase.co/storage/v1/object/public/docs/audiences.png"
+            src="https://qhxgyizmewdtvwebpmie.supabase.co/storage/v1/object/public/docs//audiences.png"
             alt="Polkadot Audience Expansion"
             className="max-w-full h-auto"
           />

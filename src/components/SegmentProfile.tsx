@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { ArrowLeft } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
@@ -105,9 +104,9 @@ const SegmentProfile = ({
   if (error) return <p className="text-red-500 text-center py-10">{error}</p>;
   if (!segmentData) return <p className="text-red-500 text-center py-10">No data found for this segment.</p>;
 
-  // Image URLs using segment ID
-  const geoImageUrl = `https://qhxgyizmewdtvwebpmie.supabase.co/storage/v1/object/public/polkadot/map_${segmentData?.id}.png`;
-  const messagingImageUrl = `https://qhxgyizmewdtvwebpmie.supabase.co/storage/v1/object/public/polkadot/matrix_${segmentData?.id}.png`;
+  // Image URLs updated to use the "docs" bucket instead of "polkadot"
+  const geoImageUrl = `https://qhxgyizmewdtvwebpmie.supabase.co/storage/v1/object/public/docs/map_${segmentData?.id}.png`;
+  const messagingImageUrl = `https://qhxgyizmewdtvwebpmie.supabase.co/storage/v1/object/public/docs/matrix_${segmentData?.id}.png`;
   return <div className="flex flex-col w-full max-w-6xl mx-auto py-8 px-4">
       {/* Back button and title area */}
       <div className="mb-8 flex items-center">

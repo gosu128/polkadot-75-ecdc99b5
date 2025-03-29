@@ -26,7 +26,7 @@ const formatContent = (text: string | undefined, insertImage: boolean = false) =
   paragraphs.forEach((paragraph, index) => {
     if (insertImage && index === 1) {
       formattedContent.push(<div key="why-image" className="flex justify-center mt-6">
-          <img src="https://qhxgyizmewdtvwebpmie.supabase.co/storage/v1/object/public/docs//audiences.png" alt="Polkadot Audience Expansion" className="w-full max-w-full h-auto object-fill" />
+          <img src="https://qhxgyizmewdtvwebpmie.supabase.co/storage/v1/object/public/docs/audiences.png" alt="Polkadot Audience Expansion" className="w-full max-w-full h-auto object-fill" />
         </div>);
     }
 
@@ -57,14 +57,26 @@ const HomePage = () => {
     const fetchContent = async () => {
       try {
         const { data, error } = await supabase
-          .from('home')
+          .from('pitch_advise')
           .select('*');
           
         if (error) {
           console.error("Error fetching content:", error);
         } else if (data && data.length > 0) {
-          // Assuming the home table has columns named "welcome", "how", and "why"
-          setContent(data[0]);
+          // Process the data from pitch_advise table
+          const contentObj: {
+            welcome?: string;
+            how?: string;
+            why?: string;
+          } = {};
+          
+          data.forEach(item => {
+            if (item.section === 'welcome') contentObj.welcome = item.content;
+            if (item.section === 'how') contentObj.how = item.content;
+            if (item.section === 'why') contentObj.why = item.content;
+          });
+          
+          setContent(contentObj);
         }
       } catch (err) {
         console.error("Error in content fetching:", err);

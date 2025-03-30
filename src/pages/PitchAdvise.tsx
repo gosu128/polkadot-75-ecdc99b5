@@ -69,15 +69,29 @@ const HomePage = () => {
   useEffect(() => {
     const fetchContent = async () => {
       try {
+        // Fix the Supabase query to use a specific table name and typing
         const { data, error } = await supabase
-          .from('home')
-          .select('*');
+          .from('pitch_advise')
+          .select('*')
+          .in('section', ['welcome', 'how', 'why']);
           
         if (error) {
           console.error("Error fetching content:", error);
         } else if (data && data.length > 0) {
-          // Assuming the home table has columns named "welcome", "how", and "why"
-          setContent(data[0]);
+          // Transform array of section data into expected object format
+          const contentMap: {
+            welcome?: string;
+            how?: string;
+            why?: string;
+          } = {};
+          
+          data.forEach(item => {
+            if (item.section === 'welcome') contentMap.welcome = item.content;
+            if (item.section === 'how') contentMap.how = item.content;
+            if (item.section === 'why') contentMap.why = item.content;
+          });
+          
+          setContent(contentMap);
         }
       } catch (err) {
         console.error("Error in content fetching:", err);

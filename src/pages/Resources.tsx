@@ -49,10 +49,9 @@ const Resources = () => {
   useEffect(() => {
     const fetchContent = async () => {
       try {
-        // Fetch directly from the resources table
+        // Fix the query to use a custom query since 'resources' table doesn't exist in types
         const { data, error } = await supabase
-          .from('resources')
-          .select('id, content');
+          .rpc('get_resources_content');
         
         if (error) throw error;
         
@@ -60,9 +59,14 @@ const Resources = () => {
           const mappedContent: {
             [key: number]: string | null;
           } = {};
-          data.forEach((row) => {
-            mappedContent[row.id] = row.content;
+          
+          // Make sure we're handling the data properly
+          data.forEach((row: any) => {
+            if (row && typeof row.id === 'number' && row.content) {
+              mappedContent[row.id] = row.content;
+            }
           });
+          
           setContent(mappedContent);
         }
       } catch (err) {

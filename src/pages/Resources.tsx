@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -49,9 +48,10 @@ const Resources = () => {
   useEffect(() => {
     const fetchContent = async () => {
       try {
-        // Fix the query to use a custom query since 'resources' table doesn't exist in types
+        // Fetch from resources table
         const { data, error } = await supabase
-          .rpc('get_resources_content');
+          .from('resources')
+          .select('id, content');
         
         if (error) throw error;
         
@@ -60,11 +60,8 @@ const Resources = () => {
             [key: number]: string | null;
           } = {};
           
-          // Make sure we're handling the data properly
-          data.forEach((row: any) => {
-            if (row && typeof row.id === 'number' && row.content) {
-              mappedContent[row.id] = row.content;
-            }
+          data.forEach((row) => {
+            mappedContent[row.id] = row.content;
           });
           
           setContent(mappedContent);

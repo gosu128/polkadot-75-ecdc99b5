@@ -20,15 +20,6 @@ const SectionHeader = ({ icon: Icon, title }: { icon: React.ElementType; title: 
 const formatContent = (text: string | undefined, insertImage: boolean = false) => {
   if (!text) return <p className="italic text-gray-500">Content not available.</p>;
 
-  // Process URLs to make them bold and pink
-  const processText = (input: string): string => {
-    // URL regex pattern
-    const urlRegex = /(https?:\/\/[^\s]+)/g;
-    
-    // Replace URLs with marked version for later HTML replacement
-    return input.replace(urlRegex, '<a href="$1" target="_blank" rel="noopener noreferrer" class="font-bold text-polkadot-pink">$1</a>');
-  };
-
   const paragraphs = text.split("\n\n");
   const formattedContent: JSX.Element[] = [];
 
@@ -75,8 +66,7 @@ const formatContent = (text: string | undefined, insertImage: boolean = false) =
       
       lines.forEach((line, lineIdx) => {
         const cleanedPoint = line.replace(/^-/, "").trim();
-        // Process both bold text and URLs
-        const formattedPoint = processText(cleanedPoint.replace(/\*([^*]+)\*/g, "<strong>$1</strong>"));
+        const formattedPoint = cleanedPoint.replace(/\*([^*]+)\*/g, "<strong>$1</strong>");
         
         listItems.push(
           <li key={`bullet-${index}-${lineIdx}`} className="text-gray-700 mb-2" dangerouslySetInnerHTML={{ __html: formattedPoint }} />
@@ -97,8 +87,7 @@ const formatContent = (text: string | undefined, insertImage: boolean = false) =
       
       lines.forEach((line, lineIdx) => {
         const cleanedPoint = line.replace(/^\d+\./, "").trim();
-        // Process both bold text and URLs
-        const formattedPoint = processText(cleanedPoint.replace(/\*([^*]+)\*/g, "<strong>$1</strong>"));
+        const formattedPoint = cleanedPoint.replace(/\*([^*]+)\*/g, "<strong>$1</strong>");
         
         listItems.push(
           <li key={`num-${index}-${lineIdx}`} className="text-gray-700 mb-2" dangerouslySetInnerHTML={{ __html: formattedPoint }} />
@@ -121,8 +110,7 @@ const formatContent = (text: string | undefined, insertImage: boolean = false) =
       listCounter = 1;
     }
 
-    // Process both bold text and URLs
-    const formattedText = processText(paragraph.replace(/\*([^*]+)\*/g, "<strong>$1</strong>"));
+    const formattedText = paragraph.replace(/\*([^*]+)\*/g, "<strong>$1</strong>");
     formattedContent.push(<p key={`text-${index}`} dangerouslySetInnerHTML={{ __html: formattedText }} />);
 
     if (insertImage && index === 0) {

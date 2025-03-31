@@ -111,29 +111,65 @@ const navItems = [
   { id: "2-7", label: "Proof Points" },
 ];
 
-const TopNav = ({ activeId }: { activeId: string }) => (
-  <div className="sticky top-[64px] z-40 bg-white border-b border-gray-200 mb-6">
-    <div className="max-w-5xl mx-auto px-4 py-2 flex flex-wrap justify-center items-center text-sm">
-      {navItems.map((item, index) => (
-        <span key={item.id} className="flex items-center">
-          <a
-            href={`#${item.id}`}
-            className={`transition-colors duration-200 ${
-              activeId === item.id
-                ? 'text-polkadot-pink font-semibold'
-                : 'text-gray-500 hover:text-polkadot-pink'
-            }`}
+const TopNav = ({ activeId }: { activeId: string }) => {
+  const [visibleGroup, setVisibleGroup] = useState<string | null>(null);
+
+  // Show child items if you're currently inside that group (via scroll)
+  useEffect(() => {
+    const currentGroup = navGroups.find(group =>
+      [group.id, ...group.children.map(c => c.id)].includes(activeId)
+    );
+    if (currentGroup) {
+      setVisibleGroup(currentGroup.id);
+    }
+  }, [activeId]);
+
+  return (
+    <div className="sticky top-[64px] z-40 bg-white border-b border-gray-200 mb-6">
+      <div className="max-w-5xl mx-auto px-4 py-2 flex flex-wrap justify-center items-center text-sm gap-x-6">
+        {navGroups.map(group => (
+          <div
+            key={group.id}
+            className="relative group"
+            onMouseEnter={() => setVisibleGroup(group.id)}
+            onMouseLeave={() => setVisibleGroup(null)}
           >
-            {item.label}
-          </a>
-          {index < navItems.length - 1 && (
-            <span className="mx-2 text-gray-300">|</span>
-          )}
-        </span>
-      ))}
+            {/* Main Section Link */}
+            <a
+              href={`#${group.id}`}
+              className={`transition-colors duration-200 ${
+                activeId === group.id ? 'text-polkadot-pink font-semibold' : 'text-gray-600 hover:text-polkadot-pink'
+              }`}
+            >
+              {group.label}
+            </a>
+
+            {/* Subsection Links - hover or scroll active */}
+            <div
+              className={`absolute left-1/2 -translate-x-1/2 top-full mt-2 bg-white border border-gray-200 shadow-md rounded-md px-4 py-2 space-y-1 transition-all duration-200 ${
+                visibleGroup === group.id ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
+              }`}
+            >
+              {group.children.map(child => (
+                <a
+                  key={child.id}
+                  href={`#${child.id}`}
+                  className={`block whitespace-nowrap text-sm ${
+                    activeId === child.id
+                      ? 'text-polkadot-pink font-semibold'
+                      : 'text-gray-500 hover:text-polkadot-pink'
+                  }`}
+                >
+                  {child.label}
+                </a>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
 // Main component
 const EnterprisePitch = () => {

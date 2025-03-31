@@ -113,7 +113,7 @@ const navItems = [
 
 // Top nav bar component
 const TopNav = ({ activeId }: { activeId: string }) => (
-  <div className="sticky top-0 bg-white z-30 border-b border-gray-200">
+  <div className="sticky top-0 z-50 bg-white border-b border-gray-200">
     <div className="overflow-x-auto whitespace-nowrap px-4 py-2 text-sm flex space-x-4">
       {navItems.map(item => (
         <a

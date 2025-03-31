@@ -98,35 +98,38 @@ const Subsection = ({ title, id, content }: { title: string; id: string; content
 
 // Navigation config
 const navItems = [
-  { id: "1", label: "1. Introduction" },
-  { id: "1-1", label: "1.1. General Advise" },
-  { id: "1-2", label: "1.2. Do's & Don'ts" },
-  { id: "2", label: "2. The Pitch" },
-  { id: "2-1", label: "2.1. Geographies" },
-  { id: "2-2", label: "2.2. Use Cases" },
-  { id: "2-3", label: "2.3. Target Audiences" },
-  { id: "2-4", label: "2.4. Value Proposition" },
-  { id: "2-5", label: "2.5. Positioning" },
-  { id: "2-6", label: "2.6. Messaging Strategy" },
-  { id: "2-7", label: "2.7. Proof Points" },
+  { id: "1", label: "Introduction" },
+  { id: "1-1", label: "General Advise" },
+  { id: "1-2", label: "Do's & Don'ts" },
+  { id: "2", label: "The Pitch" },
+  { id: "2-1", label: "Geographies" },
+  { id: "2-2", label: "Use Cases" },
+  { id: "2-3", label: "Target Audiences" },
+  { id: "2-4", label: "Value Proposition" },
+  { id: "2-5", label: "Positioning" },
+  { id: "2-6", label: "Messaging Strategy" },
+  { id: "2-7", label: "Proof Points" },
 ];
 
-// Top nav bar component
 const TopNav = ({ activeId }: { activeId: string }) => (
   <div className="sticky top-[64px] z-40 bg-white border-b border-gray-200">
-    <div className="overflow-x-auto whitespace-nowrap px-4 py-2 text-sm flex space-x-4">
-      {navItems.map(item => (
-        <a
-          key={item.id}
-          href={`#${item.id}`}
-          className={`transition-colors duration-200 ${
-            activeId === item.id
-              ? 'text-polkadot-pink font-semibold'
-              : 'text-gray-500 hover:text-polkadot-pink'
-          }`}
-        >
-          {item.label}
-        </a>
+    <div className="overflow-x-auto whitespace-nowrap px-4 py-2 text-sm flex items-center space-x-2">
+      {navItems.map((item, index) => (
+        <span key={item.id} className="flex items-center">
+          <a
+            href={`#${item.id}`}
+            className={`transition-colors duration-200 ${
+              activeId === item.id
+                ? 'text-polkadot-pink font-semibold'
+                : 'text-gray-500 hover:text-polkadot-pink'
+            }`}
+          >
+            {item.label}
+          </a>
+          {index < navItems.length - 1 && (
+            <span className="mx-2 text-gray-300">|</span>
+          )}
+        </span>
       ))}
     </div>
   </div>

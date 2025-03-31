@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { supabase } from '@/integrations/supabase/client';
@@ -132,7 +132,7 @@ const navGroups = [
 // --- Top Navigation ---
 const TopNav = ({ activeId }: { activeId: string }) => {
   const [visibleGroup, setVisibleGroup] = useState<string | null>(null);
-  const scrollTimeout = useRef<NodeJS.Timeout | null>(null);
+  const scrollTimeout = useRef<any>(null);
 
   // Show children when active section is inside group
   useEffect(() => {

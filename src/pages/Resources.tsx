@@ -15,14 +15,29 @@ const Section = ({
   content: string | null;
   children: React.ReactNode;
 }) => {
-  const isListSection = number === "5"; // Only apply this logic for Section 5
+  const isListSection = number === "5";
+
+  const formatSectionFiveContent = (raw: string) => {
+    const lines = raw.split('\n').filter(line => line.trim() !== '');
+    const bullets = lines.filter(line => line.trim().startsWith('-'));
+    const paragraphs = lines.filter(line => !line.trim().startsWith('-'));
+
+    const bulletItems = bullets.map(line =>
+      `<li>${line.replace(/^-+/, '').trim()}</li>`
+    ).join('');
+
+    const paragraphItems = paragraphs.map(line =>
+      `<p class="mb-2">${line.trim()}</p>`
+    ).join('');
+
+    return `
+      ${paragraphItems}
+      ${bulletItems ? `<ul class="list-disc pl-6 space-y-1 mt-4">${bulletItems}</ul>` : ''}
+    `;
+  };
 
   const formattedContent = isListSection && content
-    ? `<ul class="list-disc pl-6 space-y-1">${content
-        .split('\n')
-        .filter(line => line.trim() !== '')
-        .map(line => `<li>${line.trim()}</li>`)
-        .join('')}</ul>`
+    ? formatSectionFiveContent(content)
     : content;
 
   return (

@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -199,7 +200,7 @@ const EnterprisePitch = () => {
             <img src="https://qhxgyizmewdtvwebpmie.supabase.co/storage/v1/object/public/polkadot//Pitch_Advise_-_Positioning.png" alt="Polkadot's Messaging Strategy Positioning" className="w-full max-w-full h-auto" />
           </div>
           <Subsection title="2.6. Messaging Strategy" content={loading ? null : content[5]} />
-          <Subsection title="2.7. Proof Points" />
+          <Subsection title="2.7. Proof Points" content={loading ? null : content[10]} />
         </Section>
 
         {/* Add spacing at the bottom */}

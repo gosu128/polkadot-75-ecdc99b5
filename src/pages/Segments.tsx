@@ -165,7 +165,9 @@ const Segments = () => {
         </h1>
         
         <div className="mx-auto max-w-5xl">
-          <SalesDropdown onSelectSegment={handleSegmentSelect} />
+          <div className="relative z-50">
+  <SalesDropdown onSelectSegment={handleSegmentSelect} />
+</div>
 
           {selectedSegment && selectedIndustry && (
             <div className="mt-8">

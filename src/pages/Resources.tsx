@@ -113,7 +113,7 @@ const Resources = () => {
 
         <Section 
           number="2" 
-          title="Proof Points" 
+          title="Evidence & Proof Point Library for BD Messaging" 
           content={loading ? null : content[2]}
         >
           <div className="relative w-full max-w-full mx-auto">

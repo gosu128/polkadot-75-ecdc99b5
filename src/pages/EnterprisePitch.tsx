@@ -108,23 +108,23 @@ const Subsection = ({ title, id, content }: { title: string; id: string; content
 const navGroups = [
   {
     id: "1",
-    label: "Introduction",
+    label: "1. Introduction",
     children: [
-      { id: "1-1", label: "General Advise" },
-      { id: "1-2", label: "Do's & Don'ts" },
+      { id: "1-1", label: "1.1. General Advise" },
+      { id: "1-2", label: "1.2. Do's & Don'ts" },
     ],
   },
   {
     id: "2",
-    label: "The Pitch",
+    label: "2. The Pitch",
     children: [
-      { id: "2-1", label: "Geographies" },
-      { id: "2-2", label: "Use Cases" },
-      { id: "2-3", label: "Target Audiences" },
-      { id: "2-4", label: "Value Proposition" },
-      { id: "2-5", label: "Positioning" },
-      { id: "2-6", label: "Messaging Strategy" },
-      { id: "2-7", label: "Proof Points" },
+      { id: "2-1", label: "2.1. Geographies" },
+      { id: "2-2", label: "2.2. Use Cases" },
+      { id: "2-3", label: "2.3. Target Audiences" },
+      { id: "2-4", label: "2.4. Value Proposition" },
+      { id: "2-5", label: "2.5. Positioning" },
+      { id: "2-6", label: "2.6. Messaging Strategy" },
+      { id: "2-7", label: "2.7. Proof Points" },
     ],
   },
 ];
@@ -132,12 +132,20 @@ const navGroups = [
 // --- Top Navigation ---
 const TopNav = ({ activeId }: { activeId: string }) => {
   const [visibleGroup, setVisibleGroup] = useState<string | null>(null);
+  const scrollTimeout = useRef<NodeJS.Timeout | null>(null);
 
+  // Show children when active section is inside group
   useEffect(() => {
     const currentGroup = navGroups.find(group =>
       [group.id, ...group.children.map(c => c.id)].includes(activeId)
     );
-    if (currentGroup) setVisibleGroup(currentGroup.id);
+    if (currentGroup) {
+      setVisibleGroup(currentGroup.id);
+      if (scrollTimeout.current) clearTimeout(scrollTimeout.current);
+      scrollTimeout.current = setTimeout(() => {
+        setVisibleGroup(null);
+      }, 3000);
+    }
   }, [activeId]);
 
   return (

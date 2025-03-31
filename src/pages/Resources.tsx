@@ -137,6 +137,16 @@ const Resources = () => {
           </div>
         </Section>
 
+        <Section 
+          number="5" 
+          title="Additional Reading Material" 
+          content={loading ? null : content[5]}
+        >
+          <div className="text-gray-600 italic">
+            Browse through the extended collection of reports and whitepapers.
+          </div>
+        </Section>
+
         <div className="py-20"></div>
       </div>
       <Footer />

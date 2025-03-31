@@ -75,8 +75,8 @@ const formatText = (text: string) => {
 };
 
 // Section component
-const Section = ({ title, id, children }: { title: string; id: string; children: React.ReactNode }) => (
-  <div id={id} className="mb-12 scroll-mt-32">
+const Section = ({ title, id, children, className = "" }: { title: string; id: string; children: React.ReactNode; className?: string }) => (
+  <div id={id} className={`mb-12 scroll-mt-32 ${className}`}>
     <h2 className="text-2xl font-bold text-polkadot-pink mb-4">{title}</h2>
     <hr className="border-t-2 border-gray-300 mb-6" />
     {children}

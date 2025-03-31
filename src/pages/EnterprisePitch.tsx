@@ -190,7 +190,7 @@ const EnterprisePitch = () => {
       <div className="container mx-auto px-4 pt-8 max-w-5xl">
         {error && <p className="text-red-500">{error}</p>}
 
-        <Section title="1. Introduction" id="1">
+        <Section title="1. Introduction" id="1" className="mt-8">
           <Subsection title="1.1. General Advise" id="1-1" content={loading ? null : content[1]} />
           <Subsection title="1.2. Do's & Don'ts" id="1-2" content={loading ? null : content[2]} />
         </Section>

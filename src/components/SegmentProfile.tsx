@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useRef } from 'react';
 import { ArrowLeft } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
@@ -69,7 +70,7 @@ const navGroups = [
 // --- Sticky Top Navigation ---
 const TopNav = ({ activeId }: { activeId: string }) => {
   const [visibleGroup, setVisibleGroup] = useState<string | null>(null);
-  const scrollTimeout = useRef<any>(null);
+  const scrollTimeout = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     const currentGroup = navGroups.find(group =>
@@ -186,26 +187,44 @@ const SegmentProfile = ({
     fetchSegmentData();
   }, [segment]);
 
+  // Improved intersection observer for better section detection
   useEffect(() => {
+    // Get all section and subsection IDs from navGroups
     const allIds = navGroups.flatMap(group => [group.id, ...group.children.map(c => c.id)]);
-    const observer = new IntersectionObserver(
-      entries => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            setActiveId(entry.target.id);
-          }
-        });
-      },
-      { rootMargin: "-30% 0px -60% 0px", threshold: 0.1 }
-    );
-
+    
+    // Create a map to hold all elements
+    const elements: {[key: string]: HTMLElement | null} = {};
     allIds.forEach(id => {
-      const el = document.getElementById(id);
+      elements[id] = document.getElementById(id);
+    });
+    
+    // Options for better detection
+    const observerOptions = {
+      rootMargin: "-20% 0px -75% 0px", // Adjusted to improve triggering
+      threshold: [0, 0.25, 0.5, 0.75, 1] // Multiple thresholds for smoother transitions
+    };
+    
+    const handleIntersection = (entries: IntersectionObserverEntry[]) => {
+      // Filter only visible entries and sort by their visibility ratio
+      const visibleEntries = entries
+        .filter(entry => entry.isIntersecting)
+        .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
+      
+      // If we have visible entries, set the most visible one as active
+      if (visibleEntries.length > 0) {
+        setActiveId(visibleEntries[0].target.id);
+      }
+    };
+    
+    const observer = new IntersectionObserver(handleIntersection, observerOptions);
+    
+    // Observe all elements
+    Object.values(elements).forEach(el => {
       if (el) observer.observe(el);
     });
-
+    
     return () => observer.disconnect();
-  }, [loading]);
+  }, [loading]); // Only re-run when loading changes (content is available)
 
   if (loading) return <p className="text-gray-500 italic text-center py-10">Loading segment data...</p>;
   if (error) return <p className="text-red-500 text-center py-10">{error}</p>;

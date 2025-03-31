@@ -21,6 +21,16 @@ const SectionHeader = ({
 
 const formatContent = (text: string | undefined, insertImage: boolean = false) => {
   if (!text) return <p className="italic text-gray-500">Content not available.</p>;
+  
+  // Process URLs to make them bold and pink
+  const processText = (input: string): string => {
+    // URL regex pattern
+    const urlRegex = /(https?:\/\/[^\s]+)/g;
+    
+    // Replace URLs with marked version for later HTML replacement
+    return input.replace(urlRegex, '<a href="$1" target="_blank" rel="noopener noreferrer" class="font-bold text-polkadot-pink">$1</a>');
+  };
+  
   const paragraphs = text.split("\n\n");
   const formattedContent: JSX.Element[] = [];
   paragraphs.forEach((paragraph, index) => {
@@ -37,7 +47,10 @@ const formatContent = (text: string | undefined, insertImage: boolean = false) =
         </p>);
       return;
     }
-    const formattedText = paragraph.replace(/\*([^*]+)\*/g, "<strong>$1</strong>");
+    
+    // Process both bold text and URLs
+    const formattedText = processText(paragraph.replace(/\*([^*]+)\*/g, "<strong>$1</strong>"));
+    
     formattedContent.push(<p key={`text-${index}`} dangerouslySetInnerHTML={{
       __html: formattedText
     }} className="my-[15px]" />);
@@ -56,15 +69,29 @@ const HomePage = () => {
   useEffect(() => {
     const fetchContent = async () => {
       try {
+        // Fix the Supabase query to use a specific table name and typing
         const { data, error } = await supabase
-          .from('home')
-          .select('*');
+          .from('pitch_advise')
+          .select('*')
+          .in('section', ['welcome', 'how', 'why']);
           
         if (error) {
           console.error("Error fetching content:", error);
         } else if (data && data.length > 0) {
-          // Assuming the home table has columns named "welcome", "how", and "why"
-          setContent(data[0]);
+          // Transform array of section data into expected object format
+          const contentMap: {
+            welcome?: string;
+            how?: string;
+            why?: string;
+          } = {};
+          
+          data.forEach(item => {
+            if (item.section === 'welcome') contentMap.welcome = item.content;
+            if (item.section === 'how') contentMap.how = item.content;
+            if (item.section === 'why') contentMap.why = item.content;
+          });
+          
+          setContent(contentMap);
         }
       } catch (err) {
         console.error("Error in content fetching:", err);

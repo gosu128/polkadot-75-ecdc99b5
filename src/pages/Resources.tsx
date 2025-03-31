@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -38,13 +37,12 @@ const Resources = () => {
   useEffect(() => {
     const fetchContent = async () => {
       try {
-        // Using RPC to call a function that returns data from the resources table
         const { data, error } = await supabase
-          .rpc('get_resources_content')
+          .from('resources')
           .select();
-        
+
         if (error) throw error;
-        
+
         if (data) {
           const mappedContent: {
             [key: number]: string | null;
@@ -61,7 +59,7 @@ const Resources = () => {
         setLoading(false);
       }
     };
-    
+
     fetchContent();
   }, []);
 
@@ -69,10 +67,8 @@ const Resources = () => {
     <div className="w-full min-h-screen bg-white">
       <Header />
       <div className="container mx-auto p-4 pt-32 max-w-5xl">
-        {/* Display error message if data fetch fails */}
         {error && <p className="text-red-500">{error}</p>}
 
-        {/* Overview of BD Stakeholders - Section 1 */}
         <Section 
           number="1" 
           title="Overview of BD Stakeholders" 
@@ -90,7 +86,6 @@ const Resources = () => {
           </div>
         </Section>
 
-        {/* Proof Points - Section 2 */}
         <Section 
           number="2" 
           title="Proof Points" 
@@ -108,7 +103,6 @@ const Resources = () => {
           </div>
         </Section>
 
-        {/* Case Studies - Section 3 */}
         <Section 
           number="3" 
           title="Case Studies" 
@@ -126,7 +120,6 @@ const Resources = () => {
           </div>
         </Section>
 
-        {/* Methodology - Section 4 */}
         <Section 
           number="4" 
           title="Methodology" 
@@ -143,8 +136,7 @@ const Resources = () => {
             </div>
           </div>
         </Section>
-        
-        {/* Add spacing at the bottom */}
+
         <div className="py-20"></div>
       </div>
       <Footer />

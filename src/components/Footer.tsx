@@ -1,10 +1,7 @@
-
 import { ArrowUpRight } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-
 const Footer = () => {
-  return (
-    <footer className="bg-[#1A1E2E] text-white pt-16 pb-8">
+  return <footer className="bg-[#1A1E2E] text-white pt-16 pb-8">
       <div className="container-tight">
         
         {/* Flex container for Links, Resources, and Community */}
@@ -14,10 +11,7 @@ const Footer = () => {
             <div className="flex items-center mb-4">
               <span className="text-lg font-unbounded text-polkadot-pink">So So Scaled!</span>
             </div>
-            <p className="text-white/70 text-sm mb-4">
-              A one-stop resource hub for Polkadot BD Agents to find the tools and materials needed 
-              to pitch to B2B customers in an effective and efficient way. 🚀
-            </p>
+            <p className="text-white/70 text-sm mb-4">A one-stop resource hub for Polkadot BD Agents to find the tools and materials needed to pitch to B2B clients in an effective and efficient way. 🚀</p>
           </div>
 
           {/* Merged sections into Project Background and Other */}
@@ -27,23 +21,13 @@ const Footer = () => {
               <h3 className="text-base font-semibold mb-4">Project Background</h3>
               <ul className="space-y-3 text-sm">
                 <li>
-                  <a 
-                    href="https://polkadot.polkassembly.io/referenda/1090" 
-                    target="_blank" 
-                    rel="noopener noreferrer" 
-                    className="text-white/70 hover:text-white transition-colors flex items-center"
-                  >
+                  <a href="https://polkadot.polkassembly.io/referenda/1090" target="_blank" rel="noopener noreferrer" className="text-white/70 hover:text-white transition-colors flex items-center">
                     Proposal
                     <ArrowUpRight className="ml-1 w-3 h-3" />
                   </a>
                 </li>
                 <li>
-                  <a 
-                    href="https://docs.google.com/presentation/d/1_ZD9gZb7flXCKxO_3t4R0HIm1TdjCHltD1hvtU_2z0M/present" 
-                    target="_blank" 
-                    rel="noopener noreferrer" 
-                    className="text-white/70 hover:text-white transition-colors flex items-center"
-                  >
+                  <a href="https://docs.google.com/presentation/d/1_ZD9gZb7flXCKxO_3t4R0HIm1TdjCHltD1hvtU_2z0M/present" target="_blank" rel="noopener noreferrer" className="text-white/70 hover:text-white transition-colors flex items-center">
                     Methodology
                     <ArrowUpRight className="ml-1 w-3 h-3" />
                   </a>
@@ -80,12 +64,7 @@ const Footer = () => {
                   </Dialog>
                 </li>
                 <li>
-                  <a 
-                    href="https://x.com/sososcaled" 
-                    target="_blank" 
-                    rel="noopener noreferrer" 
-                    className="text-white/70 hover:text-white transition-colors flex items-center"
-                  >
+                  <a href="https://x.com/sososcaled" target="_blank" rel="noopener noreferrer" className="text-white/70 hover:text-white transition-colors flex items-center">
                     Follow us on X
                     <ArrowUpRight className="ml-1 w-3 h-3" />
                   </a>
@@ -103,8 +82,6 @@ const Footer = () => {
           </p>
         </div>
       </div>
-    </footer>
-  );
+    </footer>;
 };
-
 export default Footer;

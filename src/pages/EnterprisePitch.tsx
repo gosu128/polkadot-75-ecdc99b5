@@ -112,8 +112,8 @@ const navItems = [
 ];
 
 const TopNav = ({ activeId }: { activeId: string }) => (
-  <div className="sticky top-[64px] z-40 bg-white border-b border-gray-200">
-    <div className="overflow-x-auto whitespace-nowrap px-4 py-2 text-sm flex items-center space-x-2">
+  <div className="sticky top-[64px] z-40 bg-white border-b border-gray-200 mb-6">
+    <div className="max-w-5xl mx-auto px-4 py-2 flex flex-wrap justify-center items-center text-sm">
       {navItems.map((item, index) => (
         <span key={item.id} className="flex items-center">
           <a
@@ -187,7 +187,7 @@ const EnterprisePitch = () => {
     <div className="w-full min-h-screen bg-white">
       <Header />
       <TopNav activeId={activeId} />
-      <div className="container mx-auto p-4 pt-16 max-w-5xl">
+      <div className="container mx-auto px-4 pt-8 max-w-5xl">
         {error && <p className="text-red-500">{error}</p>}
 
         <Section title="1. Introduction" id="1">

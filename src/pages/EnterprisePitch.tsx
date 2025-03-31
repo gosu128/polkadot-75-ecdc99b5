@@ -1,9 +1,9 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { supabase } from '@/integrations/supabase/client';
 
-// Format function (same as before)
+// --- Format Function ---
 const formatText = (text: string) => {
   if (!text) return "";
   const paragraphs = text.split('\n\n');
@@ -11,8 +11,10 @@ const formatText = (text: string) => {
   let inNumberedList = false;
   let inBulletList = false;
   let currentList = '';
+
   paragraphs.forEach(paragraph => {
     const processedText = paragraph.replace(/\*(.*?)\*/g, "<strong>$1</strong>");
+
     if (processedText.trim().startsWith("###")) {
       if (inNumberedList) {
         formattedBlocks.push(`<ol class='list-decimal pl-6 space-y-3 my-4'>${currentList}</ol>`);
@@ -26,9 +28,11 @@ const formatText = (text: string) => {
       formattedBlocks.push(`<p class='text-polkadot-pink font-bold text-xl my-4'>${processedText.replace(/^###/, '').trim()}</p>`);
       return;
     }
+
     const lines = processedText.split('\n');
     const isBulletList = lines.every(line => line.trim().startsWith('-'));
     const isNumberedList = lines.every(line => /^\d+\./.test(line.trim()));
+
     if (isBulletList) {
       if (inNumberedList) {
         formattedBlocks.push(`<ol class='list-decimal pl-6 space-y-3 my-4'>${currentList}</ol>`);
@@ -42,6 +46,7 @@ const formatText = (text: string) => {
       });
       return;
     }
+
     if (isNumberedList) {
       if (inBulletList) {
         formattedBlocks.push(`<ul class='list-disc pl-6 space-y-3 my-4'>${currentList}</ul>`);
@@ -55,6 +60,7 @@ const formatText = (text: string) => {
       });
       return;
     }
+
     if (inNumberedList) {
       formattedBlocks.push(`<ol class='list-decimal pl-6 space-y-3 my-4'>${currentList}</ol>`);
       inNumberedList = false;
@@ -64,17 +70,20 @@ const formatText = (text: string) => {
       inBulletList = false;
       currentList = '';
     }
+
     formattedBlocks.push(`<p class="text-gray-700 leading-relaxed mt-5">${processedText}</p>`);
   });
+
   if (inNumberedList) {
     formattedBlocks.push(`<ol class='list-decimal pl-6 space-y-3 my-4'>${currentList}</ol>`);
   } else if (inBulletList) {
     formattedBlocks.push(`<ul class='list-disc pl-6 space-y-3 my-4'>${currentList}</ul>`);
   }
+
   return formattedBlocks.join("");
 };
 
-// Section component
+// --- Section & Subsection Components ---
 const Section = ({ title, id, children, className = "" }: { title: string; id: string; children: React.ReactNode; className?: string }) => (
   <div id={id} className={`mb-12 scroll-mt-32 ${className}`}>
     <h2 className="text-2xl font-bold text-polkadot-pink mb-4">{title}</h2>
@@ -83,7 +92,6 @@ const Section = ({ title, id, children, className = "" }: { title: string; id: s
   </div>
 );
 
-// Subsection
 const Subsection = ({ title, id, content }: { title: string; id: string; content?: string }) => (
   <div id={id} className="mb-6 scroll-mt-28">
     <h3 className="text-xl text-polkadot-pink mb-2 font-bold">{title}</h3>
@@ -96,46 +104,88 @@ const Subsection = ({ title, id, content }: { title: string; id: string; content
   </div>
 );
 
-// Navigation config
-const navItems = [
-  { id: "1", label: "Introduction" },
-  { id: "1-1", label: "General Advise" },
-  { id: "1-2", label: "Do's & Don'ts" },
-  { id: "2", label: "The Pitch" },
-  { id: "2-1", label: "Geographies" },
-  { id: "2-2", label: "Use Cases" },
-  { id: "2-3", label: "Target Audiences" },
-  { id: "2-4", label: "Value Proposition" },
-  { id: "2-5", label: "Positioning" },
-  { id: "2-6", label: "Messaging Strategy" },
-  { id: "2-7", label: "Proof Points" },
+// --- Grouped Nav Items ---
+const navGroups = [
+  {
+    id: "1",
+    label: "Introduction",
+    children: [
+      { id: "1-1", label: "General Advise" },
+      { id: "1-2", label: "Do's & Don'ts" },
+    ],
+  },
+  {
+    id: "2",
+    label: "The Pitch",
+    children: [
+      { id: "2-1", label: "Geographies" },
+      { id: "2-2", label: "Use Cases" },
+      { id: "2-3", label: "Target Audiences" },
+      { id: "2-4", label: "Value Proposition" },
+      { id: "2-5", label: "Positioning" },
+      { id: "2-6", label: "Messaging Strategy" },
+      { id: "2-7", label: "Proof Points" },
+    ],
+  },
 ];
 
-const TopNav = ({ activeId }: { activeId: string }) => (
-  <div className="sticky top-[64px] z-40 bg-white border-b border-gray-200 mb-6">
-    <div className="max-w-5xl mx-auto px-4 py-2 flex flex-wrap justify-center items-center text-sm">
-      {navItems.map((item, index) => (
-        <span key={item.id} className="flex items-center">
-          <a
-            href={`#${item.id}`}
-            className={`transition-colors duration-200 ${
-              activeId === item.id
-                ? 'text-polkadot-pink font-semibold'
-                : 'text-gray-500 hover:text-polkadot-pink'
-            }`}
-          >
-            {item.label}
-          </a>
-          {index < navItems.length - 1 && (
-            <span className="mx-2 text-gray-300">|</span>
-          )}
-        </span>
-      ))}
-    </div>
-  </div>
-);
+// --- Top Navigation ---
+const TopNav = ({ activeId }: { activeId: string }) => {
+  const [visibleGroup, setVisibleGroup] = useState<string | null>(null);
 
-// Main component
+  useEffect(() => {
+    const currentGroup = navGroups.find(group =>
+      [group.id, ...group.children.map(c => c.id)].includes(activeId)
+    );
+    if (currentGroup) setVisibleGroup(currentGroup.id);
+  }, [activeId]);
+
+  return (
+    <div className="sticky top-[64px] z-40 bg-white border-b border-gray-200 mb-6">
+      <div className="max-w-5xl mx-auto px-4 py-2 flex flex-wrap justify-center items-center text-sm gap-x-6">
+        {navGroups.map(group => (
+          <div
+            key={group.id}
+            className="relative group"
+            onMouseEnter={() => setVisibleGroup(group.id)}
+            onMouseLeave={() => setVisibleGroup(null)}
+          >
+            <a
+              href={`#${group.id}`}
+              className={`transition-colors duration-200 ${
+                activeId === group.id ? 'text-polkadot-pink font-semibold' : 'text-gray-600 hover:text-polkadot-pink'
+              }`}
+            >
+              {group.label}
+            </a>
+
+            <div
+              className={`absolute left-1/2 -translate-x-1/2 top-full mt-2 bg-white border border-gray-200 shadow-md rounded-md px-4 py-2 space-y-1 transition-all duration-200 ${
+                visibleGroup === group.id ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
+              }`}
+            >
+              {group.children.map(child => (
+                <a
+                  key={child.id}
+                  href={`#${child.id}`}
+                  className={`block whitespace-nowrap text-sm ${
+                    activeId === child.id
+                      ? 'text-polkadot-pink font-semibold'
+                      : 'text-gray-500 hover:text-polkadot-pink'
+                  }`}
+                >
+                  {child.label}
+                </a>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+// --- Main Component ---
 const EnterprisePitch = () => {
   const [content, setContent] = useState<{ [key: number]: string | null }>({});
   const [loading, setLoading] = useState(true);
@@ -162,8 +212,9 @@ const EnterprisePitch = () => {
     fetchContent();
   }, []);
 
-  // Track active section
+  // Observe visible sections
   useEffect(() => {
+    const allIds = navGroups.flatMap(group => [group.id, ...group.children.map(c => c.id)]);
     const observer = new IntersectionObserver(
       entries => {
         entries.forEach(entry => {
@@ -175,8 +226,8 @@ const EnterprisePitch = () => {
       { rootMargin: "-30% 0px -60% 0px", threshold: 0.1 }
     );
 
-    navItems.forEach(item => {
-      const el = document.getElementById(item.id);
+    allIds.forEach(id => {
+      const el = document.getElementById(id);
       if (el) observer.observe(el);
     });
 

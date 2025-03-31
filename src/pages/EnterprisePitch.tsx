@@ -11,15 +11,6 @@ const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS
 const formatText = (text: string) => {
   if (!text) return "";
 
-  // Process URLs to make them bold and pink
-  const processText = (input: string): string => {
-    // URL regex pattern
-    const urlRegex = /(https?:\/\/[^\s]+)/g;
-    
-    // Replace URLs with marked version for later HTML replacement
-    return input.replace(urlRegex, '<a href="$1" target="_blank" rel="noopener noreferrer" class="font-bold text-polkadot-pink">$1</a>');
-  };
-
   // Split text into paragraphs
   const paragraphs = text.split('\n\n');
   const formattedBlocks: string[] = [];
@@ -27,8 +18,8 @@ const formatText = (text: string) => {
   let inBulletList = false;
   let currentList = '';
   paragraphs.forEach(paragraph => {
-    // Process text within a paragraph - first handle bold, then URLs
-    const processedText = processText(paragraph.replace(/\*(.*?)\*/g, "<strong>$1</strong>"));
+    // Process text within a paragraph
+    const processedText = paragraph.replace(/\*(.*?)\*/g, "<strong>$1</strong>");
 
     // Check if this is a heading
     if (processedText.trim().startsWith("###")) {
@@ -208,7 +199,7 @@ const EnterprisePitch = () => {
             <img src="https://qhxgyizmewdtvwebpmie.supabase.co/storage/v1/object/public/polkadot//Pitch_Advise_-_Positioning.png" alt="Polkadot's Messaging Strategy Positioning" className="w-full max-w-full h-auto" />
           </div>
           <Subsection title="2.6. Messaging Strategy" content={loading ? null : content[5]} />
-          <Subsection title="2.7. Proof Points" />
+          <Subsection title="2.7. Proof Points" content={loading ? null : content[10]} />
         </Section>
 
         {/* Add spacing at the bottom */}

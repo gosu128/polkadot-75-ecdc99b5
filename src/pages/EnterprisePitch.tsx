@@ -1,9 +1,9 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { supabase } from '@/integrations/supabase/client';
 
-// Function to format content (same as your original)
+// Format function (same as before)
 const formatText = (text: string) => {
   if (!text) return "";
   const paragraphs = text.split('\n\n');
@@ -37,8 +37,8 @@ const formatText = (text: string) => {
       }
       inBulletList = true;
       lines.forEach(line => {
-        const cleanedPoint = line.replace(/^-/, '').trim();
-        currentList += `<li class='text-gray-700 mb-2'>${cleanedPoint}</li>`;
+        const cleaned = line.replace(/^-/, '').trim();
+        currentList += `<li class='text-gray-700 mb-2'>${cleaned}</li>`;
       });
       return;
     }
@@ -50,8 +50,8 @@ const formatText = (text: string) => {
       }
       inNumberedList = true;
       lines.forEach(line => {
-        const cleanedPoint = line.replace(/^\d+\./, '').trim();
-        currentList += `<li class='text-gray-700 mb-2'>${cleanedPoint}</li>`;
+        const cleaned = line.replace(/^\d+\./, '').trim();
+        currentList += `<li class='text-gray-700 mb-2'>${cleaned}</li>`;
       });
       return;
     }
@@ -74,18 +74,18 @@ const formatText = (text: string) => {
   return formattedBlocks.join("");
 };
 
-// Section component with ID
+// Section component
 const Section = ({ title, id, children }: { title: string; id: string; children: React.ReactNode }) => (
   <div id={id} className="mb-12 scroll-mt-32">
     <h2 className="text-2xl font-bold text-polkadot-pink mb-4">{title}</h2>
     <hr className="border-t-2 border-gray-300 mb-6" />
-    <div>{children}</div>
+    {children}
   </div>
 );
 
-// Subsection with ID
+// Subsection
 const Subsection = ({ title, id, content }: { title: string; id: string; content?: string }) => (
-  <div id={id} className="mb-6 scroll-mt-24">
+  <div id={id} className="mb-6 scroll-mt-28">
     <h3 className="text-xl text-polkadot-pink mb-2 font-bold">{title}</h3>
     <hr className="border-t border-gray-200 mb-4" />
     {content !== null ? (
@@ -96,10 +96,12 @@ const Subsection = ({ title, id, content }: { title: string; id: string; content
   </div>
 );
 
-// Sticky nav component
+// Navigation config
 const navItems = [
+  { id: "1", label: "1. Introduction" },
   { id: "1-1", label: "1.1. General Advise" },
   { id: "1-2", label: "1.2. Do's & Don'ts" },
+  { id: "2", label: "2. The Pitch" },
   { id: "2-1", label: "2.1. Geographies" },
   { id: "2-2", label: "2.2. Use Cases" },
   { id: "2-3", label: "2.3. Target Audiences" },
@@ -109,21 +111,25 @@ const navItems = [
   { id: "2-7", label: "2.7. Proof Points" },
 ];
 
-const NavSidebar = () => (
-  <nav className="hidden lg:block fixed left-4 top-32 text-sm text-gray-600 z-10">
-    <ul className="space-y-2">
+// Top nav bar component
+const TopNav = ({ activeId }: { activeId: string }) => (
+  <div className="sticky top-0 bg-white z-30 border-b border-gray-200">
+    <div className="overflow-x-auto whitespace-nowrap px-4 py-2 text-sm flex space-x-4">
       {navItems.map(item => (
-        <li key={item.id}>
-          <a
-            href={`#${item.id}`}
-            className="hover:text-polkadot-pink transition-colors duration-200"
-          >
-            {item.label}
-          </a>
-        </li>
+        <a
+          key={item.id}
+          href={`#${item.id}`}
+          className={`transition-colors duration-200 ${
+            activeId === item.id
+              ? 'text-polkadot-pink font-semibold'
+              : 'text-gray-500 hover:text-polkadot-pink'
+          }`}
+        >
+          {item.label}
+        </a>
       ))}
-    </ul>
-  </nav>
+    </div>
+  </div>
 );
 
 // Main component
@@ -131,6 +137,7 @@ const EnterprisePitch = () => {
   const [content, setContent] = useState<{ [key: number]: string | null }>({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [activeId, setActiveId] = useState<string>("");
 
   useEffect(() => {
     const fetchContent = async () => {
@@ -152,11 +159,32 @@ const EnterprisePitch = () => {
     fetchContent();
   }, []);
 
+  // Track active section
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            setActiveId(entry.target.id);
+          }
+        });
+      },
+      { rootMargin: "-30% 0px -60% 0px", threshold: 0.1 }
+    );
+
+    navItems.forEach(item => {
+      const el = document.getElementById(item.id);
+      if (el) observer.observe(el);
+    });
+
+    return () => observer.disconnect();
+  }, [loading]);
+
   return (
     <div className="w-full min-h-screen bg-white">
       <Header />
-      <NavSidebar />
-      <div className="container mx-auto p-4 pt-32 max-w-5xl">
+      <TopNav activeId={activeId} />
+      <div className="container mx-auto p-4 pt-16 max-w-5xl">
         {error && <p className="text-red-500">{error}</p>}
 
         <Section title="1. Introduction" id="1">
@@ -196,3 +224,4 @@ const EnterprisePitch = () => {
 };
 
 export default EnterprisePitch;
+

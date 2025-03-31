@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -15,23 +16,12 @@ const Section = ({
   content: string | null;
   children: React.ReactNode;
 }) => {
-  // Process URLs to make them bold and pink
-  const processContent = (content: string | null) => {
-    if (!content) return null;
-    
-    // URL regex pattern
-    const urlRegex = /(https?:\/\/[^\s]+)/g;
-    
-    // Replace URLs with marked version for later HTML replacement
-    return content.replace(urlRegex, '<a href="$1" target="_blank" rel="noopener noreferrer" class="font-bold text-polkadot-pink">$1</a>');
-  };
-
   return (
     <div className="mb-12">
       <h2 className="text-2xl font-bold text-polkadot-pink mb-4">{number}. {title}</h2>
       <hr className="border-t-2 border-gray-300 mb-6" />
       {content && (
-        <div className="text-gray-700 leading-relaxed mb-6" dangerouslySetInnerHTML={{ __html: processContent(content) || '' }} />
+        <div className="text-gray-700 leading-relaxed mb-6" dangerouslySetInnerHTML={{ __html: content }} />
       )}
       <div>{children}</div>
     </div>
@@ -48,10 +38,10 @@ const Resources = () => {
   useEffect(() => {
     const fetchContent = async () => {
       try {
-        // Fetch from resources table
+        // Using RPC to call a function that returns data from the resources table
         const { data, error } = await supabase
-          .from('resources')
-          .select('id, content');
+          .rpc('get_resources_content')
+          .select();
         
         if (error) throw error;
         
@@ -59,11 +49,9 @@ const Resources = () => {
           const mappedContent: {
             [key: number]: string | null;
           } = {};
-          
-          data.forEach((row) => {
+          data.forEach((row: any) => {
             mappedContent[row.id] = row.content;
           });
-          
           setContent(mappedContent);
         }
       } catch (err) {

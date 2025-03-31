@@ -97,18 +97,28 @@ const Subsection = ({ title, id, content }: { title: string; id: string; content
 );
 
 // Navigation config
-const navItems = [
-  { id: "1", label: "Introduction" },
-  { id: "1-1", label: "General Advise" },
-  { id: "1-2", label: "Do's & Don'ts" },
-  { id: "2", label: "The Pitch" },
-  { id: "2-1", label: "Geographies" },
-  { id: "2-2", label: "Use Cases" },
-  { id: "2-3", label: "Target Audiences" },
-  { id: "2-4", label: "Value Proposition" },
-  { id: "2-5", label: "Positioning" },
-  { id: "2-6", label: "Messaging Strategy" },
-  { id: "2-7", label: "Proof Points" },
+const navGroups = [
+  {
+    id: "1",
+    label: "Introduction",
+    children: [
+      { id: "1-1", label: "General Advise" },
+      { id: "1-2", label: "Do's & Don'ts" },
+    ],
+  },
+  {
+    id: "2",
+    label: "The Pitch",
+    children: [
+      { id: "2-1", label: "Geographies" },
+      { id: "2-2", label: "Use Cases" },
+      { id: "2-3", label: "Target Audiences" },
+      { id: "2-4", label: "Value Proposition" },
+      { id: "2-5", label: "Positioning" },
+      { id: "2-6", label: "Messaging Strategy" },
+      { id: "2-7", label: "Proof Points" },
+    ],
+  },
 ];
 
 const TopNav = ({ activeId }: { activeId: string }) => {

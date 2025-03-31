@@ -109,22 +109,13 @@ const HomePage = () => {
       {/* Content Sections */}
       <div className="container mx-auto p-4 pt-16 max-w-5xl">
         <div className="space-y-10">
+          {/* 1. Welcome */}
           <SectionHeader icon={BookOpen} title="Welcome to the Sales Hub" />
           <div className="text-gray-700 leading-relaxed space-y-4">
             {formatContent(content.welcome)}
           </div>
 
-          <SectionHeader icon={Info} title="How to Navigate the Polkadot Sales Hub" />
-          <div className="text-gray-700 leading-relaxed space-y-4">
-            {formatContent(content.how)}
-          </div>
-
-          <SectionHeader icon={AlertTriangle} title="Why Polkadot Must Expand Beyond Web3" />
-          <div className="text-gray-700 leading-relaxed space-y-4">
-            {formatContent(content.why, true)}
-          </div>
-
-          {/* NEW: Acknowledgements Section */}
+          {/* 2. Acknowledgements */}
           <SectionHeader icon={Sparkles} title="Acknowledgements" />
           <div className="text-gray-700 leading-relaxed space-y-4">
             {formatContent(content.thanks)}
@@ -135,6 +126,18 @@ const HomePage = () => {
                 className="w-full max-w-full h-auto object-fill"
               />
             </div>
+          </div>
+
+          {/* 3. Navigation */}
+          <SectionHeader icon={Info} title="How to Navigate the Polkadot Sales Hub" />
+          <div className="text-gray-700 leading-relaxed space-y-4">
+            {formatContent(content.how)}
+          </div>
+
+          {/* 4. Why Web3 Expansion */}
+          <SectionHeader icon={AlertTriangle} title="Why Polkadot Must Expand Beyond Web3" />
+          <div className="text-gray-700 leading-relaxed space-y-4">
+            {formatContent(content.why, true)}
           </div>
         </div>
 
@@ -147,4 +150,3 @@ const HomePage = () => {
 };
 
 export default HomePage;
-

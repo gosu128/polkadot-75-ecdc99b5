@@ -15,12 +15,22 @@ const Section = ({
   content: string | null;
   children: React.ReactNode;
 }) => {
+  const isListSection = number === "5"; // Only apply this logic for Section 5
+
+  const formattedContent = isListSection && content
+    ? `<ul class="list-disc pl-6 space-y-1">${content
+        .split('\n')
+        .filter(line => line.trim() !== '')
+        .map(line => `<li>${line.trim()}</li>`)
+        .join('')}</ul>`
+    : content;
+
   return (
     <div className="mb-12">
       <h2 className="text-2xl font-bold text-polkadot-pink mb-4">{number}. {title}</h2>
       <hr className="border-t-2 border-gray-300 mb-6" />
-      {content && (
-        <div className="text-gray-700 leading-relaxed mb-6" dangerouslySetInnerHTML={{ __html: content }} />
+      {formattedContent && (
+        <div className="text-gray-700 leading-relaxed mb-6" dangerouslySetInnerHTML={{ __html: formattedContent }} />
       )}
       <div>{children}</div>
     </div>

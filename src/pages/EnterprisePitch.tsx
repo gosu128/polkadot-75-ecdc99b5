@@ -1,3 +1,4 @@
+
 import { useEffect, useState, useRef } from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -132,7 +133,7 @@ const navGroups = [
 // --- Top Navigation ---
 const TopNav = ({ activeId }: { activeId: string }) => {
   const [visibleGroup, setVisibleGroup] = useState<string | null>(null);
-  const scrollTimeout = useRef<any>(null);
+  const scrollTimeout = useRef<NodeJS.Timeout | null>(null);
 
   // Show children when active section is inside group
   useEffect(() => {
@@ -220,27 +221,44 @@ const EnterprisePitch = () => {
     fetchContent();
   }, []);
 
-  // Observe visible sections
+  // Improved intersection observer for better detection of sections
   useEffect(() => {
+    // Get all section and subsection IDs from navGroups
     const allIds = navGroups.flatMap(group => [group.id, ...group.children.map(c => c.id)]);
-    const observer = new IntersectionObserver(
-      entries => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            setActiveId(entry.target.id);
-          }
-        });
-      },
-      { rootMargin: "-30% 0px -60% 0px", threshold: 0.1 }
-    );
-
+    
+    // Create a map to hold all elements
+    const elements: {[key: string]: HTMLElement | null} = {};
     allIds.forEach(id => {
-      const el = document.getElementById(id);
+      elements[id] = document.getElementById(id);
+    });
+    
+    // Options for better detection
+    const observerOptions = {
+      rootMargin: "-20% 0px -75% 0px", // Adjusted to improve triggering
+      threshold: [0, 0.25, 0.5, 0.75, 1] // Multiple thresholds for smoother transitions
+    };
+    
+    const handleIntersection = (entries: IntersectionObserverEntry[]) => {
+      // Filter only visible entries and sort by their visibility ratio
+      const visibleEntries = entries
+        .filter(entry => entry.isIntersecting)
+        .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
+      
+      // If we have visible entries, set the most visible one as active
+      if (visibleEntries.length > 0) {
+        setActiveId(visibleEntries[0].target.id);
+      }
+    };
+    
+    const observer = new IntersectionObserver(handleIntersection, observerOptions);
+    
+    // Observe all elements
+    Object.values(elements).forEach(el => {
       if (el) observer.observe(el);
     });
-
+    
     return () => observer.disconnect();
-  }, [loading]);
+  }, [loading]); // Only re-run when loading changes (content is available)
 
   return (
     <div className="w-full min-h-screen bg-white">

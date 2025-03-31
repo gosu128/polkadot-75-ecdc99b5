@@ -224,4 +224,3 @@ const EnterprisePitch = () => {
 };
 
 export default EnterprisePitch;
-

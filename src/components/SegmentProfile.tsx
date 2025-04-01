@@ -272,6 +272,9 @@ const SegmentProfile = ({
           </div>
           <Subsection title="3.5. Messaging Strategy" id="3-5" content={segmentData?.messaging} />
           <Subsection title="3.6. Proof Points" id="3-6" content={segmentData?.proof_points} />
+          
+          {/* Added horizontal line at the end of the segment profile */}
+          <hr className="border-t border-gray-300 mt-10" />
         </Section>
       </div>
     </div>

@@ -192,7 +192,7 @@ const Segments = () => {
             </p>
             <p>
               Each of the 83 segments was rated on a scale from 1 to 10 per criterion using a combination of extensive market research, expert insights and advanced language models. 
-              The final score is a weighted average of these ratings, normalized to reflect realistic market dynamics and Web3 relevance. This allows Polkadot stakeholders to prioritize where to focus business development, partnerships, and ecosystem investments for maximum impact.
+              The final score is a weighted average of these ratings, normalized to reflect realistic market dynamics and Web3 relevance. This allows Polkadot BD Agents to prioritize where to focus efforts in order to maximum impact.
             </p>
           </div>
 

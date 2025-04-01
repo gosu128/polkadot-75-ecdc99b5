@@ -229,7 +229,7 @@ const Segments = () => {
                     sortedSegments.map(segment => (
                       <tr key={segment.id} className="border-b border-gray-200 hover:bg-gray-50 transition-colors font-unbounded">
                         <td className="py-3 px-4 text-gray-800 whitespace-nowrap text-xs md:text-sm">{segment.name}</td>
-                        <td className={`py-2 px-2 text-center text-xs md:text-sm transition-all duration-200 font-unbounded text-polkadot-pink ${hoveredCell === `${segment.id}-pmf` ? "scale-125 font-bold shadow-sm rounded-md bg-white z-10 relative" : ""}`} onMouseEnter={() => setHoveredCell(`${segment.id}-pmf`)} onMouseLeave={() => setHoveredCell(null)}>
+                        <td className={`py-2 px-2 text-center text-xs md:text-sm transition-all duration-200 font-unbounded font-bold ${hoveredCell === `${segment.id}-pmf` ? "scale-125 shadow-sm rounded-md bg-white z-10 relative text-polkadot-pink" : ""}`} onMouseEnter={() => setHoveredCell(`${segment.id}-pmf`)} onMouseLeave={() => setHoveredCell(null)}>
                           {segment.pmf?.toFixed(1) || "N/A"}
                         </td>
                         <td className={getCellStyle(segment.interoperability, segment.id, "interop")} onMouseEnter={() => setHoveredCell(`${segment.id}-interop`)} onMouseLeave={() => setHoveredCell(null)}>

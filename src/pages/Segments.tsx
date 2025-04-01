@@ -188,7 +188,7 @@ const Segments = () => {
           
           <div className="max-w-4xl mx-auto mb-12 text-gray-700 leading-relaxed">
             <p className="mb-4">
-              The Polkadot-Market-Fit Score™ is a proprietary scoring system developed by So So Scaled! to evaluate the strategic attractiveness of different industry verticals for the Polkadot ecosystem. It is based on a rigorous, data-informed framework that analyzes each segments across ten weighted criteria—including technological readiness, interoperability needs, market size, and potential return on investment. These criteria are a mix of general industry dynamics and Polkadot-specific strengths, ensuring that the score reflects both market opportunity and blockchain-platform fit.
+              The Polkadot-Market-Fit Score™ is a proprietary scoring system developed by So So Scaled! to evaluate the strategic attractiveness of different industry verticals for the Polkadot ecosystem. It is based on a rigorous, data-informed framework that analyzes each segments across ten weighted criteria, including Web3 awareness, technological readiness, interoperability needs, total addressable market size, and potential return on investment. These criteria are a mix of general industry dynamics and Polkadot-specific strengths, ensuring that the score reflects both market opportunity and blockchain-platform fit.
             </p>
             <p>
               Each of the 83 segments was rated on a scale from 1 to 10 per criterion using a combination of extensive market research, expert insights and advanced language models. 

@@ -116,14 +116,14 @@ const PMFScores = () => {
   return <div className="w-full bg-white min-h-screen flex flex-col">
       <Header />
       <div className="max-w-6xl mx-auto p-4 pt-32 flex-grow py-[200px]">
-        <h2 className="text-2xl font-bold mb-6 text-center">Polkadot-Market-Fit Score</h2>
+        <h2 className="text-2xl font-bold mb-6 text-center">The Polkadot-Market-Fit Score™</h2>
         
         <div className="max-w-4xl mx-auto mb-12 text-gray-700 leading-relaxed">
           <p className="mb-4">
-            The Polkadot-Market-Fit Score™ is a proprietary scoring system developed by So So Scaled! to evaluate the strategic attractiveness of different industry sub-verticals for the Polkadot ecosystem. It is based on a rigorous, data-informed framework that analyzes each sub-vertical across ten weighted criteria—including technological readiness, interoperability needs, market size, and potential return on investment. These criteria are a mix of general industry dynamics and Polkadot-specific strengths, ensuring that the score reflects both market opportunity and blockchain-platform fit.
+            The Polkadot-Market-Fit Score™ is a proprietary scoring system developed by So So Scaled! to evaluate the strategic attractiveness of different industry segments for the Polkadot ecosystem. It is based on a rigorous, data-informed framework that analyzes each sub-vertical across ten weighted criteria—including technological readiness, interoperability needs, market size, and potential return on investment. These criteria are a mix of general industry dynamics and Polkadot-specific strengths, ensuring that the score reflects both market opportunity and blockchain-platform fit.
           </p>
           <p>
-            Each of the 83 sub-verticals was rated on a scale from 1 to 10 per criterion using a combination of market research, expert insights and advanced language models. 
+            Each of the 83 segments was rated on a scale from 1 to 10 per criterion using a combination of market research, expert insights and advanced language models. 
             The final score is a weighted average of these ratings, normalized to reflect realistic market dynamics and Web3 relevance. This allows Polkadot stakeholders to prioritize where to focus business development, partnerships, and ecosystem investments for maximum impact.
           </p>
         </div>

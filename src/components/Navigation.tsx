@@ -11,6 +11,7 @@ const Navigation = () => {
     { name: 'Home', path: '/' },
     { name: 'About UX', path: '/about' },
     { name: 'UX Audits', path: '/audits' },
+    { name: 'UX Complaint Box', path: '/ux-complaint-box' },
   ];
 
   const isActive = (path: string) => {

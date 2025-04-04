@@ -11,6 +11,7 @@ import About from "./pages/About";
 import Audits from "./pages/Audits";
 import NotFound from "./pages/NotFound";
 import PitchAdvise from "./pages/PitchAdvise";
+import UxComplaintBox from "./pages/UxComplaintBox";
 
 const queryClient = new QueryClient();
 
@@ -27,6 +28,7 @@ const App = () => (
             <Route path="/about" element={<About />} />
             <Route path="/audits" element={<Audits />} />
             <Route path="/pitch-advise" element={<PitchAdvise />} />
+            <Route path="/ux-complaint-box" element={<UxComplaintBox />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
           <Footer />

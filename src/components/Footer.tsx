@@ -1,87 +1,86 @@
+
 import { ArrowUpRight } from 'lucide-react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+
 const Footer = () => {
-  return <footer className="bg-[#1A1E2E] text-white pt-16 pb-8">
-      <div className="container-tight">
-        
-        {/* Flex container for Links, Resources, and Community */}
-        <div className="flex flex-col md:flex-row justify-between gap-10 mb-16">
-          {/* Logo and info */}
-          <div className="md:w-1/3">
-            <div className="flex items-center mb-4">
-              <span className="text-lg font-unbounded text-polkadot-pink">So So Scaled!</span>
+  return (
+    <footer className="bg-polkadot-dark text-white py-12">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
+          <div className="col-span-1 md:col-span-2">
+            <div className="flex items-center space-x-2 mb-4">
+              <div className="w-8 h-8 bg-polkadot-pink rounded-full flex items-center justify-center">
+                <div className="w-4 h-4 bg-white rounded-full"></div>
+              </div>
+              <span className="font-bold text-lg">UX Bounty</span>
             </div>
-            <p className="text-white/70 text-sm mb-4">A one-stop resource hub for Polkadot BD Agents to find the tools and materials needed to pitch to B2B clients in an effective and efficient way. 🚀</p>
+            <p className="text-gray-300 mb-6 max-w-md">
+              Improving the Polkadot ecosystem through systematic, consistent, and normalized user experiences.
+            </p>
+            <div className="flex space-x-4">
+              <a href="https://twitter.com/Polkadot" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white">
+                Twitter
+              </a>
+              <a href="https://github.com/polkadot-js" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white">
+                GitHub
+              </a>
+              <a href="https://polkadot.network/" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white">
+                Polkadot
+              </a>
+            </div>
           </div>
-
-          {/* Merged sections into Project Background and Other */}
-          <div className="flex flex-wrap md:flex-nowrap md:justify-evenly gap-8 w-full md:w-2/3">
-            {/* Project Background */}
-            <div>
-              <h3 className="text-base font-semibold mb-4">Project Background</h3>
-              <ul className="space-y-3 text-sm">
-                <li>
-                  <a href="https://polkadot.polkassembly.io/referenda/1090" target="_blank" rel="noopener noreferrer" className="text-white/70 hover:text-white transition-colors flex items-center">
-                    Proposal
-                    <ArrowUpRight className="ml-1 w-3 h-3" />
-                  </a>
-                </li>
-                <li>
-                  <a href="https://docs.google.com/presentation/d/1_ZD9gZb7flXCKxO_3t4R0HIm1TdjCHltD1hvtU_2z0M/present" target="_blank" rel="noopener noreferrer" className="text-white/70 hover:text-white transition-colors flex items-center">
-                    Methodology
-                    <ArrowUpRight className="ml-1 w-3 h-3" />
-                  </a>
-                </li>
-              </ul>
-            </div>
-
-            {/* Other */}
-            <div>
-              <h3 className="text-base font-semibold mb-4">Other</h3>
-              <ul className="space-y-3 text-sm">
-                <li>
-                  <Dialog>
-                    <DialogTrigger className="text-white/70 hover:text-white transition-colors">
-                      About So So Scaled!
-                    </DialogTrigger>
-                    <DialogContent>
-                      <DialogHeader>
-                        <DialogTitle>Coming soon...</DialogTitle>
-                      </DialogHeader>
-                    </DialogContent>
-                  </Dialog>
-                </li>
-                <li>
-                  <Dialog>
-                    <DialogTrigger className="text-white/70 hover:text-white transition-colors">
-                      Whitepaper
-                    </DialogTrigger>
-                    <DialogContent>
-                      <DialogHeader>
-                        <DialogTitle>Coming soon...</DialogTitle>
-                      </DialogHeader>
-                    </DialogContent>
-                  </Dialog>
-                </li>
-                <li>
-                  <a href="https://x.com/sososcaled" target="_blank" rel="noopener noreferrer" className="text-white/70 hover:text-white transition-colors flex items-center">
-                    Follow us on X
-                    <ArrowUpRight className="ml-1 w-3 h-3" />
-                  </a>
-                </li>
-              </ul>
-            </div>
+          
+          <div>
+            <h3 className="font-semibold text-lg mb-4">Quick Links</h3>
+            <ul className="space-y-3">
+              <li>
+                <a href="/" className="text-gray-300 hover:text-white transition-colors">Home</a>
+              </li>
+              <li>
+                <a href="/about" className="text-gray-300 hover:text-white transition-colors">About UX</a>
+              </li>
+              <li>
+                <a href="/audits" className="text-gray-300 hover:text-white transition-colors">UX Audits</a>
+              </li>
+            </ul>
+          </div>
+          
+          <div>
+            <h3 className="font-semibold text-lg mb-4">Resources</h3>
+            <ul className="space-y-3">
+              <li>
+                <a href="https://polkadot.network/ecosystem/" target="_blank" rel="noopener noreferrer" className="text-gray-300 hover:text-white transition-colors flex items-center">
+                  Ecosystem
+                  <ArrowUpRight className="ml-1 h-3 w-3" />
+                </a>
+              </li>
+              <li>
+                <a href="https://polkadot.network/blog/" target="_blank" rel="noopener noreferrer" className="text-gray-300 hover:text-white transition-colors flex items-center">
+                  Blog
+                  <ArrowUpRight className="ml-1 h-3 w-3" />
+                </a>
+              </li>
+              <li>
+                <a href="https://wiki.polkadot.network/" target="_blank" rel="noopener noreferrer" className="text-gray-300 hover:text-white transition-colors flex items-center">
+                  Documentation
+                  <ArrowUpRight className="ml-1 h-3 w-3" />
+                </a>
+              </li>
+            </ul>
           </div>
         </div>
-
-        {/* Bottom footer */}
-        <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center">
-          <p className="text-white/60 text-xs">
-            © {new Date().getFullYear()} So So Scaled. All rights reserved. Powered by 
-            <a href="#" className="text-polkadot-pink hover:underline"> So So Scaled!</a>
+        
+        <div className="border-t border-gray-800 mt-10 pt-6 flex flex-col md:flex-row justify-between items-center">
+          <p className="text-gray-400 text-sm mb-4 md:mb-0">
+            © {new Date().getFullYear()} UX Bounty. All rights reserved.
           </p>
+          <div className="flex space-x-6">
+            <a href="#" className="text-gray-400 hover:text-white text-sm">Privacy Policy</a>
+            <a href="#" className="text-gray-400 hover:text-white text-sm">Terms of Service</a>
+          </div>
         </div>
       </div>
-    </footer>;
+    </footer>
+  );
 };
+
 export default Footer;

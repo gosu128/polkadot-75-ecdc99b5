@@ -4,10 +4,11 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import PitchAdvise from "./pages/PitchAdvise";
-import EnterprisePitch from "./pages/EnterprisePitch";
-import Segments from "./pages/Segments";
-import Resources from "./pages/Resources";
+import Navigation from "./components/Navigation";
+import Footer from "./components/Footer";
+import Home from "./pages/Home";
+import About from "./pages/About";
+import Audits from "./pages/Audits";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -18,18 +19,16 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<PitchAdvise />} />
-          <Route path="/enterprise-pitch" element={<EnterprisePitch />} />
-          <Route path="/segments" element={<Segments />} />
-          <Route path="/resources" element={<Resources />} />
-          {/* Redirects for old routes */}
-          <Route path="/pmf-scores" element={<Segments />} />
-          <Route path="/bd-teams" element={<Resources />} />
-          <Route path="/case-studies" element={<Resources />} />
-          <Route path="/methodology" element={<Resources />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
+        <div className="flex flex-col min-h-screen">
+          <Navigation />
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/audits" element={<Audits />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+          <Footer />
+        </div>
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>

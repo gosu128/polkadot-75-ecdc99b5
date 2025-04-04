@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { AlertTriangle, Info, BookOpen, Sparkles } from "lucide-react";
@@ -70,12 +71,29 @@ const HomePage = () => {
   useEffect(() => {
     const fetchContent = async () => {
       try {
-        const { data, error } = await supabase.from("home").select("*");
+        // Change from 'home' to 'pitch_advise' which exists in the database schema
+        const { data, error } = await supabase.from("pitch_advise").select("*");
 
         if (error) {
           console.error("Error fetching content:", error);
         } else if (data && data.length > 0) {
-          setContent(data[0]);
+          // Map the data into the expected format
+          const mappedContent: {
+            welcome?: string;
+            how?: string;
+            why?: string;
+            thanks?: string;
+          } = {};
+
+          // Assuming the data has section and content fields
+          data.forEach((item: { section: string; content: string }) => {
+            if (item.section === "welcome") mappedContent.welcome = item.content;
+            if (item.section === "how") mappedContent.how = item.content;
+            if (item.section === "why") mappedContent.why = item.content;
+            if (item.section === "thanks") mappedContent.thanks = item.content;
+          });
+
+          setContent(mappedContent);
         }
       } catch (err) {
         console.error("Error in content fetching:", err);

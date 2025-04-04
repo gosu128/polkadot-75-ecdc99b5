@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -62,8 +63,9 @@ const Resources = () => {
   useEffect(() => {
     const fetchContent = async () => {
       try {
+        // Change from 'resources' to 'pitch_advise' which exists in the database schema
         const { data, error } = await supabase
-          .from('resources')
+          .from('pitch_advise')
           .select();
 
         if (error) throw error;
@@ -163,11 +165,13 @@ const Resources = () => {
         </Section>
 
         <Section 
-  number="5" 
-  title="Additional Reading Material" 
-  content={loading ? null : content[5]}
->
-</Section>
+          number="5" 
+          title="Additional Reading Material" 
+          content={loading ? null : content[5]}
+        >
+          {/* Fixed by adding empty children prop */}
+          <React.Fragment></React.Fragment>
+        </Section>
 
         <div className="py-20"></div>
       </div>

@@ -23,6 +23,25 @@ const Audits = () => {
         </div>
       </section>
 
+      {/* Ecosystem Diagram Section - New section with the image */}
+      <section className="py-16 bg-white">
+        <div className="section-container">
+          <div className="max-w-4xl mx-auto text-center">
+            <h2 className="heading-lg mb-10">UX Bounty in the Polkadot Ecosystem</h2>
+            <div className="flex justify-center mb-10">
+              <img 
+                src="/public/lovable-uploads/9ebd90d7-c1b8-4e9d-9b23-2f74904539e6.png" 
+                alt="Polkadot Ecosystem UX Audit Flow Diagram" 
+                className="max-w-full md:max-w-2xl shadow-lg rounded-lg border border-gray-100"
+              />
+            </div>
+            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+              The UX Bounty program audits user-facing products in the Polkadot ecosystem to improve the overall user experience across the network.
+            </p>
+          </div>
+        </div>
+      </section>
+
       {/* About UX Audits Section */}
       <section className="py-16 bg-polkadot-light">
         <div className="section-container">

@@ -1,9 +1,8 @@
-
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { AlertTriangle } from "lucide-react";
+import { AlertTriangle, Upload, X } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 import {
@@ -31,6 +30,7 @@ const formSchema = z.object({
   complaint: z.string().min(10, {
     message: "Your complaint must be at least 10 characters.",
   }),
+  images: z.any().optional(),
 });
 
 type FormValues = z.infer<typeof formSchema>;
@@ -38,6 +38,8 @@ type FormValues = z.infer<typeof formSchema>;
 const UxComplaintBox = () => {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [selectedImages, setSelectedImages] = useState<File[]>([]);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -46,13 +48,49 @@ const UxComplaintBox = () => {
       email: "",
       product: "",
       complaint: "",
+      images: undefined,
     },
   });
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files) return;
+
+    const validFiles: File[] = [];
+    const invalidFiles: string[] = [];
+
+    Array.from(files).forEach(file => {
+      if (file.type === 'image/jpeg' || file.type === 'image/png') {
+        validFiles.push(file);
+      } else {
+        invalidFiles.push(file.name);
+      }
+    });
+
+    if (invalidFiles.length > 0) {
+      toast({
+        title: "Invalid file type",
+        description: `Only PNG and JPG files are allowed. Invalid files: ${invalidFiles.join(', ')}`,
+        variant: "destructive",
+      });
+    }
+
+    setSelectedImages(prev => [...prev, ...validFiles]);
+    form.setValue('images', validFiles);
+  };
+
+  const removeImage = (index: number) => {
+    setSelectedImages(prev => prev.filter((_, i) => i !== index));
+    if (selectedImages.length === 1) {
+      form.setValue('images', undefined);
+    }
+  };
 
   const onSubmit = async (data: FormValues) => {
     setIsSubmitting(true);
     // In a real application, you would send this data to your backend
     console.log("Form submitted:", data);
+    console.log("Images:", selectedImages);
     
     // Simulate API call
     await new Promise(resolve => setTimeout(resolve, 1000));
@@ -63,6 +101,7 @@ const UxComplaintBox = () => {
     });
     
     form.reset();
+    setSelectedImages([]);
     setIsSubmitting(false);
   };
 
@@ -79,10 +118,10 @@ const UxComplaintBox = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
           <div className="flex justify-center">
             <img 
-              src="/lovable-uploads/cabd9cf2-4848-4a56-88a3-15b85c090628.png" 
+              src="/lovable-uploads/Referenda.png" 
               alt="UX Complaint Box" 
               className="w-full max-w-md rounded-lg shadow-lg"
             />
@@ -150,6 +189,60 @@ const UxComplaintBox = () => {
                           className="min-h-[120px]"
                           {...field}
                         />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="images"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Upload Screenshots (PNG/JPG only)</FormLabel>
+                      <FormControl>
+                        <div className="space-y-4">
+                          <div 
+                            className="border-2 border-dashed border-gray-300 rounded-md p-4 text-center cursor-pointer hover:border-polkadot-pink transition-colors"
+                            onClick={() => fileInputRef.current?.click()}
+                          >
+                            <Upload className="h-8 w-8 mx-auto text-gray-400 mb-2" />
+                            <p className="text-sm text-gray-500">Click to upload or drag and drop</p>
+                            <p className="text-xs text-gray-400 mt-1">PNG, JPG up to 5MB each</p>
+                            <input
+                              type="file"
+                              ref={fileInputRef}
+                              className="hidden"
+                              accept="image/png,image/jpeg"
+                              multiple
+                              onChange={handleImageChange}
+                            />
+                          </div>
+                          
+                          {selectedImages.length > 0 && (
+                            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 mt-2">
+                              {selectedImages.map((file, index) => (
+                                <div key={index} className="relative group">
+                                  <div className="aspect-square rounded-md overflow-hidden bg-gray-100">
+                                    <img 
+                                      src={URL.createObjectURL(file)} 
+                                      alt={`Preview ${index + 1}`}
+                                      className="w-full h-full object-cover"
+                                    />
+                                  </div>
+                                  <button
+                                    type="button"
+                                    onClick={() => removeImage(index)}
+                                    className="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
+                                  >
+                                    <X className="h-4 w-4" />
+                                  </button>
+                                </div>
+                              ))}
+                            </div>
+                          )}
+                        </div>
                       </FormControl>
                       <FormMessage />
                     </FormItem>

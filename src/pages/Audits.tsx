@@ -1,8 +1,11 @@
-
 import { ArrowRight, CheckCircle, Users, FileSearch, FileText, Settings, Zap } from 'lucide-react';
 import DotPattern from '../components/DotPattern';
+import UxAuditRequest from '../components/UxAuditRequest';
+import { useState } from 'react';
 
 const Audits = () => {
+  const [isAuditModalOpen, setIsAuditModalOpen] = useState(false);
+
   return (
     <div className="min-h-screen pt-20">
       {/* Hero Section */}
@@ -16,12 +19,22 @@ const Audits = () => {
             <p className="text-lg sm:text-xl text-gray-600 mb-8 opacity-0 animate-fade-in" style={{ animationDelay: '200ms' }}>
               Get a professional assessment of your product's user experience and actionable recommendations to improve it.
             </p>
-            <a href="#audit-process" className="btn-primary opacity-0 animate-fade-in" style={{ animationDelay: '400ms' }}>
-              Learn How It Works
-            </a>
+            <button 
+              onClick={() => setIsAuditModalOpen(true)}
+              className="btn-primary opacity-0 animate-fade-in" 
+              style={{ animationDelay: '400ms' }}
+            >
+              Request UX Audit
+            </button>
           </div>
         </div>
       </section>
+
+      {/* UxAuditRequest Modal */}
+      <UxAuditRequest 
+        isOpen={isAuditModalOpen} 
+        onClose={() => setIsAuditModalOpen(false)} 
+      />
 
       {/* Ecosystem Diagram Section - New section with the image */}
       <section className="py-16 bg-white">

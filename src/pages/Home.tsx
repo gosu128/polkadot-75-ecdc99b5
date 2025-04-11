@@ -15,7 +15,7 @@ const Home = () => {
               <span className="block polkadot-gradient font-bold">Your users win.</span>
             </h1>
             <img 
-                src="/public/lovable-uploads/funded_black_pink.png" 
+                src="/public/lovable-uploads/polkadot-funded.png" 
                 alt="Funded by polkadot" 
                 className="w-[200px] mx-auto my-2 shadow-lg rounded-lg border border-gray-100 bg-background"
               />

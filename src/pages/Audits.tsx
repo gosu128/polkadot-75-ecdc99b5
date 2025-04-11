@@ -43,7 +43,7 @@ const Audits = () => {
             <h2 className="heading-lg mb-10">UX Bounty in the Polkadot Ecosystem</h2>
             <div className="flex justify-center mb-10">
               <img 
-                src="/public/lovable-uploads/9ebd90d7-c1b8-4e9d-9b23-2f74904539e6.png" 
+                src="/public/lovable-uploads/diagram.png" 
                 alt="Polkadot Ecosystem UX Audit Flow Diagram" 
                 className="max-w-full md:max-w-2xl shadow-lg rounded-lg border border-gray-100"
               />

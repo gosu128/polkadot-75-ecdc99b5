@@ -23,7 +23,7 @@ const Footer = () => {
               <a href="https://github.com/polkadot-js" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white">
                 GitHub
               </a>
-              <a href="https://polkadot.network/" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white">
+              <a href="https://polkadot.com/" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white">
                 Polkadot
               </a>
             </div>
@@ -44,29 +44,7 @@ const Footer = () => {
             </ul>
           </div>
           
-          <div>
-            <h3 className="font-semibold text-lg mb-4">Resources</h3>
-            <ul className="space-y-3">
-              <li>
-                <a href="https://polkadot.network/ecosystem/" target="_blank" rel="noopener noreferrer" className="text-gray-300 hover:text-white transition-colors flex items-center">
-                  Ecosystem
-                  <ArrowUpRight className="ml-1 h-3 w-3" />
-                </a>
-              </li>
-              <li>
-                <a href="https://polkadot.network/blog/" target="_blank" rel="noopener noreferrer" className="text-gray-300 hover:text-white transition-colors flex items-center">
-                  Blog
-                  <ArrowUpRight className="ml-1 h-3 w-3" />
-                </a>
-              </li>
-              <li>
-                <a href="https://wiki.polkadot.network/" target="_blank" rel="noopener noreferrer" className="text-gray-300 hover:text-white transition-colors flex items-center">
-                  Documentation
-                  <ArrowUpRight className="ml-1 h-3 w-3" />
-                </a>
-              </li>
-            </ul>
-          </div>
+          
         </div>
         
         <div className="border-t border-gray-800 mt-10 pt-6 flex flex-col md:flex-row justify-between items-center">
@@ -74,8 +52,7 @@ const Footer = () => {
             © {new Date().getFullYear()} UX Bounty. All rights reserved.
           </p>
           <div className="flex space-x-6">
-            <a href="#" className="text-gray-400 hover:text-white text-sm">Privacy Policy</a>
-            <a href="#" className="text-gray-400 hover:text-white text-sm">Terms of Service</a>
+           
           </div>
         </div>
       </div>

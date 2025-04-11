@@ -14,7 +14,11 @@ const Home = () => {
               We measure. We report. You implement.
               <span className="block polkadot-gradient font-bold">Your users win.</span>
             </h1>
-            <h1>TEST</h1>
+            <img 
+                src="/public/lovable-uploads/funded_black_pink.png" 
+                alt="Funded by polkadot" 
+                className="w-[200px] mx-auto my-2 shadow-lg rounded-lg border border-gray-100 bg-background"
+              />
             <p className="text-lg sm:text-xl text-gray-600 mb-8 opacity-0 animate-fade-in" style={{ animationDelay: '200ms' }}>
               UX Bounty produces systematic solutions to enhance the user experience across the Polkadot ecosystem.
             </p>

@@ -36,7 +36,7 @@ const UxComplaintBox = () => {
 
   return (
     <div className="min-h-screen pt-24 pb-16">
-      <div className="container mx-auto px-4 max-w-5xl">
+      <div className="container mx-auto px-4 max-w-7xl">
         <div className="text-center mb-12">
           <h1 className="text-4xl md:text-5xl font-unbounded font-bold mb-6 text-polkadot-dark">
             UX <span className="text-polkadot-pink">Complaint</span> Box
@@ -47,16 +47,16 @@ const UxComplaintBox = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-5 gap-12 items-start">
-          <div className="flex justify-center lg:col-span-2">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+          <div className="flex justify-center h-full">
             <img 
               src="/lovable-uploads/Referenda.png" 
               alt="UX Complaint Box" 
-              className="w-full max-w-md rounded-lg shadow-lg"
+              className="w-full h-[calc(100vh-300px)] object-contain rounded-lg shadow-lg"
             />
           </div>
 
-          <div className="bg-white p-8 rounded-lg shadow-md h-full lg:col-span-3">
+          <div className="bg-white p-8 rounded-lg shadow-md h-full">
             <div className="flex items-center mb-6">
               <AlertTriangle className="h-6 w-6 text-polkadot-pink mr-2" />
               <h2 className="text-2xl font-semibold">Submit Your Complaint</h2>

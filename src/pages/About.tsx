@@ -86,7 +86,7 @@ const About = () => {
                 <div className="w-12 h-12 bg-polkadot-pink bg-opacity-10 rounded-full flex items-center justify-center mb-6">
                   <span className="text-polkadot-pink font-bold">1</span>
                 </div>
-                <h3 className="text-xl font-semibold mb-4">Structured Discipline</h3>
+                <h3 className="text-xl font-semibold mb-4">Structured discipline</h3>
                 <p className="text-gray-600">
                   UX is a structured discipline that blends research, engineering principles, and design to create meaningful experiences.
                 </p>
@@ -96,7 +96,7 @@ const About = () => {
                 <div className="w-12 h-12 bg-polkadot-pink bg-opacity-10 rounded-full flex items-center justify-center mb-6">
                   <span className="text-polkadot-pink font-bold">2</span>
                 </div>
-                <h3 className="text-xl font-semibold mb-4">Research-Driven</h3>
+                <h3 className="text-xl font-semibold mb-4">Research-driven</h3>
                 <p className="text-gray-600">
                   UX is more than just design—it's a structured, research-driven process that ensures usability and accessibility.
                 </p>
@@ -106,7 +106,7 @@ const About = () => {
                 <div className="w-12 h-12 bg-polkadot-pink bg-opacity-10 rounded-full flex items-center justify-center mb-6">
                   <span className="text-polkadot-pink font-bold">3</span>
                 </div>
-                <h3 className="text-xl font-semibold mb-4">Data-Driven</h3>
+                <h3 className="text-xl font-semibold mb-4">Data-driven</h3>
                 <p className="text-gray-600">
                   UX is systematic and data-driven, combining research, usability principles, and interaction design.
                 </p>

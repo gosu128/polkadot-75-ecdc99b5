@@ -2,7 +2,7 @@ import { ArrowRight, CheckCircle, Users, FileSearch, FileText, Settings, Zap } f
 import DotPattern from '../components/DotPattern';
 import UxAuditRequest from '../components/UxAuditRequest';
 import { useState } from 'react';
-
+import auditDiagram from '../assets/diagram.png';
 const Audits = () => {
   const [isAuditModalOpen, setIsAuditModalOpen] = useState(false);
 
@@ -43,7 +43,7 @@ const Audits = () => {
             <h2 className="heading-lg mb-10">UX Bounty in the Polkadot Ecosystem</h2>
             <div className="flex justify-center mb-10">
               <img 
-                src="/public/lovable-uploads/diagram.png" 
+                src={auditDiagram}
                 alt="Polkadot Ecosystem UX Audit Flow Diagram" 
                 className="max-w-full md:max-w-2xl shadow-lg rounded-lg border border-gray-100"
               />

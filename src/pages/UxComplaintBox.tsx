@@ -50,7 +50,7 @@ const UxComplaintBox = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
           <div className="flex justify-center h-full">
             <img 
-              src="/lovable-uploads/Referenda.png" 
+              src="./lovable-uploads/Referenda.png" 
               alt="UX Complaint Box" 
               className="w-full h-[calc(100vh-300px)] object-contain rounded-lg shadow-lg"
             />

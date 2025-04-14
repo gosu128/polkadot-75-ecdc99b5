@@ -313,10 +313,13 @@ const Audits = () => {
             <p className="text-lg text-gray-300 mb-10">
               Have a Polkadot-based product? Apply for a free UX audit today.
             </p>
-            <a href="#" className="btn-primary bg-white text-polkadot-dark hover:bg-gray-100 inline-flex items-center">
+            <button 
+              onClick={() => setIsAuditModalOpen(true)}
+              className="btn-primary bg-white text-polkadot-dark hover:bg-gray-100 inline-flex items-center"
+            >
               Apply for UX Audit
               <ArrowRight className="ml-2 w-4 h-4" />
-            </a>
+            </button>
           </div>
         </div>
       </section>

@@ -17,10 +17,10 @@ const Footer = () => {
               Improving the Polkadot ecosystem through systematic, consistent, and normalized user experiences.
             </p>
             <div className="flex space-x-4">
-              <a href="https://twitter.com/Polkadot" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white">
+              <a href="https://x.com/houdz_kek" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white">
                 Twitter
               </a>
-              <a href="https://github.com/polkadot-js" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white">
+              <a href="https://github.com/gosu128/polkadot-75-ecdc99b5" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white">
                 GitHub
               </a>
               <a href="https://polkadot.com/" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white">

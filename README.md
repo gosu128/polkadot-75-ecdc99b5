@@ -1,69 +1,72 @@
-# Welcome to your Lovable project
+# Polkadot UX Complaint Box
 
-## Project info
+A web application for collecting UX feedback from Polkadot ecosystem users.
 
-**URL**: https://lovable.dev/projects/44815d92-807c-4759-a4d5-95c97c0f7733
+## Features
 
-## How can I edit this code?
+- Form for submitting UX complaints
+- File upload functionality for screenshots
+- Telegram integration for notifications
+- Responsive design
 
-There are several ways of editing your application.
+## Setup
 
-**Use Lovable**
+### Prerequisites
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/44815d92-807c-4759-a4d5-95c97c0f7733) and start prompting.
+- Node.js 18+ and npm/yarn
+- Vercel account (for Blob storage)
+- Telegram bot token (optional)
 
-Changes made via Lovable will be committed automatically to this repo.
+### Environment Variables
 
-**Use your preferred IDE**
+Create a `.env` file in the root directory with the following variables:
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+```
+# Vercel Blob Storage
+# To get a valid token:
+# 1. Go to https://vercel.com/dashboard
+# 2. Select your project
+# 3. Go to Storage > Blob
+# 4. Create a new Blob store if you don't have one
+# 5. Copy the token and paste it here
+BLOB_READ_WRITE_TOKEN=your_blob_token_here
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
+# Telegram Bot (optional)
+TELEGRAM_BOT_TOKEN=your_telegram_bot_token
+TELEGRAM_CHAT_ID=your_telegram_chat_id
 ```
 
-**Edit a file directly in GitHub**
+### Installation
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+1. Clone the repository
+2. Install dependencies:
+   ```bash
+   npm install
+   # or
+   yarn install
+   ```
+3. Start the development server:
+   ```bash
+   npm run dev
+   # or
+   yarn dev
+   ```
 
-**Use GitHub Codespaces**
+## Development Notes
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+- In development mode, if the Blob token is not set or is invalid, the application will use a placeholder image instead of failing.
+- The form will still submit successfully even if file upload fails.
+- For production deployment, make sure to set up the proper environment variables in your hosting platform.
 
-## What technologies are used for this project?
+## Deployment
 
-This project is built with .
+This project is configured for deployment on Vercel. Simply connect your repository to Vercel and it will automatically deploy.
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+Make sure to set up the following environment variables in your Vercel project settings:
+- `BLOB_READ_WRITE_TOKEN`
+- `TELEGRAM_BOT_TOKEN` (optional)
+- `TELEGRAM_CHAT_ID` (optional)
 
-## How can I deploy this project?
+## License
 
-Simply open [Lovable](https://lovable.dev/projects/44815d92-807c-4759-a4d5-95c97c0f7733) and click on Share -> Publish.
-
-## I want to use a custom domain - is that possible?
-
-We don't support custom domains (yet). If you want to deploy your project under your own domain then we recommend using Netlify. Visit our docs for more details: [Custom domains](https://docs.lovable.dev/tips-tricks/custom-domain/)
+MIT
